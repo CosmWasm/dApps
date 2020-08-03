@@ -1,0 +1,24 @@
+{
+  "name": "d-apps",
+  "private": true,
+  "description": "Decentralized Apps showcasing CosmJS",
+  "homepage": "https://github.com/CosmWasm/dApps",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CosmWasm/dApps.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CosmWasm/dApps/issues"
+  },
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "format": "lerna run format",
+    "lint": "lerna run lint",
+    "lint-fix": "lerna run lint-fix",
+    "build": "lerna run build --stream"
+  },
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  }
+}
