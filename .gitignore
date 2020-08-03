@@ -1,0 +1,12 @@
+# Logs
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencies
+node_modules/
+
+# OS-specific
+.DS_Store
+
+# IDE-specific
+.vscode/
