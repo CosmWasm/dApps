@@ -5,6 +5,9 @@ yarn-error.log*
 # Dependencies
 node_modules/
 
+# Built packages
+build/
+
 # OS-specific
 .DS_Store
 
