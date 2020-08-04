@@ -1,20 +1,23 @@
-import React from "react";
 import { Button, Typography } from "antd";
+import React from "react";
+import Center from "../theme/layout/Center";
+import Stack from "../theme/layout/Stack";
 import "./App.less";
 
-const { Title, Paragraph } = Typography;
+const { Title, Text } = Typography;
 
 const App = (): JSX.Element => (
-  <div className="App">
-    <Typography>
-      <Title>This title should be red instead of black</Title>
-      <Paragraph>
-        This paragraph should be blue instead of black. The button below should be orange with black text,
-        instead of blue with white text
-      </Paragraph>
-    </Typography>
-    <Button type="primary">Button</Button>
-  </div>
+  <Center tag="main" className="App">
+    <Stack>
+      <Typography>
+        <Title>CosmWasm</Title>
+        <Title level={2}>Hello!</Title>
+        <Text>Select one of the following options to start:</Text>
+      </Typography>
+      <Button type="primary">Browser (Demo)</Button>
+      <Button type="primary">Keplr (Secure)</Button>
+    </Stack>
+  </Center>
 );
 
 export default App;
