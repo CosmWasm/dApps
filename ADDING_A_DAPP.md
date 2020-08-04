@@ -54,7 +54,7 @@ module.exports = {
 };
 ```
 
-This allows you to have an `override.less` file in the `src/theme/` directory, that enables the overriding of the default Ant Design theme with the `LESS` variables defined [here]("https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less").
+This allows you to have an `override.less` file in the `src/theme/` directory, that enables the overriding of the default Ant Design theme with the `LESS` variables defined [here](https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less).
 
 ### Testing that override works
 
@@ -67,7 +67,7 @@ Add the following content to `src/theme/override.less`:
 @btn-primary-bg: hsl(16, 100%, 73%);
 ```
 
-Change `App.css` to `App.less` and add `@import "~antd/dist/antd.less";` at the top.
+Rename `App.css` to `App.less` and add `@import "~antd/dist/antd.less";` at the top.
 
 Change `App.tsx` to have the following content:
 
