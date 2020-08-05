@@ -6,7 +6,7 @@ interface TagProp {
   readonly tag?: keyof JSX.IntrinsicElements;
 }
 
-type StackProps = TagProp & React.HTMLAttributes<HTMLOrSVGElement>;
+export type StackProps = TagProp & React.HTMLAttributes<HTMLOrSVGElement>;
 
 function Stack({ tag: Tag = "div", className, children, ...props }: StackProps): JSX.Element {
   const classNames = joinClassNames("Stack", className);
