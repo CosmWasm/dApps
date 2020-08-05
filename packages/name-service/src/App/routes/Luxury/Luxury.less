@@ -1,0 +1,41 @@
+.Luxury {
+  padding: var(--s4);
+
+  @media (max-width: 379px) {
+    padding: 0;
+    padding-bottom: var(--s-2);
+  }
+
+  &.Center {
+    --max-width: 22rem;
+  }
+
+  .MainStack {
+    --gap: var(--s8);
+  }
+
+  .SearchAndResultStack {
+    --gap: var(--s4);
+  }
+
+  .SearchStack {
+    --gap: var(--s2);
+  }
+
+  h1 {
+    margin: 0;
+  }
+
+  span {
+    font-size: var(--s-1);
+    overflow-wrap: anywhere;
+  }
+
+  nav.Stack > * {
+    --gap: var(--s3);
+  }
+
+  button {
+    width: 100%;
+  }
+}
