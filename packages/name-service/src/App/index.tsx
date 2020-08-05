@@ -1,10 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { pathHome, pathLogin, pathLuxury, pathTestLoading } from "./paths";
+import Loading from "./components/Loading";
+import { pathHome, pathLogin, pathLuxury, pathTestLoading, pathTransfer } from "./paths";
 import Home from "./routes/Home";
 import Login from "./routes/Login";
 import Luxury from "./routes/Luxury";
-import Loading from "./components/Loading";
+import Transfer from "./routes/Transfer";
 
 function App(): JSX.Element {
   return (
@@ -14,6 +15,7 @@ function App(): JSX.Element {
         <Route exact path={pathLogin} component={Login} />
         <Route exact path={pathHome} component={Home} />
         <Route exact path={pathLuxury} component={Luxury} />
+        <Route exact path={pathTransfer} component={Transfer} />
         <Route exact path={pathTestLoading} component={Loading} />
       </Switch>
     </Router>
