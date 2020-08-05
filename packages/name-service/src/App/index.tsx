@@ -1,23 +1,23 @@
-import { Button, Typography } from "antd";
 import React from "react";
-import Center from "../theme/layout/Center";
-import Stack from "../theme/layout/Stack";
-import "./App.less";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { pathHome, pathLogin, pathLuxury, pathTestLoading } from "./paths";
+import Home from "./routes/Home";
+import Login from "./routes/Login";
+import Luxury from "./routes/Luxury";
+import Loading from "./components/Loading";
 
-const { Title, Text } = Typography;
-
-const App = (): JSX.Element => (
-  <Center tag="main" className="App">
-    <Stack>
-      <Typography>
-        <Title>CosmWasm</Title>
-        <Title level={2}>Hello!</Title>
-        <Text>Select one of the following options to start:</Text>
-      </Typography>
-      <Button type="primary">Browser (Demo)</Button>
-      <Button type="primary">Keplr (Secure)</Button>
-    </Stack>
-  </Center>
-);
+function App(): JSX.Element {
+  return (
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Login} />
+        <Route exact path={pathLogin} component={Login} />
+        <Route exact path={pathHome} component={Home} />
+        <Route exact path={pathLuxury} component={Luxury} />
+        <Route exact path={pathTestLoading} component={Loading} />
+      </Switch>
+    </Router>
+  );
+}
 
 export default App;
