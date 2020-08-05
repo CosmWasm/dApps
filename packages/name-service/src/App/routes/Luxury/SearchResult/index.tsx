@@ -1,8 +1,10 @@
 import { Button, Typography } from "antd";
 import React from "react";
 import Center from "../../../../theme/layout/Center";
+import { useHistory } from "react-router-dom";
 import Stack from "../../../../theme/layout/Stack";
 import "./SearchResult.less";
+import { pathTransfer } from "../../../paths";
 
 const { Text } = Typography;
 
@@ -12,14 +14,14 @@ interface Result {
   readonly action: (name: string) => void;
 }
 
-function getDummyResult(name: string): Result {
+function getDummyResult(name: string, navigateToTransfer: () => void): Result {
   switch (name) {
     case "ownedByYou":
       return {
         message: "is owned by you !",
         actionText: "Transfer 1 COSM",
-        action: (name) => {
-          console.log("Transfer" + name);
+        action: (_name) => {
+          navigateToTransfer();
         },
       };
     case "ownedByOther":
@@ -46,7 +48,13 @@ interface SearchResultProps {
 }
 
 function SearchResult({ name }: SearchResultProps): JSX.Element {
-  const { message, actionText, action } = getDummyResult(name);
+  const history = useHistory();
+
+  function navigateToTransfer() {
+    history.push({ pathname: pathTransfer, state: name });
+  }
+
+  const { message, actionText, action } = getDummyResult(name, navigateToTransfer);
 
   return (
     <Center tag="main" className="SearchResult">
