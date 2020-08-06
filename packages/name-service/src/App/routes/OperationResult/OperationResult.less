@@ -1,0 +1,35 @@
+.OperationResult {
+  padding: var(--s4);
+
+  @media (max-width: 379px) {
+    padding: 0;
+    padding-top: var(--s-2);
+    padding-bottom: var(--s-2);
+  }
+
+  &.Center {
+    --max-width: 22rem;
+  }
+
+  .Stack {
+    --gap: var(--s3);
+  }
+
+  .SuccessText,
+  .FailText {
+    font-size: var(--s-1);
+  }
+
+  .SuccessText {
+    color: green;
+  }
+
+  .FailText {
+    color: red;
+  }
+
+  button {
+    width: var(--max-width);
+    max-width: 100vw;
+  }
+}
