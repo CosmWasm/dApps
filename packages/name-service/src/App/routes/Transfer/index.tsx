@@ -22,7 +22,7 @@ function Transfer(): JSX.Element {
 
   return (
     <Center tag="main" className="Transfer">
-      <Stack className="MainStack">
+      <Stack>
         <Stack className="TransferStack">
           <Title>Transfer</Title>
           <Typography>

@@ -14,7 +14,7 @@ function Luxury(): JSX.Element {
 
   return (
     <Center tag="main" className="Luxury">
-      <Stack className="MainStack">
+      <Stack>
         <Stack className="SearchAndResultStack">
           <Stack className="SearchStack">
             <Title>Luxury</Title>

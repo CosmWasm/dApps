@@ -52,7 +52,7 @@ function OperationResult(): JSX.Element {
 
   return (
     <Center tag="main" className="OperationResult">
-      <Stack>
+      <Stack className="MainStack">
         <img src={icon} alt="Result icon" />
         <Text className={textClass}>{message}</Text>
         <Button type="primary" onClick={() => buttonAction()}>

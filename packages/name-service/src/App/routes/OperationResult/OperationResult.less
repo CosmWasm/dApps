@@ -1,17 +1,10 @@
+/* Mixins: .StandardPageLayout() */
+@import "../../../theme/layout/mixins.less";
+
 .OperationResult {
-  padding: var(--s4);
+  .StandardPageLayout();
 
-  @media (max-width: 379px) {
-    padding: 0;
-    padding-top: var(--s-2);
-    padding-bottom: var(--s-2);
-  }
-
-  &.Center {
-    --max-width: 22rem;
-  }
-
-  .Stack {
+  .MainStack {
     --gap: var(--s3);
   }
 
