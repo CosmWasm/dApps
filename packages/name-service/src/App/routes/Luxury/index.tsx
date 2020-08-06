@@ -26,6 +26,7 @@ function Luxury(): JSX.Element {
             <Search
               placeholder="Name"
               enterButton
+              className="SearchBox"
               onSearch={(name) => {
                 setSearchedName(name);
               }}
