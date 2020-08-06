@@ -15,16 +15,12 @@ function Transfer(): JSX.Element {
     <Center tag="main" className="Transfer">
       <Stack className="MainStack">
         <Stack className="TransferStack">
-          <Typography>
-            <Title>Transfer</Title>
-          </Typography>
+          <Title>Transfer</Title>
           <Typography>
             <Text>Name: </Text>
             <Text>{name}</Text>
           </Typography>
-          <Typography>
-            <Text>to</Text>
-          </Typography>
+          <Text>to</Text>
           <Input placeholder="Enter address" />
           <Button type="primary">Transfer 1 COSM</Button>
         </Stack>

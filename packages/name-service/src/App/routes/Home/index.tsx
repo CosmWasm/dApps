@@ -13,9 +13,7 @@ function Home(): JSX.Element {
   return (
     <Center tag="main" className="Home">
       <Stack className="MainStack">
-        <Typography>
-          <Title>Name Service</Title>
-        </Typography>
+        <Title>Name Service</Title>
         <Stack tag="nav">
           <Button disabled type="primary">
             Free

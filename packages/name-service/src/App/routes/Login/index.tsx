@@ -12,9 +12,7 @@ function Login(): JSX.Element {
   return (
     <Center tag="main" className="Login">
       <Stack className="MainStack">
-        <Typography>
-          <Title>CosmWasm</Title>
-        </Typography>
+        <Title>CosmWasm</Title>
         <Stack className="WelcomeStack">
           <Typography>
             <Title level={2}>Hello!</Title>

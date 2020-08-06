@@ -17,12 +17,8 @@ function Luxury(): JSX.Element {
       <Stack className="MainStack">
         <Stack className="SearchAndResultStack">
           <Stack className="SearchStack">
-            <Typography>
-              <Title>Luxury</Title>
-            </Typography>
-            <Typography>
-              <Text>(cosmos1ym5m5dw7ptt7jkf8f0k3k3o30889ju</Text>
-            </Typography>
+            <Title>Luxury</Title>
+            <Text>(cosmos1ym5m5dw7ptt7jkf8f0k3k3o30889ju</Text>
             <Search
               placeholder="Name"
               enterButton

@@ -59,12 +59,8 @@ function SearchResult({ name }: SearchResultProps): JSX.Element {
   return (
     <Center tag="main" className="SearchResult">
       <Stack>
-        <Typography>
-          <Text className="SearchedName">{name}</Text>
-        </Typography>
-        <Typography>
-          <Text className="LightText">{message}</Text>
-        </Typography>
+        <Text className="SearchedName">{name}</Text>
+        <Text className="LightText">{message}</Text>
         <Button type="primary" onClick={() => action(name)}>
           {actionText}
         </Button>

@@ -11,9 +11,7 @@ function YourAccount(props: StackProps): JSX.Element {
     <Center className="YourAccount" {...props}>
       <Stack>
         <header>
-          <Typography>
-            <Title level={3}>Your Account</Title>
-          </Typography>
+          <Title level={3}>Your Account</Title>
           <Divider />
         </header>
         <Typography>
