@@ -31,7 +31,7 @@ function Luxury(): JSX.Element {
               }}
             />
           </Stack>
-          <SearchResult name={searchedName} />
+          {searchedName && <SearchResult name={searchedName} />}
         </Stack>
         <YourAccount tag="footer" />
       </Stack>
