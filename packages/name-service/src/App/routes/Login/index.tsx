@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Center from "../../../theme/layout/Center";
 import Stack from "../../../theme/layout/Stack";
 import { pathHome } from "../../paths";
+import cosmWasmLogo from "./assets/cosmWasmLogo.svg";
 import "./Login.less";
 
 const { Title, Text } = Typography;
@@ -12,7 +13,7 @@ function Login(): JSX.Element {
   return (
     <Center tag="main" className="Login">
       <Stack className="MainStack">
-        <Title>CosmWasm</Title>
+        <img src={cosmWasmLogo} alt="CosmWasm logo" />
         <Stack className="WelcomeStack">
           <Typography>
             <Title level={2}>Hello!</Title>
