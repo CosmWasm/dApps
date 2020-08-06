@@ -1,10 +1,10 @@
 import { Button, Typography } from "antd";
 import React from "react";
-import Center from "../../../../theme/layout/Center";
 import { useHistory } from "react-router-dom";
+import Center from "../../../../theme/layout/Center";
 import Stack from "../../../../theme/layout/Stack";
+import { pathOperationResult, pathTransfer } from "../../../paths";
 import "./SearchResult.less";
-import { pathTransfer } from "../../../paths";
 
 const { Text } = Typography;
 
@@ -14,7 +14,7 @@ interface Result {
   readonly action: (name: string) => void;
 }
 
-function getDummyResult(name: string, navigateToTransfer: () => void): Result {
+function getDummyResult(name: string, tryRegister: () => void, navigateToTransfer: () => void): Result {
   switch (name) {
     case "ownedByYou":
       return {
@@ -36,8 +36,8 @@ function getDummyResult(name: string, navigateToTransfer: () => void): Result {
       return {
         message: "is available!",
         actionText: "Register 2 COSM",
-        action: (name) => {
-          console.log("Register " + name);
+        action: (_name) => {
+          tryRegister();
         },
       };
   }
@@ -50,11 +50,18 @@ interface SearchResultProps {
 function SearchResult({ name }: SearchResultProps): JSX.Element {
   const history = useHistory();
 
+  function tryRegister() {
+    history.push({
+      pathname: pathOperationResult,
+      state: { success: true, message: "Registered succesfully" },
+    });
+  }
+
   function navigateToTransfer() {
     history.push({ pathname: pathTransfer, state: name });
   }
 
-  const { message, actionText, action } = getDummyResult(name, navigateToTransfer);
+  const { message, actionText, action } = getDummyResult(name, tryRegister, navigateToTransfer);
 
   return (
     <Center tag="main" className="SearchResult">
