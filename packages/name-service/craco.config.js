@@ -6,7 +6,7 @@ module.exports = {
     {
       plugin: CracoAntDesignPlugin,
       options: {
-        customizeThemeLessPath: path.join(__dirname, "src/theme/override.less"),
+        customizeThemeLessPath: path.join(__dirname, "src/theme/override/variables.less"),
       },
     },
   ],
