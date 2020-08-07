@@ -1,0 +1,29 @@
+/* Mixins: .ff */
+@import "./mixins.less";
+
+.fonts {
+  --ff-text: Montserrat-Regular, sans-serif;
+  --ff-bold: Montserrat-Bold, sans-serif;
+  --ff-light: Montserrat-Light, sans-serif;
+  --ff-heading: Iceland-Regular, serif;
+
+  font-family: var(--ff-text);
+}
+
+.ff(Montserrat-Regular);
+.ff(Montserrat-Bold);
+.ff(Montserrat-Light);
+.ff(Iceland-Regular);
+
+p,
+span {
+  font-family: var(--ff-text);
+  font-size: var(--s0);
+  overflow-wrap: anywhere;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--ff-heading);
+}

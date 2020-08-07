@@ -1,0 +1,23 @@
+/* Mixins: .StandardPageLayout() */
+@import "../../../theme/layout/mixins.less";
+
+.Login {
+  .StandardPageLayout();
+
+  .MainStack {
+    --gap: var(--s9);
+  }
+
+  .WelcomeStack {
+    --gap: var(--s3);
+  }
+
+  .LightText {
+    font-family: var(--ff-light);
+  }
+
+  button {
+    width: var(--max-width);
+    max-width: 100vw;
+  }
+}
