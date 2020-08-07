@@ -3,6 +3,7 @@ import React from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import Center from "../../../theme/layout/Center";
 import Stack from "../../../theme/layout/Stack";
+import BackButton from "../../components/BackButton";
 import YourAccount from "../../components/YourAccount";
 import { pathOperationResult } from "../../paths";
 import "./Transfer.less";
@@ -23,6 +24,7 @@ function Transfer(): JSX.Element {
   return (
     <Center tag="main" className="Transfer">
       <Stack>
+        <BackButton />
         <Stack className="TransferStack">
           <Title>Transfer</Title>
           <Typography>

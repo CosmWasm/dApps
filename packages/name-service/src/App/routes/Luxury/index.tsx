@@ -2,6 +2,7 @@ import { Input, Typography } from "antd";
 import React, { useState } from "react";
 import Center from "../../../theme/layout/Center";
 import Stack from "../../../theme/layout/Stack";
+import BackButton from "../../components/BackButton";
 import YourAccount from "../../components/YourAccount";
 import "./Luxury.less";
 import SearchResult from "./SearchResult";
@@ -15,6 +16,7 @@ function Luxury(): JSX.Element {
   return (
     <Center tag="main" className="Luxury">
       <Stack>
+        <BackButton />
         <Stack className="SearchAndResultStack">
           <Stack className="SearchStack">
             <Title>Luxury</Title>
