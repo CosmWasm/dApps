@@ -1,14 +1,15 @@
 import { Button, Input, Typography } from "antd";
 import React, { useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
+import { useAccount, useError, useSdk } from "../../../service";
+import { printableCoin } from "../../../service/helpers";
 import Center from "../../../theme/layout/Center";
 import Stack from "../../../theme/layout/Stack";
 import BackButton from "../../components/BackButton";
 import YourAccount from "../../components/YourAccount";
 import { pathOperationResult } from "../../paths";
-import "./Transfer.less";
 import { Prices } from "../Luxury/SearchResult";
-import { useSdk, useAccount, useError } from "../../../service";
+import "./Transfer.less";
 
 const { Title, Text } = Typography;
 
@@ -25,6 +26,7 @@ function Transfer(): JSX.Element {
   const history = useHistory();
   const [newOwnerAddress, setNewOwnerAddress] = useState("");
   const [prices, setPrices] = useState<Prices>({});
+  const transferPrice = prices.transfer;
 
   React.useEffect(() => {
     getClient()
@@ -38,8 +40,8 @@ function Transfer(): JSX.Element {
   }, [setError, contractAddress, getClient]);
 
   function tryTransfer() {
-    const transferPrice = prices.transfer;
     const payment = transferPrice ? [transferPrice] : undefined;
+
     getClient()
       .execute(
         contractAddress,
@@ -49,13 +51,20 @@ function Transfer(): JSX.Element {
       )
       .then(() => {
         accountProvider.refreshAccount();
-      })
-      .catch(setError);
 
-    history.push({
-      pathname: pathOperationResult,
-      state: { success: false, message: "Could not transfer name" },
-    });
+        history.push({
+          pathname: pathOperationResult,
+          state: { success: true, message: `Succesfully transferred ${name} to ${newOwnerAddress}` },
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+
+        history.push({
+          pathname: pathOperationResult,
+          state: { success: false, message: "Name transfer failed" },
+        });
+      });
   }
 
   return (
@@ -71,7 +80,7 @@ function Transfer(): JSX.Element {
           <Text>to</Text>
           <Input placeholder="Enter address" onChange={(event) => setNewOwnerAddress(event.target.value)} />
           <Button type="primary" onClick={tryTransfer}>
-            Transfer 1 COSM
+            Transfer {printableCoin(transferPrice)}
           </Button>
         </Stack>
         <YourAccount tag="footer" />
