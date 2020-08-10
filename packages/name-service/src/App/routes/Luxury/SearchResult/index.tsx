@@ -8,36 +8,48 @@ import "./SearchResult.less";
 
 const { Text } = Typography;
 
+export interface Prices {
+  readonly purchase?: Coin;
+  readonly transfer?: Coin;
+}
+
 interface Result {
   readonly message: string;
   readonly actionText: string;
-  readonly action: (name: string) => void;
+  readonly action: () => void;
 }
 
-function getDummyResult(name: string, tryRegister: () => void, navigateToTransfer: () => void): Result {
-  switch (name) {
-    case "ownedByYou":
+function getResult(
+  myAddress: string,
+  nameOwnerAddress: string,
+  prices: Prices,
+  tryRegister: () => void,
+  navigateToTransfer: () => void,
+): Result {
+  if (!nameOwnerAddress) {
       return {
+      message: "is available!",
+      actionText: `Register ${printableCoin(prices.purchase)}`,
+      action: () => {
+        tryRegister();
+      },
+    };
+  }
+
+  if (myAddress === nameOwnerAddress) {
+    return {
         message: "is owned by you !",
-        actionText: "Transfer 1 COSM",
-        action: (_name) => {
+      actionText: `Transfer ${printableCoin(prices.transfer)}`,
+      action: () => {
           navigateToTransfer();
         },
       };
-    case "ownedByOther":
+  } else {
       return {
-        message: "is owned by cosmos1ym5m5ueud683p202u3h4f5v6k6ll7h",
+      message: `is owned by ${nameOwnerAddress}`,
         actionText: "Copy Owner Address",
-        action: (name) => {
-          console.log("Copied" + name);
-        },
-      };
-    default:
-      return {
-        message: "is available!",
-        actionText: "Register 2 COSM",
-        action: (_name) => {
-          tryRegister();
+      action: () => {
+        copyToClipboard(nameOwnerAddress);
         },
       };
   }
