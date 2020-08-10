@@ -101,13 +101,22 @@ function SearchResult({ name, contractAddress }: SearchResultProps): JSX.Element
 
     getClient()
       .execute(contractAddress, { register: { name: name } }, "Buying my name", payment)
-      .then(() => accountProvider.refreshAccount())
-      .catch(setError);
+      .then(() => {
+        accountProvider.refreshAccount();
 
-    history.push({
-      pathname: pathOperationResult,
-      state: { success: true, message: "Registered succesfully" },
-    });
+        history.push({
+          pathname: pathOperationResult,
+          state: { success: true, message: `Succesfully registered ${name}` },
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+
+        history.push({
+          pathname: pathOperationResult,
+          state: { success: false, message: "Name register failed" },
+        });
+      });
   }
 
   function navigateToTransfer() {
