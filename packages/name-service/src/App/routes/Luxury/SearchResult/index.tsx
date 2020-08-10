@@ -1,6 +1,10 @@
+import { Coin } from "@cosmjs/launchpad";
 import { Button, Typography } from "antd";
-import React from "react";
+import copyToClipboard from "clipboard-copy";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useAccount, useError, useSdk } from "../../../../service";
+import { printableCoin } from "../../../../service/helpers";
 import Center from "../../../../theme/layout/Center";
 import Stack from "../../../../theme/layout/Stack";
 import { pathOperationResult, pathTransfer } from "../../../paths";
@@ -27,7 +31,7 @@ function getResult(
   navigateToTransfer: () => void,
 ): Result {
   if (!nameOwnerAddress) {
-      return {
+    return {
       message: "is available!",
       actionText: `Register ${printableCoin(prices.purchase)}`,
       action: () => {
@@ -38,31 +42,75 @@ function getResult(
 
   if (myAddress === nameOwnerAddress) {
     return {
-        message: "is owned by you !",
+      message: "is owned by you !",
       actionText: `Transfer ${printableCoin(prices.transfer)}`,
       action: () => {
-          navigateToTransfer();
-        },
-      };
+        navigateToTransfer();
+      },
+    };
   } else {
-      return {
+    return {
       message: `is owned by ${nameOwnerAddress}`,
-        actionText: "Copy Owner Address",
+      actionText: "Copy Owner Address",
       action: () => {
         copyToClipboard(nameOwnerAddress);
-        },
-      };
+      },
+    };
   }
 }
 
 interface SearchResultProps {
   readonly name: string;
+  readonly contractAddress: string;
 }
 
-function SearchResult({ name }: SearchResultProps): JSX.Element {
+function SearchResult({ name, contractAddress }: SearchResultProps): JSX.Element {
   const history = useHistory();
+  const { getClient } = useSdk();
+  const accountProvider = useAccount();
+  const { setError } = useError();
 
-  function tryRegister() {
+  const [nameOwnerAddress, setNameOwnerAddress] = useState<string>();
+  const [prices, setPrices] = useState<Prices>({});
+
+  React.useEffect(() => {
+    getClient()
+      .queryContractSmart(contractAddress, { config: {} })
+      .then((response) => {
+        setNameOwnerAddress(response.address);
+      })
+      .catch((error) => {
+        // a not found error means it is free, other errors need to be reported
+        if (!error.toString().includes("NameRecord not found")) {
+          setError(error);
+        }
+      });
+  }, [setError, contractAddress, getClient]);
+
+  React.useEffect(() => {
+    getClient()
+      .queryContractSmart(contractAddress, { config: {} })
+      .then((response) => {
+        setPrices({
+          purchase: response.purchase_price,
+          transfer: response.transfer_price,
+        });
+      })
+      .catch(setError);
+  }, [setError, contractAddress, getClient]);
+
+  async function tryRegister() {
+    const purchasePrice = prices.purchase;
+    const payment = purchasePrice ? [purchasePrice] : undefined;
+
+    try {
+      await getClient().execute(contractAddress, { register: { name: name } }, "Buying my name", payment);
+
+      accountProvider.refreshAccount();
+    } catch (err) {
+      setError(err);
+    }
+
     history.push({
       pathname: pathOperationResult,
       state: { success: true, message: "Registered succesfully" },
@@ -73,14 +121,20 @@ function SearchResult({ name }: SearchResultProps): JSX.Element {
     history.push({ pathname: pathTransfer, state: name });
   }
 
-  const { message, actionText, action } = getDummyResult(name, tryRegister, navigateToTransfer);
+  const { message, actionText, action } = getResult(
+    accountProvider.account.address,
+    nameOwnerAddress,
+    prices,
+    tryRegister,
+    navigateToTransfer,
+  );
 
   return (
     <Center tag="main" className="SearchResult">
       <Stack>
         <Text className="SearchedName">{name}</Text>
         <Text className="LightText">{message}</Text>
-        <Button type="primary" onClick={() => action(name)}>
+        <Button type="primary" onClick={action}>
           {actionText}
         </Button>
       </Stack>
