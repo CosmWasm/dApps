@@ -6,11 +6,13 @@ import BackButton from "../../components/BackButton";
 import YourAccount from "../../components/YourAccount";
 import "./Luxury.less";
 import SearchResult from "./SearchResult";
+import { useParams } from "react-router-dom";
 
 const { Title, Text } = Typography;
 const { Search } = Input;
 
 function Luxury(): JSX.Element {
+  const { address } = useParams();
   const [searchedName, setSearchedName] = useState("");
 
   return (
@@ -20,7 +22,7 @@ function Luxury(): JSX.Element {
         <Stack className="SearchAndResultStack">
           <Stack className="SearchStack">
             <Title>Luxury</Title>
-            <Text>(cosmos1ym5m5dw7ptt7jkf8f0k3k3o30889ju</Text>
+            <Text>({address})</Text>
             <Search
               placeholder="Name"
               enterButton
@@ -30,7 +32,7 @@ function Luxury(): JSX.Element {
               }}
             />
           </Stack>
-          {searchedName && <SearchResult name={searchedName} />}
+          {searchedName && <SearchResult name={searchedName} contractAddress={address} />}
         </Stack>
         <YourAccount tag="footer" />
       </Stack>
