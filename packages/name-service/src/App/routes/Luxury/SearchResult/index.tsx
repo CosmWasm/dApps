@@ -34,9 +34,7 @@ function getResult(
     return {
       message: "is available!",
       actionText: `Register ${printableCoin(prices.purchase)}`,
-      action: () => {
-        tryRegister();
-      },
+      action: tryRegister,
     };
   }
 
@@ -44,9 +42,7 @@ function getResult(
     return {
       message: "is owned by you !",
       actionText: `Transfer ${printableCoin(prices.transfer)}`,
-      action: () => {
-        navigateToTransfer();
-      },
+      action: navigateToTransfer,
     };
   } else {
     return {
@@ -68,14 +64,14 @@ function SearchResult({ name, contractAddress }: SearchResultProps): JSX.Element
   const history = useHistory();
   const { getClient } = useSdk();
   const accountProvider = useAccount();
-  const { setError } = useError();
+  const { setError, error } = useError();
 
-  const [nameOwnerAddress, setNameOwnerAddress] = useState<string>();
+  const [nameOwnerAddress, setNameOwnerAddress] = useState("");
   const [prices, setPrices] = useState<Prices>({});
 
   React.useEffect(() => {
     getClient()
-      .queryContractSmart(contractAddress, { config: {} })
+      .queryContractSmart(contractAddress, { resolve_record: { name } })
       .then((response) => {
         setNameOwnerAddress(response.address);
       })
@@ -85,7 +81,7 @@ function SearchResult({ name, contractAddress }: SearchResultProps): JSX.Element
           setError(error);
         }
       });
-  }, [setError, contractAddress, getClient]);
+  }, [setError, contractAddress, getClient, name]);
 
   React.useEffect(() => {
     getClient()
@@ -99,17 +95,14 @@ function SearchResult({ name, contractAddress }: SearchResultProps): JSX.Element
       .catch(setError);
   }, [setError, contractAddress, getClient]);
 
-  async function tryRegister() {
+  function tryRegister() {
     const purchasePrice = prices.purchase;
     const payment = purchasePrice ? [purchasePrice] : undefined;
 
-    try {
-      await getClient().execute(contractAddress, { register: { name: name } }, "Buying my name", payment);
-
-      accountProvider.refreshAccount();
-    } catch (err) {
-      setError(err);
-    }
+    getClient()
+      .execute(contractAddress, { register: { name: name } }, "Buying my name", payment)
+      .then(() => accountProvider.refreshAccount())
+      .catch(setError);
 
     history.push({
       pathname: pathOperationResult,
@@ -118,7 +111,7 @@ function SearchResult({ name, contractAddress }: SearchResultProps): JSX.Element
   }
 
   function navigateToTransfer() {
-    history.push({ pathname: pathTransfer, state: name });
+    history.push({ pathname: pathTransfer, state: { name: name, contractAddress: contractAddress } });
   }
 
   const { message, actionText, action } = getResult(
@@ -132,6 +125,7 @@ function SearchResult({ name, contractAddress }: SearchResultProps): JSX.Element
   return (
     <Center tag="main" className="SearchResult">
       <Stack>
+        <Text>{error}</Text>
         <Text className="SearchedName">{name}</Text>
         <Text className="LightText">{message}</Text>
         <Button type="primary" onClick={action}>
