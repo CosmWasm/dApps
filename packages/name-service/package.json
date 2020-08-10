@@ -14,7 +14,13 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
+    "@cosmjs/cosmwasm": "^0.22.0",
+    "@cosmjs/crypto": "^0.22.0",
+    "@cosmjs/launchpad": "^0.22.0",
+    "@cosmjs/math": "^0.22.0",
     "antd": "^4.5.2",
+    "clipboard-copy": "^3.1.0",
+    "ky": "^0.23.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0"
