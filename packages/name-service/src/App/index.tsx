@@ -18,7 +18,6 @@ function App(): JSX.Element {
         <Route exact path={pathLuxury} component={Luxury} />
         <Route exact path={pathTransfer} component={Transfer} />
         <Route exact path={pathOperationResult} component={OperationResult} />
-        <Route exact path={pathTestLoading} component={Loading} />
       </Switch>
     </Router>
   );
