@@ -3,7 +3,7 @@ import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { config } from "../../../config";
-import { useAccount, useError, useSdk } from "../../../service";
+import { useError, useSdk } from "../../../service";
 import Center from "../../../theme/layout/Center";
 import Stack from "../../../theme/layout/Stack";
 import Loading from "../../components/Loading";
@@ -13,15 +13,15 @@ import "./Home.less";
 const { Title } = Typography;
 
 function Home(): JSX.Element {
-  const sdk = useSdk();
-  const accountProvider = useAccount();
   const { setError } = useError();
+  const sdk = useSdk();
+
   const [contracts, setContracts] = useState<readonly Contract[]>([]);
 
   useEffect(() => {
     sdk.init();
-    accountProvider.refreshAccount();
-  }, [sdk, accountProvider]);
+    //  eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     !sdk.loading &&

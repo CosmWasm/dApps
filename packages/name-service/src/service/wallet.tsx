@@ -4,22 +4,19 @@ import ky from "ky";
 import * as React from "react";
 import { useState } from "react";
 import { AppConfig } from "../config";
-import { useError } from "./error";
 import { createClient, loadOrCreateWallet } from "./sdk";
 
 export interface CosmWasmContextType {
   readonly loading: boolean;
   readonly address: string;
-  readonly init: () => void;
+  readonly init: () => Promise<void>;
   readonly getClient: () => SigningCosmWasmClient;
 }
 
 const defaultContext: CosmWasmContextType = {
   loading: true,
   address: "",
-  init: () => {
-    return;
-  },
+  init: () => Promise.reject("Default init"),
   getClient: (): SigningCosmWasmClient => {
     throw new Error("not yet initialized");
   },
@@ -59,12 +56,11 @@ export function SdkProvider(props: SdkProviderProps): JSX.Element {
   };
 
   const [value, setValue] = useState(defaultContext);
-  const { setError } = useError();
 
   const { config, loadWallet } = props;
 
-  function init() {
-    loadWallet(config.addressPrefix)
+  async function init() {
+    return loadWallet(config.addressPrefix)
       .then((signer) => createClient(config.httpUrl, signer))
       .then(async (client) => {
         const address = client.senderAddress;
@@ -79,13 +75,10 @@ export function SdkProvider(props: SdkProviderProps): JSX.Element {
         setValue({
           loading: false,
           address: address,
-          init: () => {
-            return;
-          },
+          init: () => Promise.reject("Already initialized"),
           getClient: () => client,
         });
-      })
-      .catch(setError);
+      });
   }
 
   return <CosmWasmContext.Provider value={value}>{props.children}</CosmWasmContext.Provider>;

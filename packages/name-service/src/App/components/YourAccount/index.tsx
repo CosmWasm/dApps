@@ -1,6 +1,6 @@
 import { Button, Divider, Typography } from "antd";
 import copyToClipboard from "clipboard-copy";
-import React, { useEffect } from "react";
+import React from "react";
 import { useAccount } from "../../../service";
 import { printableBalance } from "../../../service/helpers";
 import Center, { CenterProps } from "../../../theme/layout/Center";
@@ -11,8 +11,6 @@ const { Title, Text } = Typography;
 
 function YourAccount(props: CenterProps): JSX.Element {
   const accountProvider = useAccount();
-
-  useEffect(accountProvider.refreshAccount, [accountProvider]);
 
   return (
     <Center className="YourAccount" {...props}>
