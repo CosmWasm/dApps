@@ -1,4 +1,6 @@
-import { Input, Typography } from "antd";
+import { Typography } from "antd";
+import { Formik } from "formik";
+import { Form, FormItem, Input } from "formik-antd";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Center from "../../../theme/layout/Center";
@@ -6,11 +8,11 @@ import Stack from "../../../theme/layout/Stack";
 import BackButton from "../../components/BackButton";
 import Loading from "../../components/Loading";
 import YourAccount from "../../components/YourAccount";
+import { SearchValidationSchema } from "../../forms/validationSchemas";
 import "./Luxury.less";
 import SearchResult from "./SearchResult";
 
 const { Title, Text } = Typography;
-const { Search } = Input;
 
 function Luxury(): JSX.Element {
   const { address } = useParams();
@@ -28,14 +30,19 @@ function Luxury(): JSX.Element {
             <Stack className="SearchStack">
               <Title>Luxury</Title>
               <Text>({address})</Text>
-              <Search
-                placeholder="Name"
-                enterButton
-                className="SearchBox"
-                onSearch={(name) => {
-                  setSearchedName(name);
+              <Formik
+                initialValues={{ name: "" }}
+                validationSchema={SearchValidationSchema}
+                onSubmit={(values) => {
+                  setSearchedName(values.name);
                 }}
-              />
+              >
+                <Form>
+                  <FormItem name="name">
+                    <Input name="name" placeholder="Name" />
+                  </FormItem>
+                </Form>
+              </Formik>
             </Stack>
             {searchedName && (
               <SearchResult name={searchedName} contractAddress={address} setLoading={setLoading} />

@@ -1,5 +1,7 @@
 import { Coin } from "@cosmjs/launchpad";
-import { Button, Input, Typography } from "antd";
+import { Button, Typography } from "antd";
+import { Formik } from "formik";
+import { Form, FormItem, Input } from "formik-antd";
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { useAccount, useError, useSdk } from "../../../service";
@@ -9,6 +11,7 @@ import Stack from "../../../theme/layout/Stack";
 import BackButton from "../../components/BackButton";
 import Loading from "../../components/Loading";
 import YourAccount from "../../components/YourAccount";
+import { TransferValidationSchema } from "../../forms/validationSchemas";
 import { pathOperationResult } from "../../paths";
 import "./Transfer.less";
 
@@ -84,7 +87,19 @@ function Transfer(): JSX.Element {
               <Text>{name}</Text>
             </Typography>
             <Text>to</Text>
-            <Input placeholder="Enter address" onChange={(event) => setNewOwnerAddress(event.target.value)} />
+            <Formik
+              initialValues={{ address: "" }}
+              validationSchema={TransferValidationSchema}
+              onSubmit={(values) => {
+                setNewOwnerAddress(values.address);
+              }}
+            >
+              <Form>
+                <FormItem name="address">
+                  <Input name="address" placeholder="Enter address" />
+                </FormItem>
+              </Form>
+            </Formik>
             <Button type="primary" onClick={tryTransfer}>
               Transfer {printableCoin(transferPrice)}
             </Button>
