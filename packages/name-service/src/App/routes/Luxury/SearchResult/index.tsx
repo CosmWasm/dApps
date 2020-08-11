@@ -1,7 +1,7 @@
 import { Coin } from "@cosmjs/launchpad";
 import { Button, Typography } from "antd";
 import copyToClipboard from "clipboard-copy";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useAccount, useError, useSdk } from "../../../../service";
 import { printableCoin } from "../../../../service/helpers";
@@ -58,18 +58,19 @@ function getResult(
 interface SearchResultProps {
   readonly name: string;
   readonly contractAddress: string;
+  readonly setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function SearchResult({ name, contractAddress }: SearchResultProps): JSX.Element {
+function SearchResult({ name, contractAddress, setLoading }: SearchResultProps): JSX.Element {
   const history = useHistory();
+  const { setError, error } = useError();
   const { getClient } = useSdk();
   const accountProvider = useAccount();
-  const { setError, error } = useError();
 
   const [nameOwnerAddress, setNameOwnerAddress] = useState("");
   const [prices, setPrices] = useState<Prices>({});
 
-  React.useEffect(() => {
+  useEffect(() => {
     getClient()
       .queryContractSmart(contractAddress, { resolve_record: { name } })
       .then((response) => {
@@ -83,7 +84,7 @@ function SearchResult({ name, contractAddress }: SearchResultProps): JSX.Element
       });
   }, [setError, contractAddress, getClient, name]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     getClient()
       .queryContractSmart(contractAddress, { config: {} })
       .then((response) => {
@@ -96,6 +97,8 @@ function SearchResult({ name, contractAddress }: SearchResultProps): JSX.Element
   }, [setError, contractAddress, getClient]);
 
   function tryRegister() {
+    setLoading(true);
+
     const purchasePrice = prices.purchase;
     const payment = purchasePrice ? [purchasePrice] : undefined;
 
