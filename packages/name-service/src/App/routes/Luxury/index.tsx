@@ -19,7 +19,7 @@ function Luxury(): JSX.Element {
   const [searchedName, setSearchedName] = useState("");
 
   return (
-    (loading && <Loading />) ||
+    (loading && <Loading loadingText={`Registering name: ${searchedName}...`} />) ||
     (!loading && (
       <Center tag="main" className="Luxury">
         <Stack>

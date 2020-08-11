@@ -72,7 +72,7 @@ function Transfer(): JSX.Element {
   }
 
   return (
-    (loading && <Loading />) ||
+    (loading && <Loading loadingText={`Transferring name: ${name}...`} />) ||
     (!loading && (
       <Center tag="main" className="Transfer">
         <Stack>
