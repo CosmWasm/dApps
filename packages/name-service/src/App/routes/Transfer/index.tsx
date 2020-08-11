@@ -1,14 +1,15 @@
+import { Coin } from "@cosmjs/launchpad";
 import { Button, Input, Typography } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { useAccount, useError, useSdk } from "../../../service";
 import { printableCoin } from "../../../service/helpers";
 import Center from "../../../theme/layout/Center";
 import Stack from "../../../theme/layout/Stack";
 import BackButton from "../../components/BackButton";
+import Loading from "../../components/Loading";
 import YourAccount from "../../components/YourAccount";
 import { pathOperationResult } from "../../paths";
-import { Prices } from "../Luxury/SearchResult";
 import "./Transfer.less";
 
 const { Title, Text } = Typography;
@@ -20,26 +21,26 @@ interface TransferState {
 
 function Transfer(): JSX.Element {
   const { name, contractAddress } = useLocation().state as TransferState;
+  const history = useHistory();
+  const { setError } = useError();
   const { getClient } = useSdk();
   const accountProvider = useAccount();
-  const { setError } = useError();
-  const history = useHistory();
-  const [newOwnerAddress, setNewOwnerAddress] = useState("");
-  const [prices, setPrices] = useState<Prices>({});
-  const transferPrice = prices.transfer;
 
-  React.useEffect(() => {
+  const [loading, setLoading] = useState(false);
+  const [newOwnerAddress, setNewOwnerAddress] = useState("");
+  const [transferPrice, setTransferPrice] = useState<Coin>();
+
+  useEffect(() => {
     getClient()
       .queryContractSmart(contractAddress, { config: {} })
       .then((response) => {
-        setPrices({
-          transfer: response.transfer_price,
-        });
+        setTransferPrice(response.transfer_price);
       })
       .catch(setError);
   }, [setError, contractAddress, getClient]);
 
   function tryTransfer() {
+    setLoading(true);
     const payment = transferPrice ? [transferPrice] : undefined;
 
     getClient()
@@ -54,7 +55,10 @@ function Transfer(): JSX.Element {
 
         history.push({
           pathname: pathOperationResult,
-          state: { success: true, message: `Succesfully transferred ${name} to ${newOwnerAddress}` },
+          state: {
+            success: true,
+            message: `Succesfully transferred ${name} to ${newOwnerAddress}`,
+          },
         });
       })
       .catch((error) => {
@@ -68,24 +72,27 @@ function Transfer(): JSX.Element {
   }
 
   return (
-    <Center tag="main" className="Transfer">
-      <Stack>
-        <BackButton />
-        <Stack className="TransferStack">
-          <Title>Transfer</Title>
-          <Typography>
-            <Text>Name: </Text>
-            <Text>{name}</Text>
-          </Typography>
-          <Text>to</Text>
-          <Input placeholder="Enter address" onChange={(event) => setNewOwnerAddress(event.target.value)} />
-          <Button type="primary" onClick={tryTransfer}>
-            Transfer {printableCoin(transferPrice)}
-          </Button>
+    (loading && <Loading />) ||
+    (!loading && (
+      <Center tag="main" className="Transfer">
+        <Stack>
+          <BackButton />
+          <Stack className="TransferStack">
+            <Title>Transfer</Title>
+            <Typography>
+              <Text>Name: </Text>
+              <Text>{name}</Text>
+            </Typography>
+            <Text>to</Text>
+            <Input placeholder="Enter address" onChange={(event) => setNewOwnerAddress(event.target.value)} />
+            <Button type="primary" onClick={tryTransfer}>
+              Transfer {printableCoin(transferPrice)}
+            </Button>
+          </Stack>
+          <YourAccount tag="footer" />
         </Stack>
-        <YourAccount tag="footer" />
-      </Stack>
-    </Center>
+      </Center>
+    ))
   );
 }
 
