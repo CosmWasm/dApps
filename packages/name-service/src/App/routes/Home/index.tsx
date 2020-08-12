@@ -14,7 +14,7 @@ import "./Home.less";
 const { Title } = Typography;
 
 function Home(): JSX.Element {
-  const { setError } = useError();
+  const { setError, error } = useError();
   const sdk = useSdk();
 
   const [contracts, setContracts] = useState<readonly Contract[]>([]);
@@ -33,12 +33,22 @@ function Home(): JSX.Element {
     }
   }, [sdk, setError]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      Promise.reject("Test reject").catch((error) => {
+        setError(error);
+        console.error(error);
+      });
+    }, 5000);
+  }, [setError]);
+
   return !sdk.initialized ? (
     <Loading loadingText="Initializing app..." />
   ) : (
     <Center tag="main" className="Home">
       <Stack>
         <Title>Name Service</Title>
+        {error && <Title>{error}</Title>}
         <Stack tag="nav">
           {contracts.map(({ label, address }) => (
             <Link key={address} to={`${pathContract}/${label.toLowerCase()}/${address}`}>
