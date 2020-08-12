@@ -12,7 +12,6 @@ function FormSearchName({ setSearchedName }: FormSearchNameProps): JSX.Element {
   return (
     <Formik
       initialValues={{ name: "" }}
-      isInitialValid={false}
       validationSchema={SearchValidationSchema}
       onSubmit={(values) => {
         setSearchedName(values.name);

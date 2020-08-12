@@ -18,7 +18,6 @@ function FormTransferName({
   return (
     <Formik
       initialValues={{ address: "" }}
-      isInitialValid={false}
       validationSchema={TransferValidationSchema}
       onSubmit={(values) => {
         setNewOwnerAddress(values.address);
@@ -29,7 +28,11 @@ function FormTransferName({
           <FormItem name="address">
             <Input name="address" placeholder="Enter address" />
           </FormItem>
-          <Button type="primary" onClick={transferButtonAction} disabled={!formikProps.isValid}>
+          <Button
+            type="primary"
+            onClick={transferButtonAction}
+            disabled={!(formikProps.isValid && formikProps.dirty)}
+          >
             {transferButtonText}
           </Button>
         </Form>
