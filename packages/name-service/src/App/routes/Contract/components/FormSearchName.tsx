@@ -1,6 +1,7 @@
 import { Formik } from "formik";
-import { Form, FormItem, Input } from "formik-antd";
+import { Form, FormItem } from "formik-antd";
 import React from "react";
+import Search from "../../../forms/Search";
 import { SearchValidationSchema } from "../../../forms/validationSchemas";
 
 interface FormSearchNameProps {
@@ -11,16 +12,26 @@ function FormSearchName({ setSearchedName }: FormSearchNameProps): JSX.Element {
   return (
     <Formik
       initialValues={{ name: "" }}
+      isInitialValid={false}
       validationSchema={SearchValidationSchema}
       onSubmit={(values) => {
         setSearchedName(values.name);
       }}
     >
-      <Form>
-        <FormItem name="name">
-          <Input name="name" placeholder="Name" />
-        </FormItem>
-      </Form>
+      {(formikProps) => (
+        <Form>
+          <FormItem name="name">
+            <Search
+              name="name"
+              placeholder="Name"
+              enterButton
+              onSearch={(value) => {
+                formikProps.isValid && setSearchedName(value);
+              }}
+            />
+          </FormItem>
+        </Form>
+      )}
     </Formik>
   );
 }
