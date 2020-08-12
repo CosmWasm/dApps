@@ -1,6 +1,5 @@
 import { Account } from "@cosmjs/launchpad";
 import * as React from "react";
-
 import { useError } from "./error";
 import { useSdk } from "./wallet";
 
@@ -12,39 +11,39 @@ export interface AccountContextType extends State {
   readonly refreshAccount: () => void;
 }
 
-function dummyRefresh(): void {}
-
-const defaultContext = (): AccountContextType => {
-  return {
-    refreshAccount: dummyRefresh,
-  };
+const defaultContext: AccountContextType = {
+  refreshAccount: () => {
+    return;
+  },
 };
 
-export const AccountContext = React.createContext<AccountContextType>(defaultContext());
+export const AccountContext = React.createContext<AccountContextType>(defaultContext);
 
 export const useAccount = (): AccountContextType => React.useContext(AccountContext);
 
-export function AccountProvider(props: { readonly children: any }): JSX.Element {
-  const [value, setValue] = React.useState<State>({});
-  const { loading, getClient } = useSdk();
+export function AccountProvider({ children }: React.HTMLAttributes<HTMLOrSVGElement>): JSX.Element {
   const { setError } = useError();
+  const sdk = useSdk();
 
-  const refreshAccount = (): void => {
-    if (!loading) {
-      getClient()
+  const [value, setValue] = React.useState<State>({});
+
+  function refreshAccount() {
+    if (sdk.initialized) {
+      sdk
+        .getClient()
         .getAccount()
         .then((account) => setValue({ account }))
         .catch(setError);
     }
-  };
+  }
 
   // this should just be called once on startup
-  React.useEffect(refreshAccount, [loading, getClient, setError]);
+  React.useEffect(refreshAccount, [sdk, setError]);
 
   const context: AccountContextType = {
     refreshAccount,
     account: value.account,
   };
 
-  return <AccountContext.Provider value={context}>{props.children}</AccountContext.Provider>;
+  return <AccountContext.Provider value={context}>{children}</AccountContext.Provider>;
 }

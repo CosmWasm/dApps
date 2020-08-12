@@ -21,19 +21,19 @@ function Home(): JSX.Element {
 
   useEffect(() => {
     sdk.init();
-    //  eslint-disable-next-line
-  }, []);
+  }, [sdk]);
 
   useEffect(() => {
-    !sdk.loading &&
+    if (sdk.initialized) {
       sdk
         .getClient()
         .getContracts(config.codeId)
         .then((contracts) => setContracts(contracts))
         .catch(setError);
+    }
   }, [sdk, setError]);
 
-  return sdk.loading ? (
+  return !sdk.initialized ? (
     <Loading loadingText="Initializing app..." />
   ) : (
     <Center tag="main" className="Home">

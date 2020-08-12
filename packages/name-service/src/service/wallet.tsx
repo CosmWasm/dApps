@@ -7,16 +7,18 @@ import { AppConfig } from "../config";
 import { createClient, loadOrCreateWallet } from "./sdk";
 
 export interface CosmWasmContextType {
-  readonly loading: boolean;
+  readonly initialized: boolean;
   readonly address: string;
-  readonly init: () => Promise<void>;
+  readonly init: () => void;
   readonly getClient: () => SigningCosmWasmClient;
 }
 
 const defaultContext: CosmWasmContextType = {
-  loading: true,
+  initialized: false,
   address: "",
-  init: () => Promise.resolve(),
+  init: () => {
+    return;
+  },
   getClient: (): SigningCosmWasmClient => {
     throw new Error("not yet initialized");
   },
@@ -26,41 +28,29 @@ export const CosmWasmContext = React.createContext<CosmWasmContextType>(defaultC
 
 export const useSdk = (): CosmWasmContextType => React.useContext(CosmWasmContext);
 
-export interface WalletProviderProps {
+export interface BurnerWalletProviderProps extends React.HTMLAttributes<HTMLOrSVGElement> {
   config: AppConfig;
-  children: any;
 }
 
-export interface SdkProviderProps {
-  config: AppConfig;
-  loadWallet: (addressPrefix: string) => Promise<OfflineSigner>;
-  children: any;
-}
-
-export function BurnerWalletProvider(props: WalletProviderProps): JSX.Element {
+export function BurnerWalletProvider({ config, children }: BurnerWalletProviderProps): JSX.Element {
   return (
-    <SdkProvider config={props.config} loadWallet={loadOrCreateWallet}>
-      {props.children}
+    <SdkProvider config={config} loadWallet={loadOrCreateWallet}>
+      {children}
     </SdkProvider>
   );
 }
 
-export function SdkProvider(props: SdkProviderProps): JSX.Element {
-  const defaultContext: CosmWasmContextType = {
-    loading: true,
-    address: "",
-    init: init,
-    getClient: (): SigningCosmWasmClient => {
-      throw new Error("not yet initialized");
-    },
-  };
+export interface SdkProviderProps extends React.HTMLAttributes<HTMLOrSVGElement> {
+  config: AppConfig;
+  loadWallet: (addressPrefix: string) => Promise<OfflineSigner>;
+}
 
-  const [value, setValue] = useState(defaultContext);
+export function SdkProvider({ config, loadWallet, children }: SdkProviderProps): JSX.Element {
+  const contextWithInit = { ...defaultContext, init: init };
+  const [value, setValue] = useState(contextWithInit);
 
-  const { config, loadWallet } = props;
-
-  async function init() {
-    return loadWallet(config.addressPrefix)
+  function init() {
+    loadWallet(config.addressPrefix)
       .then((signer) => createClient(config.httpUrl, signer))
       .then(async (client) => {
         const address = client.senderAddress;
@@ -73,13 +63,15 @@ export function SdkProvider(props: SdkProviderProps): JSX.Element {
         }
 
         setValue({
-          loading: false,
+          initialized: true,
           address: address,
-          init: () => Promise.resolve(),
+          init: () => {
+            return;
+          },
           getClient: () => client,
         });
       });
   }
 
-  return <CosmWasmContext.Provider value={value}>{props.children}</CosmWasmContext.Provider>;
+  return <CosmWasmContext.Provider value={value}>{children}</CosmWasmContext.Provider>;
 }
