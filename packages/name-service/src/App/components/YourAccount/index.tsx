@@ -1,12 +1,17 @@
 import { Button, Divider, Typography } from "antd";
+import copyToClipboard from "clipboard-copy";
 import React from "react";
-import Center from "../../../theme/layout/Center";
-import Stack, { StackProps } from "../../../theme/layout/Stack";
+import { useAccount } from "../../../service";
+import { printableBalance } from "../../../service/helpers";
+import Center, { CenterProps } from "../../../theme/layout/Center";
+import Stack from "../../../theme/layout/Stack";
 import "./YourAccount.less";
 
 const { Title, Text } = Typography;
 
-function YourAccount(props: StackProps): JSX.Element {
+function YourAccount(props: CenterProps): JSX.Element {
+  const accountProvider = useAccount();
+
   return (
     <Center className="YourAccount" {...props}>
       <Stack>
@@ -14,13 +19,17 @@ function YourAccount(props: StackProps): JSX.Element {
           <Title level={3}>Your Account</Title>
           <Divider />
         </header>
-        <Typography>
-          <Text>cosmos1jllyqyelctsqhdq6jkdnyf7900ollfnfkfop0090</Text>
-          <Text>(7.995 COSM)</Text>
-        </Typography>
-        <Button disabled type="primary">
-          Copy Account Address
-        </Button>
+        {accountProvider.account && (
+          <>
+            <Typography>
+              <Text>{accountProvider.account.address}</Text>
+              <Text>({printableBalance(accountProvider.account.balance)})</Text>
+            </Typography>
+            <Button type="primary" onClick={() => copyToClipboard(accountProvider.account.address)}>
+              Copy Account Address
+            </Button>
+          </>
+        )}
       </Stack>
     </Center>
   );

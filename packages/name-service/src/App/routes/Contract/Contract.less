@@ -1,7 +1,7 @@
 /* Mixins: .StandardPageLayout() */
 @import "../../../theme/layout/mixins.less";
 
-.Luxury {
+.Contract {
   .StandardPageLayout();
 
   .SearchAndResultStack {
@@ -10,19 +10,19 @@
 
   .SearchStack {
     --gap: var(--s2);
+
+    .ant-form {
+      margin-top: var(--gap);
+    }
   }
 
   h1 {
     margin: 0;
+    text-transform: capitalize;
   }
 
   span {
     font-size: var(--s-1);
     overflow-wrap: anywhere;
-  }
-
-  .SearchBox {
-    width: var(--max-width);
-    max-width: 100vw;
   }
 }

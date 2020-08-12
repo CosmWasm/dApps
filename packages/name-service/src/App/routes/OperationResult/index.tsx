@@ -40,23 +40,32 @@ function getResultContent(success: boolean, history: History): ResultContent {
   };
 }
 
-interface ResultState {
+export interface OperationResultState {
   readonly success: boolean;
   readonly message: string;
+  readonly customButtonText?: string;
+  readonly customButtonActionPath?: string;
 }
 
 function OperationResult(): JSX.Element {
   const history = useHistory();
-  const { success, message } = history.location.state as ResultState;
+
+  const { success, message, customButtonText, customButtonActionPath } = history.location
+    .state as OperationResultState;
   const { icon, textClass, buttonText, buttonAction } = getResultContent(success, history);
+
+  const chosenButtonText = customButtonText || buttonText;
+  const chosenButtonAction = customButtonActionPath
+    ? () => history.push(customButtonActionPath)
+    : buttonAction;
 
   return (
     <Center tag="main" className="OperationResult">
       <Stack className="MainStack">
         <img src={icon} alt="Result icon" />
         <Text className={textClass}>{message}</Text>
-        <Button type="primary" onClick={() => buttonAction()}>
-          {buttonText}
+        <Button type="primary" onClick={chosenButtonAction}>
+          {chosenButtonText}
         </Button>
       </Stack>
     </Center>

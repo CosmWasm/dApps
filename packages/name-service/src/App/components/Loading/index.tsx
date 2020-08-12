@@ -6,10 +6,16 @@ import "./Loading.less";
 
 const spinIndicator = <LoadingOutlined style={{ fontSize: "6.25rem" }} spin />;
 
-function Loading(): JSX.Element {
+interface LoadingProps {
+  readonly loadingText?: string;
+}
+
+function Loading({ loadingText }: LoadingProps): JSX.Element {
+  const tip = loadingText || "Loading...";
+
   return (
     <Center tag="main" className="Loading">
-      <Spin indicator={spinIndicator} tip="Loading..." className="Spin" />
+      <Spin indicator={spinIndicator} tip={tip} className="Spin" />
     </Center>
   );
 }

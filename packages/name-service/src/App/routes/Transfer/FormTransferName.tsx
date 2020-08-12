@@ -1,0 +1,41 @@
+import { Button } from "antd";
+import { Formik } from "formik";
+import { Form, FormItem, Input } from "formik-antd";
+import React from "react";
+import { TransferValidationSchema } from "../../forms/validationSchemas";
+
+interface FormTransferNameProps {
+  readonly setNewOwnerAddress: (value: React.SetStateAction<string>) => void;
+  readonly transferButtonText: string;
+  readonly transferButtonAction: () => void;
+}
+
+function FormTransferName({
+  setNewOwnerAddress,
+  transferButtonText,
+  transferButtonAction,
+}: FormTransferNameProps): JSX.Element {
+  return (
+    <Formik
+      initialValues={{ address: "" }}
+      isInitialValid={false}
+      validationSchema={TransferValidationSchema}
+      onSubmit={(values) => {
+        setNewOwnerAddress(values.address);
+      }}
+    >
+      {(formikProps) => (
+        <Form>
+          <FormItem name="address">
+            <Input name="address" placeholder="Enter address" />
+          </FormItem>
+          <Button type="primary" onClick={transferButtonAction} disabled={!formikProps.isValid}>
+            {transferButtonText}
+          </Button>
+        </Form>
+      )}
+    </Formik>
+  );
+}
+
+export default FormTransferName;
