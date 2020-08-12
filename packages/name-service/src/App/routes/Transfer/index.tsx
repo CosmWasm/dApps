@@ -90,20 +90,23 @@ function Transfer(): JSX.Element {
             <Text>to</Text>
             <Formik
               initialValues={{ address: "" }}
+              isInitialValid={false}
               validationSchema={TransferValidationSchema}
               onSubmit={(values) => {
                 setNewOwnerAddress(values.address);
               }}
             >
-              <Form>
-                <FormItem name="address">
-                  <Input name="address" placeholder="Enter address" />
-                </FormItem>
-              </Form>
+              {(formikProps) => (
+                <Form>
+                  <FormItem name="address">
+                    <Input name="address" placeholder="Enter address" />
+                  </FormItem>
+                  <Button type="primary" onClick={tryTransfer} disabled={!formikProps.isValid}>
+                    Transfer {printableCoin(transferPrice)}
+                  </Button>
+                </Form>
+              )}
             </Formik>
-            <Button type="primary" onClick={tryTransfer}>
-              Transfer {printableCoin(transferPrice)}
-            </Button>
           </Stack>
           <YourAccount tag="footer" />
         </Stack>
