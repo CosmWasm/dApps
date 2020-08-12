@@ -28,9 +28,11 @@ const CosmWasmContext = React.createContext<CosmWasmContextType>(defaultContext)
 
 export const useSdk = (): CosmWasmContextType => React.useContext(CosmWasmContext);
 
-interface BurnerWalletProviderProps extends React.HTMLAttributes<HTMLOrSVGElement> {
+interface ConfigProp {
   readonly config: AppConfig;
 }
+
+type BurnerWalletProviderProps = ConfigProp & React.HTMLAttributes<HTMLOrSVGElement>;
 
 export function BurnerWalletProvider({ config, children }: BurnerWalletProviderProps): JSX.Element {
   return (
@@ -40,10 +42,11 @@ export function BurnerWalletProvider({ config, children }: BurnerWalletProviderP
   );
 }
 
-interface SdkProviderProps extends React.HTMLAttributes<HTMLOrSVGElement> {
-  readonly config: AppConfig;
+interface ConfigWalletProps extends ConfigProp {
   readonly loadWallet: (addressPrefix: string) => Promise<OfflineSigner>;
 }
+
+type SdkProviderProps = ConfigWalletProps & React.HTMLAttributes<HTMLOrSVGElement>;
 
 export function SdkProvider({ config, loadWallet, children }: SdkProviderProps): JSX.Element {
   const contextWithInit = { ...defaultContext, init: init };
