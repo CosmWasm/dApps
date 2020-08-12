@@ -9,13 +9,18 @@ import BackButton from "../../components/BackButton";
 import Loading from "../../components/Loading";
 import YourAccount from "../../components/YourAccount";
 import { SearchValidationSchema } from "../../forms/validationSchemas";
-import "./Luxury.less";
+import "./Contract.less";
 import SearchResult from "./SearchResult";
 
 const { Title, Text } = Typography;
 
-function Luxury(): JSX.Element {
-  const { address } = useParams();
+interface ContractState {
+  readonly label: string;
+  readonly address: string;
+}
+
+function Contract(): JSX.Element {
+  const { label, address } = useParams() as ContractState;
 
   const [loading, setLoading] = useState(false);
   const [searchedName, setSearchedName] = useState("");
@@ -23,12 +28,12 @@ function Luxury(): JSX.Element {
   return (
     (loading && <Loading loadingText={`Registering name: ${searchedName}...`} />) ||
     (!loading && (
-      <Center tag="main" className="Luxury">
+      <Center tag="main" className="Contract">
         <Stack>
           <BackButton />
           <Stack className="SearchAndResultStack">
             <Stack className="SearchStack">
-              <Title>Luxury</Title>
+              <Title>{label}</Title>
               <Text>({address})</Text>
               <Formik
                 initialValues={{ name: "" }}
@@ -55,4 +60,4 @@ function Luxury(): JSX.Element {
   );
 }
 
-export default Luxury;
+export default Contract;
