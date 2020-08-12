@@ -3,12 +3,12 @@ import { Button, Typography } from "antd";
 import copyToClipboard from "clipboard-copy";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useAccount, useError, useSdk } from "../../../../service";
-import { printableCoin } from "../../../../service/helpers";
-import Center from "../../../../theme/layout/Center";
-import Stack from "../../../../theme/layout/Stack";
-import { pathOperationResult, pathTransfer } from "../../../paths";
-import { OperationResultState } from "../../OperationResult";
+import { useAccount, useError, useSdk } from "../../../../../service";
+import { printableCoin } from "../../../../../service/helpers";
+import Center from "../../../../../theme/layout/Center";
+import Stack from "../../../../../theme/layout/Stack";
+import { pathOperationResult, pathTransfer } from "../../../../paths";
+import { OperationResultState } from "../../../OperationResult";
 import "./SearchResult.less";
 
 const { Text } = Typography;

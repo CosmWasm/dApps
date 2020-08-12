@@ -1,6 +1,4 @@
 import { Typography } from "antd";
-import { Formik } from "formik";
-import { Form, FormItem, Input } from "formik-antd";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Center from "../../../theme/layout/Center";
@@ -8,19 +6,19 @@ import Stack from "../../../theme/layout/Stack";
 import BackButton from "../../components/BackButton";
 import Loading from "../../components/Loading";
 import YourAccount from "../../components/YourAccount";
-import { SearchValidationSchema } from "../../forms/validationSchemas";
+import FormSearchName from "./components/FormSearchName";
+import SearchResult from "./components/SearchResult";
 import "./Contract.less";
-import SearchResult from "./SearchResult";
 
 const { Title, Text } = Typography;
 
-interface ContractState {
+interface ContractParams {
   readonly label: string;
   readonly address: string;
 }
 
 function Contract(): JSX.Element {
-  const { label, address } = useParams() as ContractState;
+  const { label, address } = useParams() as ContractParams;
 
   const [loading, setLoading] = useState(false);
   const [searchedName, setSearchedName] = useState("");
@@ -35,19 +33,7 @@ function Contract(): JSX.Element {
             <Stack className="SearchStack">
               <Title>{label}</Title>
               <Text>({address})</Text>
-              <Formik
-                initialValues={{ name: "" }}
-                validationSchema={SearchValidationSchema}
-                onSubmit={(values) => {
-                  setSearchedName(values.name);
-                }}
-              >
-                <Form>
-                  <FormItem name="name">
-                    <Input name="name" placeholder="Name" />
-                  </FormItem>
-                </Form>
-              </Formik>
+              <FormSearchName setSearchedName={setSearchedName} />
             </Stack>
             {searchedName && (
               <SearchResult name={searchedName} contractAddress={address} setLoading={setLoading} />
