@@ -13,6 +13,7 @@ import Loading from "../../components/Loading";
 import YourAccount from "../../components/YourAccount";
 import { TransferValidationSchema } from "../../forms/validationSchemas";
 import { pathOperationResult } from "../../paths";
+import { OperationResultState } from "../OperationResult";
 import "./Transfer.less";
 
 const { Title, Text } = Typography;
@@ -61,7 +62,7 @@ function Transfer(): JSX.Element {
           state: {
             success: true,
             message: `Succesfully transferred ${name} to ${newOwnerAddress}`,
-          },
+          } as OperationResultState,
         });
       })
       .catch((error) => {
@@ -69,7 +70,7 @@ function Transfer(): JSX.Element {
 
         history.push({
           pathname: pathOperationResult,
-          state: { success: false, message: "Name transfer failed" },
+          state: { success: false, message: "Name transfer failed" } as OperationResultState,
         });
       });
   }

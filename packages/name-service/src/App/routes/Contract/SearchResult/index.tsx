@@ -8,6 +8,7 @@ import { printableCoin } from "../../../../service/helpers";
 import Center from "../../../../theme/layout/Center";
 import Stack from "../../../../theme/layout/Stack";
 import { pathOperationResult, pathTransfer } from "../../../paths";
+import { OperationResultState } from "../../OperationResult";
 import "./SearchResult.less";
 
 const { Text } = Typography;
@@ -109,7 +110,7 @@ function SearchResult({ name, contractAddress, setLoading }: SearchResultProps):
 
         history.push({
           pathname: pathOperationResult,
-          state: { success: true, message: `Succesfully registered ${name}` },
+          state: { success: true, message: `Succesfully registered ${name}` } as OperationResultState,
         });
       })
       .catch((error) => {
@@ -117,7 +118,7 @@ function SearchResult({ name, contractAddress, setLoading }: SearchResultProps):
 
         history.push({
           pathname: pathOperationResult,
-          state: { success: false, message: "Name register failed" },
+          state: { success: false, message: "Name register failed" } as OperationResultState,
         });
       });
   }
