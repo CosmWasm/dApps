@@ -1,7 +1,5 @@
 import { Coin } from "@cosmjs/launchpad";
-import { Button, Typography } from "antd";
-import { Formik } from "formik";
-import { Form, FormItem, Input } from "formik-antd";
+import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { useAccount, useError, useSdk } from "../../../service";
@@ -11,9 +9,9 @@ import Stack from "../../../theme/layout/Stack";
 import BackButton from "../../components/BackButton";
 import Loading from "../../components/Loading";
 import YourAccount from "../../components/YourAccount";
-import { TransferValidationSchema } from "../../forms/validationSchemas";
 import { pathOperationResult } from "../../paths";
 import { OperationResultState } from "../OperationResult";
+import FormTransferName from "./FormTransferName";
 import "./Transfer.less";
 
 const { Title, Text } = Typography;
@@ -88,25 +86,11 @@ function Transfer(): JSX.Element {
               <Text>{name}</Text>
             </Typography>
             <Text>to</Text>
-            <Formik
-              initialValues={{ address: "" }}
-              isInitialValid={false}
-              validationSchema={TransferValidationSchema}
-              onSubmit={(values) => {
-                setNewOwnerAddress(values.address);
-              }}
-            >
-              {(formikProps) => (
-                <Form>
-                  <FormItem name="address">
-                    <Input name="address" placeholder="Enter address" />
-                  </FormItem>
-                  <Button type="primary" onClick={tryTransfer} disabled={!formikProps.isValid}>
-                    Transfer {printableCoin(transferPrice)}
-                  </Button>
-                </Form>
-              )}
-            </Formik>
+            <FormTransferName
+              setNewOwnerAddress={setNewOwnerAddress}
+              transferButtonText={`Transfer ${printableCoin(transferPrice)}`}
+              transferButtonAction={tryTransfer}
+            />
           </Stack>
           <YourAccount tag="footer" />
         </Stack>
