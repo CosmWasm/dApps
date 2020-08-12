@@ -16,7 +16,7 @@ export interface CosmWasmContextType {
 const defaultContext: CosmWasmContextType = {
   loading: true,
   address: "",
-  init: () => Promise.reject("Default init"),
+  init: () => Promise.resolve(),
   getClient: (): SigningCosmWasmClient => {
     throw new Error("not yet initialized");
   },
@@ -75,7 +75,7 @@ export function SdkProvider(props: SdkProviderProps): JSX.Element {
         setValue({
           loading: false,
           address: address,
-          init: () => Promise.reject("Already initialized"),
+          init: () => Promise.resolve(),
           getClient: () => client,
         });
       });
