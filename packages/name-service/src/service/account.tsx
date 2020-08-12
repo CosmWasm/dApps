@@ -7,7 +7,7 @@ interface State {
   readonly account?: Account;
 }
 
-export interface AccountContextType extends State {
+interface AccountContextType extends State {
   readonly refreshAccount: () => void;
 }
 
@@ -17,7 +17,7 @@ const defaultContext: AccountContextType = {
   },
 };
 
-export const AccountContext = React.createContext<AccountContextType>(defaultContext);
+const AccountContext = React.createContext<AccountContextType>(defaultContext);
 
 export const useAccount = (): AccountContextType => React.useContext(AccountContext);
 

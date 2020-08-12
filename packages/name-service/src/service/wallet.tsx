@@ -6,7 +6,7 @@ import { useState } from "react";
 import { AppConfig } from "../config";
 import { createClient, loadOrCreateWallet } from "./sdk";
 
-export interface CosmWasmContextType {
+interface CosmWasmContextType {
   readonly initialized: boolean;
   readonly address: string;
   readonly init: () => void;
@@ -24,12 +24,12 @@ const defaultContext: CosmWasmContextType = {
   },
 };
 
-export const CosmWasmContext = React.createContext<CosmWasmContextType>(defaultContext);
+const CosmWasmContext = React.createContext<CosmWasmContextType>(defaultContext);
 
 export const useSdk = (): CosmWasmContextType => React.useContext(CosmWasmContext);
 
-export interface BurnerWalletProviderProps extends React.HTMLAttributes<HTMLOrSVGElement> {
-  config: AppConfig;
+interface BurnerWalletProviderProps extends React.HTMLAttributes<HTMLOrSVGElement> {
+  readonly config: AppConfig;
 }
 
 export function BurnerWalletProvider({ config, children }: BurnerWalletProviderProps): JSX.Element {
@@ -40,9 +40,9 @@ export function BurnerWalletProvider({ config, children }: BurnerWalletProviderP
   );
 }
 
-export interface SdkProviderProps extends React.HTMLAttributes<HTMLOrSVGElement> {
-  config: AppConfig;
-  loadWallet: (addressPrefix: string) => Promise<OfflineSigner>;
+interface SdkProviderProps extends React.HTMLAttributes<HTMLOrSVGElement> {
+  readonly config: AppConfig;
+  readonly loadWallet: (addressPrefix: string) => Promise<OfflineSigner>;
 }
 
 export function SdkProvider({ config, loadWallet, children }: SdkProviderProps): JSX.Element {

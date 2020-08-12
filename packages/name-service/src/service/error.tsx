@@ -33,7 +33,7 @@ function clearError(): void {
 
 /** ****************/
 
-export interface ErrorContextType {
+interface ErrorContextType {
   readonly error?: string;
   readonly setError: (err: string) => void;
   readonly clearError: () => void;
@@ -46,7 +46,7 @@ const defaultContext = (): ErrorContextType => {
   };
 };
 
-export const ErrorContext = React.createContext<ErrorContextType>(defaultContext());
+const ErrorContext = React.createContext<ErrorContextType>(defaultContext());
 
 export const useError = (): ErrorContextType => React.useContext(ErrorContext);
 
