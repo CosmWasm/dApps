@@ -25,7 +25,7 @@ interface TransferState {
 
 function Transfer(): JSX.Element {
   const { name, contractLabel, contractAddress } = useLocation().state as TransferState;
-  const fullContractPath = `${pathContract}/${contractLabel}/${contractAddress}`;
+  const fullContractPath = `${pathContract}/${contractLabel}/${contractAddress}/${name}`;
 
   const history = useHistory();
   const { setError } = useError();
@@ -65,7 +65,7 @@ function Transfer(): JSX.Element {
             success: true,
             message: `Succesfully transferred ${name} to ${newOwnerAddress}`,
             customButtonText: "Name details",
-            customButtonActionPath: `${fullContractPath}/${name}`,
+            customButtonActionPath: fullContractPath,
           } as OperationResultState,
         });
       })
@@ -88,7 +88,7 @@ function Transfer(): JSX.Element {
     (!loading && (
       <Center tag="main" className="Transfer">
         <Stack>
-          <BackButton path={`${fullContractPath}/${name}`} />
+          <BackButton path={fullContractPath} />
           <Stack className="TransferStack">
             <Title>Transfer</Title>
             <Typography>
