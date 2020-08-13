@@ -25,6 +25,10 @@ function Contract(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const [searchedName, setSearchedName] = useState(name);
 
+  function setLowercaseSearchedName(newName: string) {
+    setSearchedName(newName.toLowerCase());
+  }
+
   return (
     (loading && <Loading loadingText={`Registering name: ${searchedName}...`} />) ||
     (!loading && (
@@ -35,7 +39,7 @@ function Contract(): JSX.Element {
             <Stack className="SearchStack">
               <Title>{label}</Title>
               <Text>({address})</Text>
-              <FormSearchName initialName={name} setSearchedName={setSearchedName} />
+              <FormSearchName initialName={name} setSearchedName={setLowercaseSearchedName} />
             </Stack>
             {searchedName && (
               <SearchResult
