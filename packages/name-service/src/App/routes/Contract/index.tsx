@@ -9,6 +9,7 @@ import YourAccount from "../../components/YourAccount";
 import FormSearchName from "./components/FormSearchName";
 import SearchResult from "./components/SearchResult";
 import "./Contract.less";
+import { pathHome } from "../../paths";
 
 const { Title, Text } = Typography;
 
@@ -29,7 +30,7 @@ function Contract(): JSX.Element {
     (!loading && (
       <Center tag="main" className="Contract">
         <Stack>
-          <BackButton />
+          <BackButton path={pathHome} />
           <Stack className="SearchAndResultStack">
             <Stack className="SearchStack">
               <Title>{label}</Title>
