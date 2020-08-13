@@ -19,14 +19,18 @@ function FormTransferName({
     <Formik
       initialValues={{ address: "" }}
       validationSchema={TransferValidationSchema}
-      onSubmit={(values) => {
-        setNewOwnerAddress(values.address);
-      }}
+      onSubmit={transferButtonAction}
     >
       {(formikProps) => (
         <Form>
           <FormItem name="address">
-            <Input name="address" placeholder="Enter address" />
+            <Input
+              name="address"
+              placeholder="Enter address"
+              onChange={(event) => {
+                setNewOwnerAddress(event.target.value);
+              }}
+            />
           </FormItem>
           <Button
             type="primary"
