@@ -10,6 +10,7 @@ import BackButton from "../../components/BackButton";
 import Loading from "../../components/Loading";
 import YourAccount from "../../components/YourAccount";
 import { pathContract, pathOperationResult } from "../../paths";
+import { getErrorFromStackTrace } from "../../utils/errors";
 import { OperationResultState } from "../OperationResult";
 import FormTransferName from "./FormTransferName";
 import "./Transfer.less";
@@ -68,12 +69,16 @@ function Transfer(): JSX.Element {
           } as OperationResultState,
         });
       })
-      .catch((error) => {
-        console.error(error);
+      .catch((stackTrace) => {
+        console.error(stackTrace);
 
         history.push({
           pathname: pathOperationResult,
-          state: { success: false, message: "Name transfer failed" } as OperationResultState,
+          state: {
+            success: false,
+            message: "Name transfer failed:",
+            error: getErrorFromStackTrace(stackTrace),
+          } as OperationResultState,
         });
       });
   }

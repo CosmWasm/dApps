@@ -43,6 +43,7 @@ function getResultContent(success: boolean, history: History): ResultContent {
 export interface OperationResultState {
   readonly success: boolean;
   readonly message: string;
+  readonly error?: string;
   readonly customButtonText?: string;
   readonly customButtonActionPath?: string;
 }
@@ -50,7 +51,7 @@ export interface OperationResultState {
 function OperationResult(): JSX.Element {
   const history = useHistory();
 
-  const { success, message, customButtonText, customButtonActionPath } = history.location
+  const { success, message, error, customButtonText, customButtonActionPath } = history.location
     .state as OperationResultState;
   const { icon, textClass, buttonText, buttonAction } = getResultContent(success, history);
 
@@ -64,6 +65,7 @@ function OperationResult(): JSX.Element {
       <Stack className="MainStack">
         <img src={icon} alt="Result icon" />
         <Text className={textClass}>{message}</Text>
+        {error && <Text className={textClass}>{error}</Text>}
         <Button type="primary" onClick={chosenButtonAction}>
           {chosenButtonText}
         </Button>

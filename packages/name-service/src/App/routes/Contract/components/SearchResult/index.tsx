@@ -7,7 +7,8 @@ import { useAccount, useError, useSdk } from "../../../../../service";
 import { printableCoin } from "../../../../../service/helpers";
 import Center from "../../../../../theme/layout/Center";
 import Stack from "../../../../../theme/layout/Stack";
-import { pathOperationResult, pathTransfer, pathContract } from "../../../../paths";
+import { pathContract, pathOperationResult, pathTransfer } from "../../../../paths";
+import { getErrorFromStackTrace } from "../../../../utils/errors";
 import { OperationResultState } from "../../../OperationResult";
 import "./SearchResult.less";
 
@@ -119,12 +120,16 @@ function SearchResult({ name, contractLabel, contractAddress, setLoading }: Sear
           } as OperationResultState,
         });
       })
-      .catch((error) => {
-        console.error(error);
+      .catch((stackTrace) => {
+        console.error(stackTrace);
 
         history.push({
           pathname: pathOperationResult,
-          state: { success: false, message: "Name register failed" } as OperationResultState,
+          state: {
+            success: false,
+            message: "Name register failed:",
+            error: getErrorFromStackTrace(stackTrace),
+          } as OperationResultState,
         });
       });
   }
