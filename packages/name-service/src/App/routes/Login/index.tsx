@@ -1,8 +1,11 @@
 import { Button, Typography } from "antd";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { useAccount, useSdk } from "../../../service";
 import Center from "../../../theme/layout/Center";
 import Stack from "../../../theme/layout/Stack";
+import Loading from "../../components/Loading";
+import { RedirectLocation } from "../../components/ProtectedSwitch";
 import { pathHome } from "../../paths";
 import cosmWasmLogo from "./assets/cosmWasmLogo.svg";
 import "./Login.less";
@@ -10,7 +13,37 @@ import "./Login.less";
 const { Title, Text } = Typography;
 
 function Login(): JSX.Element {
-  return (
+  const history = useHistory();
+  const state = history.location.state as RedirectLocation;
+  const sdk = useSdk();
+  const { refreshAccount, account } = useAccount();
+
+  const [initializing, setInitializing] = useState(false);
+
+  function init() {
+    setInitializing(true);
+    sdk.init();
+  }
+
+  useEffect(() => {
+    if (sdk.initialized) {
+      refreshAccount();
+    }
+  }, [sdk.initialized, refreshAccount]);
+
+  useEffect(() => {
+    if (account) {
+      if (state) {
+        history.push(state.redirectPathname, state.redirectState);
+      } else {
+        history.push(pathHome);
+      }
+    }
+  }, [account, state, history]);
+
+  return initializing ? (
+    <Loading loadingText="Initializing app..." />
+  ) : (
     <Center tag="main" className="Login">
       <Stack className="MainStack">
         <img src={cosmWasmLogo} alt="CosmWasm logo" />
@@ -19,9 +52,9 @@ function Login(): JSX.Element {
             <Title level={2}>Hello!</Title>
             <Text className="LightText">Select one of the following options to start:</Text>
           </Typography>
-          <Link to={pathHome}>
-            <Button type="primary">Browser (Demo)</Button>
-          </Link>
+          <Button type="primary" onClick={init}>
+            Browser (Demo)
+          </Button>
           <Button disabled type="primary">
             Keplr (Secure)
           </Button>

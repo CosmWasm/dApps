@@ -64,7 +64,9 @@ interface SearchResultProps {
   readonly setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function SearchResult({ name, contractLabel, contractAddress, setLoading }: SearchResultProps): JSX.Element {
+function SearchResult({ contractLabel, contractAddress, name, setLoading }: SearchResultProps): JSX.Element {
+  const fullContractPath = `${pathContract}/${contractLabel}/${contractAddress}/${name}`;
+
   const history = useHistory();
   const { setError, error } = useError();
   const { getClient } = useSdk();
@@ -116,7 +118,7 @@ function SearchResult({ name, contractLabel, contractAddress, setLoading }: Sear
             success: true,
             message: `Succesfully registered ${name}`,
             customButtonText: "Name details",
-            customButtonActionPath: `${pathContract}/${contractLabel}/${contractAddress}/${name}`,
+            customButtonActionPath: fullContractPath,
           } as OperationResultState,
         });
       })
@@ -129,16 +131,14 @@ function SearchResult({ name, contractLabel, contractAddress, setLoading }: Sear
             success: false,
             message: "Name register failed:",
             error: getErrorFromStackTrace(stackTrace),
+            customButtonActionPath: fullContractPath,
           } as OperationResultState,
         });
       });
   }
 
   function navigateToTransfer() {
-    history.push({
-      pathname: pathTransfer,
-      state: { contractLabel: contractLabel, contractAddress: contractAddress, name: name },
-    });
+    history.push(`${pathTransfer}/${contractLabel}/${contractAddress}/${name}`);
   }
 
   const { message, actionText, action } = getResult(

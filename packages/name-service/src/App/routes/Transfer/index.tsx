@@ -1,7 +1,7 @@
 import { Coin } from "@cosmjs/launchpad";
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useAccount, useError, useSdk } from "../../../service";
 import { printableCoin } from "../../../service/helpers";
 import Center from "../../../theme/layout/Center";
@@ -9,7 +9,7 @@ import Stack from "../../../theme/layout/Stack";
 import BackButton from "../../components/BackButton";
 import Loading from "../../components/Loading";
 import YourAccount from "../../components/YourAccount";
-import { pathContract, pathOperationResult } from "../../paths";
+import { pathContract, pathOperationResult, pathTransfer } from "../../paths";
 import { getErrorFromStackTrace } from "../../utils/errors";
 import { OperationResultState } from "../OperationResult";
 import FormTransferName from "./FormTransferName";
@@ -17,14 +17,14 @@ import "./Transfer.less";
 
 const { Title, Text } = Typography;
 
-interface TransferState {
+interface TransferParams {
   readonly contractLabel: string;
   readonly contractAddress: string;
   readonly name: string;
 }
 
 function Transfer(): JSX.Element {
-  const { name, contractLabel, contractAddress } = useLocation().state as TransferState;
+  const { contractLabel, contractAddress, name } = useParams() as TransferParams;
   const fullContractPath = `${pathContract}/${contractLabel}/${contractAddress}/${name}`;
 
   const history = useHistory();
@@ -78,6 +78,7 @@ function Transfer(): JSX.Element {
             success: false,
             message: "Name transfer failed:",
             error: getErrorFromStackTrace(stackTrace),
+            customButtonActionPath: `${pathTransfer}/${contractLabel}/${contractAddress}/${name}`,
           } as OperationResultState,
         });
       });
