@@ -5,13 +5,14 @@ import Search from "../../../forms/Search";
 import { SearchValidationSchema } from "../../../forms/validationSchemas";
 
 interface FormSearchNameProps {
+  readonly initialName?: string;
   readonly setSearchedName: (value: React.SetStateAction<string>) => void;
 }
 
-function FormSearchName({ setSearchedName }: FormSearchNameProps): JSX.Element {
+function FormSearchName({ initialName, setSearchedName }: FormSearchNameProps): JSX.Element {
   return (
     <Formik
-      initialValues={{ name: "" }}
+      initialValues={{ name: initialName }}
       validationSchema={SearchValidationSchema}
       onSubmit={(values) => {
         setSearchedName(values.name);

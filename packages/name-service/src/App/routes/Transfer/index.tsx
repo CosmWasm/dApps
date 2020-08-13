@@ -9,7 +9,7 @@ import Stack from "../../../theme/layout/Stack";
 import BackButton from "../../components/BackButton";
 import Loading from "../../components/Loading";
 import YourAccount from "../../components/YourAccount";
-import { pathOperationResult } from "../../paths";
+import { pathContract, pathOperationResult } from "../../paths";
 import { OperationResultState } from "../OperationResult";
 import FormTransferName from "./FormTransferName";
 import "./Transfer.less";
@@ -17,12 +17,13 @@ import "./Transfer.less";
 const { Title, Text } = Typography;
 
 interface TransferState {
-  readonly name: string;
+  readonly contractLabel: string;
   readonly contractAddress: string;
+  readonly name: string;
 }
 
 function Transfer(): JSX.Element {
-  const { name, contractAddress } = useLocation().state as TransferState;
+  const { name, contractLabel, contractAddress } = useLocation().state as TransferState;
   const history = useHistory();
   const { setError } = useError();
   const { getClient } = useSdk();
@@ -60,6 +61,8 @@ function Transfer(): JSX.Element {
           state: {
             success: true,
             message: `Succesfully transferred ${name} to ${newOwnerAddress}`,
+            customButtonText: "Name details",
+            customButtonActionPath: `${pathContract}/${contractLabel}/${contractAddress}/${name}`,
           } as OperationResultState,
         });
       })

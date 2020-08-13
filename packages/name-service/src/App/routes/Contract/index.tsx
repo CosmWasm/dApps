@@ -15,13 +15,14 @@ const { Title, Text } = Typography;
 interface ContractParams {
   readonly label: string;
   readonly address: string;
+  readonly name?: string;
 }
 
 function Contract(): JSX.Element {
-  const { label, address } = useParams() as ContractParams;
+  const { label, address, name } = useParams() as ContractParams;
 
   const [loading, setLoading] = useState(false);
-  const [searchedName, setSearchedName] = useState("");
+  const [searchedName, setSearchedName] = useState(name);
 
   return (
     (loading && <Loading loadingText={`Registering name: ${searchedName}...`} />) ||
@@ -33,10 +34,15 @@ function Contract(): JSX.Element {
             <Stack className="SearchStack">
               <Title>{label}</Title>
               <Text>({address})</Text>
-              <FormSearchName setSearchedName={setSearchedName} />
+              <FormSearchName initialName={name} setSearchedName={setSearchedName} />
             </Stack>
             {searchedName && (
-              <SearchResult name={searchedName} contractAddress={address} setLoading={setLoading} />
+              <SearchResult
+                contractLabel={label}
+                contractAddress={address}
+                name={searchedName}
+                setLoading={setLoading}
+              />
             )}
           </Stack>
           <YourAccount tag="footer" />

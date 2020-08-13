@@ -7,7 +7,7 @@ import { useAccount, useError, useSdk } from "../../../../../service";
 import { printableCoin } from "../../../../../service/helpers";
 import Center from "../../../../../theme/layout/Center";
 import Stack from "../../../../../theme/layout/Stack";
-import { pathOperationResult, pathTransfer } from "../../../../paths";
+import { pathOperationResult, pathTransfer, pathContract } from "../../../../paths";
 import { OperationResultState } from "../../../OperationResult";
 import "./SearchResult.less";
 
@@ -57,12 +57,13 @@ function getResult(
 }
 
 interface SearchResultProps {
-  readonly name: string;
+  readonly contractLabel: string;
   readonly contractAddress: string;
+  readonly name: string;
   readonly setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function SearchResult({ name, contractAddress, setLoading }: SearchResultProps): JSX.Element {
+function SearchResult({ name, contractLabel, contractAddress, setLoading }: SearchResultProps): JSX.Element {
   const history = useHistory();
   const { setError, error } = useError();
   const { getClient } = useSdk();
@@ -110,7 +111,12 @@ function SearchResult({ name, contractAddress, setLoading }: SearchResultProps):
 
         history.push({
           pathname: pathOperationResult,
-          state: { success: true, message: `Succesfully registered ${name}` } as OperationResultState,
+          state: {
+            success: true,
+            message: `Succesfully registered ${name}`,
+            customButtonText: "Name details",
+            customButtonActionPath: `${pathContract}/${contractLabel}/${contractAddress}/${name}`,
+          } as OperationResultState,
         });
       })
       .catch((error) => {
@@ -124,7 +130,10 @@ function SearchResult({ name, contractAddress, setLoading }: SearchResultProps):
   }
 
   function navigateToTransfer() {
-    history.push({ pathname: pathTransfer, state: { name: name, contractAddress: contractAddress } });
+    history.push({
+      pathname: pathTransfer,
+      state: { contractLabel: contractLabel, contractAddress: contractAddress, name: name },
+    });
   }
 
   const { message, actionText, action } = getResult(

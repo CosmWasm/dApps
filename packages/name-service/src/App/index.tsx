@@ -19,7 +19,7 @@ function App(): JSX.Element {
               <Route exact path="/" component={Login} />
               <Route exact path={pathLogin} component={Login} />
               <Route exact path={pathHome} component={Home} />
-              <Route exact path={`${pathContract}/:label/:address`} component={Contract} />
+              <Route exact path={`${pathContract}/:label/:address/:name?`} component={Contract} />
               <Route exact path={pathTransfer} component={Transfer} />
               <Route exact path={pathOperationResult} component={OperationResult} />
             </Switch>
