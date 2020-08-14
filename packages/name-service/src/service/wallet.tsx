@@ -1,6 +1,5 @@
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm";
 import { OfflineSigner } from "@cosmjs/launchpad";
-import ky from "ky";
 import * as React from "react";
 import { useState } from "react";
 import { AppConfig } from "../config";
@@ -61,7 +60,11 @@ export function SdkProvider({ config, loadWallet, children }: SdkProviderProps):
         if (config.faucetUrl) {
           const acct = await client.getAccount();
           if (!acct?.balance?.length) {
-            await ky.post(config.faucetUrl, { json: { ticker: "COSM", address } });
+            await fetch(config.faucetUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ ticker: config.faucetToken, address }),
+            });
           }
         }
 

@@ -7,8 +7,8 @@ import { useAccount, useError, useSdk } from "../../../../../service";
 import { printableCoin } from "../../../../../service/helpers";
 import Center from "../../../../../theme/layout/Center";
 import Stack from "../../../../../theme/layout/Stack";
+import { getErrorFromStackTrace } from "../../../../../utils/errors";
 import { pathContract, pathOperationResult, pathTransfer } from "../../../../paths";
-import { getErrorFromStackTrace } from "../../../../utils/errors";
 import { OperationResultState } from "../../../OperationResult";
 import "./SearchResult.less";
 
