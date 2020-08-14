@@ -1,7 +1,7 @@
 import { Coin } from "@cosmjs/launchpad";
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useAccount, useError, useSdk } from "../../../service";
 import { printableCoin } from "../../../service/helpers";
 import Center from "../../../theme/layout/Center";
@@ -9,20 +9,24 @@ import Stack from "../../../theme/layout/Stack";
 import BackButton from "../../components/BackButton";
 import Loading from "../../components/Loading";
 import YourAccount from "../../components/YourAccount";
-import { pathOperationResult } from "../../paths";
+import { pathContract, pathOperationResult, pathTransfer } from "../../paths";
+import { getErrorFromStackTrace } from "../../utils/errors";
 import { OperationResultState } from "../OperationResult";
 import FormTransferName from "./FormTransferName";
 import "./Transfer.less";
 
 const { Title, Text } = Typography;
 
-interface TransferState {
-  readonly name: string;
+interface TransferParams {
+  readonly contractLabel: string;
   readonly contractAddress: string;
+  readonly name: string;
 }
 
 function Transfer(): JSX.Element {
-  const { name, contractAddress } = useLocation().state as TransferState;
+  const { contractLabel, contractAddress, name } = useParams() as TransferParams;
+  const fullContractPath = `${pathContract}/${contractLabel}/${contractAddress}/${name}`;
+
   const history = useHistory();
   const { setError } = useError();
   const { getClient } = useSdk();
@@ -60,15 +64,22 @@ function Transfer(): JSX.Element {
           state: {
             success: true,
             message: `Succesfully transferred ${name} to ${newOwnerAddress}`,
+            customButtonText: "Name details",
+            customButtonActionPath: fullContractPath,
           } as OperationResultState,
         });
       })
-      .catch((error) => {
-        console.error(error);
+      .catch((stackTrace) => {
+        console.error(stackTrace);
 
         history.push({
           pathname: pathOperationResult,
-          state: { success: false, message: "Name transfer failed" } as OperationResultState,
+          state: {
+            success: false,
+            message: "Name transfer failed:",
+            error: getErrorFromStackTrace(stackTrace),
+            customButtonActionPath: `${pathTransfer}/${contractLabel}/${contractAddress}/${name}`,
+          } as OperationResultState,
         });
       });
   }
@@ -78,7 +89,7 @@ function Transfer(): JSX.Element {
     (!loading && (
       <Center tag="main" className="Transfer">
         <Stack>
-          <BackButton />
+          <BackButton path={fullContractPath} />
           <Stack className="TransferStack">
             <Title>Transfer</Title>
             <Typography>

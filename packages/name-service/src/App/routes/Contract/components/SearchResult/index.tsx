@@ -7,7 +7,8 @@ import { useAccount, useError, useSdk } from "../../../../../service";
 import { printableCoin } from "../../../../../service/helpers";
 import Center from "../../../../../theme/layout/Center";
 import Stack from "../../../../../theme/layout/Stack";
-import { pathOperationResult, pathTransfer } from "../../../../paths";
+import { pathContract, pathOperationResult, pathTransfer } from "../../../../paths";
+import { getErrorFromStackTrace } from "../../../../utils/errors";
 import { OperationResultState } from "../../../OperationResult";
 import "./SearchResult.less";
 
@@ -57,12 +58,15 @@ function getResult(
 }
 
 interface SearchResultProps {
-  readonly name: string;
+  readonly contractLabel: string;
   readonly contractAddress: string;
+  readonly name: string;
   readonly setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function SearchResult({ name, contractAddress, setLoading }: SearchResultProps): JSX.Element {
+function SearchResult({ contractLabel, contractAddress, name, setLoading }: SearchResultProps): JSX.Element {
+  const fullContractPath = `${pathContract}/${contractLabel}/${contractAddress}/${name}`;
+
   const history = useHistory();
   const { setError, error } = useError();
   const { getClient } = useSdk();
@@ -110,21 +114,31 @@ function SearchResult({ name, contractAddress, setLoading }: SearchResultProps):
 
         history.push({
           pathname: pathOperationResult,
-          state: { success: true, message: `Succesfully registered ${name}` } as OperationResultState,
+          state: {
+            success: true,
+            message: `Succesfully registered ${name}`,
+            customButtonText: "Name details",
+            customButtonActionPath: fullContractPath,
+          } as OperationResultState,
         });
       })
-      .catch((error) => {
-        console.error(error);
+      .catch((stackTrace) => {
+        console.error(stackTrace);
 
         history.push({
           pathname: pathOperationResult,
-          state: { success: false, message: "Name register failed" } as OperationResultState,
+          state: {
+            success: false,
+            message: "Name register failed:",
+            error: getErrorFromStackTrace(stackTrace),
+            customButtonActionPath: fullContractPath,
+          } as OperationResultState,
         });
       });
   }
 
   function navigateToTransfer() {
-    history.push({ pathname: pathTransfer, state: { name: name, contractAddress: contractAddress } });
+    history.push(`${pathTransfer}/${contractLabel}/${contractAddress}/${name}`);
   }
 
   const { message, actionText, action } = getResult(

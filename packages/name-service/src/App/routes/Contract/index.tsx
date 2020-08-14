@@ -9,34 +9,45 @@ import YourAccount from "../../components/YourAccount";
 import FormSearchName from "./components/FormSearchName";
 import SearchResult from "./components/SearchResult";
 import "./Contract.less";
+import { pathHome } from "../../paths";
 
 const { Title, Text } = Typography;
 
 interface ContractParams {
   readonly label: string;
   readonly address: string;
+  readonly name?: string;
 }
 
 function Contract(): JSX.Element {
-  const { label, address } = useParams() as ContractParams;
+  const { label, address, name } = useParams() as ContractParams;
 
   const [loading, setLoading] = useState(false);
-  const [searchedName, setSearchedName] = useState("");
+  const [searchedName, setSearchedName] = useState(name);
+
+  function setLowercaseSearchedName(newName: string) {
+    setSearchedName(newName.toLowerCase());
+  }
 
   return (
     (loading && <Loading loadingText={`Registering name: ${searchedName}...`} />) ||
     (!loading && (
       <Center tag="main" className="Contract">
         <Stack>
-          <BackButton />
+          <BackButton path={pathHome} />
           <Stack className="SearchAndResultStack">
             <Stack className="SearchStack">
               <Title>{label}</Title>
               <Text>({address})</Text>
-              <FormSearchName setSearchedName={setSearchedName} />
+              <FormSearchName initialName={name} setSearchedName={setLowercaseSearchedName} />
             </Stack>
             {searchedName && (
-              <SearchResult name={searchedName} contractAddress={address} setLoading={setLoading} />
+              <SearchResult
+                contractLabel={label}
+                contractAddress={address}
+                name={searchedName}
+                setLoading={setLoading}
+              />
             )}
           </Stack>
           <YourAccount tag="footer" />

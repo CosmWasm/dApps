@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { config } from "../config";
 import { AccountProvider, BurnerWalletProvider, ErrorProvider } from "../service";
+import ProtectedSwitch from "./components/ProtectedSwitch";
 import { pathContract, pathHome, pathLogin, pathOperationResult, pathTransfer } from "./paths";
 import Contract from "./routes/Contract";
 import Home from "./routes/Home";
@@ -18,10 +19,16 @@ function App(): JSX.Element {
             <Switch>
               <Route exact path="/" component={Login} />
               <Route exact path={pathLogin} component={Login} />
-              <Route exact path={pathHome} component={Home} />
-              <Route exact path={`${pathContract}/:label/:address`} component={Contract} />
-              <Route exact path={pathTransfer} component={Transfer} />
-              <Route exact path={pathOperationResult} component={OperationResult} />
+              <ProtectedSwitch>
+                <Route exact path={pathHome} component={Home} />
+                <Route exact path={`${pathContract}/:label/:address/:name?`} component={Contract} />
+                <Route
+                  exact
+                  path={`${pathTransfer}/:contractLabel/:contractAddress/:name`}
+                  component={Transfer}
+                />
+                <Route exact path={pathOperationResult} component={OperationResult} />
+              </ProtectedSwitch>
             </Switch>
           </Router>
         </AccountProvider>
