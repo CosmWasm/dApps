@@ -1,0 +1,27 @@
+/* Mixins: .StandardPageLayout() */
+@import "../../../theme/layout/mixins.less";
+
+.Transfer {
+  .StandardPageLayout();
+
+  .TransferStack {
+    --gap: var(--s3);
+
+    .ant-form {
+      margin-top: var(--gap);
+    }
+  }
+
+  h1 {
+    margin: 0;
+  }
+
+  span {
+    font-size: var(--s-1);
+    overflow-wrap: anywhere;
+  }
+
+  nav.Stack > * {
+    --gap: var(--s3);
+  }
+}

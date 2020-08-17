@@ -1,0 +1,6 @@
+{
+  "short_name": "Name Service",
+  "name": "Name Service with CRA",
+  "start_url": ".",
+  "display": "standalone"
+}

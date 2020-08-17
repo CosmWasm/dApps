@@ -1,0 +1,14 @@
+/* Mixins: .StandardPageLayout() */
+@import "../../../theme/layout/mixins.less";
+
+.Home {
+  .StandardPageLayout();
+
+  h1 {
+    margin: 0;
+  }
+
+  nav.Stack > * {
+    --gap: var(--s3);
+  }
+}

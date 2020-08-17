@@ -1,0 +1,28 @@
+/* Mixins: .StandardPageLayout() */
+@import "../../../theme/layout/mixins.less";
+
+.Contract {
+  .StandardPageLayout();
+
+  .SearchAndResultStack {
+    --gap: var(--s4);
+  }
+
+  .SearchStack {
+    --gap: var(--s2);
+
+    .ant-form {
+      margin-top: var(--gap);
+    }
+  }
+
+  h1 {
+    margin: 0;
+    text-transform: capitalize;
+  }
+
+  span {
+    font-size: var(--s-1);
+    overflow-wrap: anywhere;
+  }
+}
