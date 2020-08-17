@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/dApps/names/static/css/main.286c3914.chunk.css",
-    "main.js": "/dApps/names/static/js/main.a5a8f15e.chunk.js",
-    "main.js.map": "/dApps/names/static/js/main.a5a8f15e.chunk.js.map",
+    "main.js": "/dApps/names/static/js/main.d8af2015.chunk.js",
+    "main.js.map": "/dApps/names/static/js/main.d8af2015.chunk.js.map",
     "runtime-main.js": "/dApps/names/static/js/runtime-main.2fe88d24.js",
     "runtime-main.js.map": "/dApps/names/static/js/runtime-main.2fe88d24.js.map",
-    "static/css/2.56f4ec35.chunk.css": "/dApps/names/static/css/2.56f4ec35.chunk.css",
+    "static/css/2.ab37708d.chunk.css": "/dApps/names/static/css/2.ab37708d.chunk.css",
     "static/js/2.e3c5ff13.chunk.js": "/dApps/names/static/js/2.e3c5ff13.chunk.js",
     "static/js/2.e3c5ff13.chunk.js.map": "/dApps/names/static/js/2.e3c5ff13.chunk.js.map",
     "index.html": "/dApps/names/index.html",
-    "precache-manifest.4c2aa055f86a73b46086820852d23c71.js": "/dApps/names/precache-manifest.4c2aa055f86a73b46086820852d23c71.js",
+    "precache-manifest.34af9fea7035b80be9fd873a59f42a12.js": "/dApps/names/precache-manifest.34af9fea7035b80be9fd873a59f42a12.js",
     "service-worker.js": "/dApps/names/service-worker.js",
-    "static/css/2.56f4ec35.chunk.css.map": "/dApps/names/static/css/2.56f4ec35.chunk.css.map",
+    "static/css/2.ab37708d.chunk.css.map": "/dApps/names/static/css/2.ab37708d.chunk.css.map",
     "static/css/main.286c3914.chunk.css.map": "/dApps/names/static/css/main.286c3914.chunk.css.map",
     "static/js/2.e3c5ff13.chunk.js.LICENSE.txt": "/dApps/names/static/js/2.e3c5ff13.chunk.js.LICENSE.txt",
     "static/media/index.less": "/dApps/names/static/media/Montserrat-Regular.ee653992.ttf",
@@ -22,9 +22,9 @@
   },
   "entrypoints": [
     "static/js/runtime-main.2fe88d24.js",
-    "static/css/2.56f4ec35.chunk.css",
+    "static/css/2.ab37708d.chunk.css",
     "static/js/2.e3c5ff13.chunk.js",
     "static/css/main.286c3914.chunk.css",
-    "static/js/main.a5a8f15e.chunk.js"
+    "static/js/main.d8af2015.chunk.js"
   ]
 }
