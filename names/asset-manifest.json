@@ -1,30 +1,30 @@
 {
   "files": {
-    "main.css": "/names/static/css/main.5efeaeb1.chunk.css",
-    "main.js": "/names/static/js/main.0792361f.chunk.js",
-    "main.js.map": "/names/static/js/main.0792361f.chunk.js.map",
-    "runtime-main.js": "/names/static/js/runtime-main.e1b92d9b.js",
-    "runtime-main.js.map": "/names/static/js/runtime-main.e1b92d9b.js.map",
-    "static/css/2.ab37708d.chunk.css": "/names/static/css/2.ab37708d.chunk.css",
-    "static/js/2.cce945ad.chunk.js": "/names/static/js/2.cce945ad.chunk.js",
-    "static/js/2.cce945ad.chunk.js.map": "/names/static/js/2.cce945ad.chunk.js.map",
-    "index.html": "/names/index.html",
-    "precache-manifest.c4647a62cd0e1d2696ff9293f03466f9.js": "/names/precache-manifest.c4647a62cd0e1d2696ff9293f03466f9.js",
-    "service-worker.js": "/names/service-worker.js",
-    "static/css/2.ab37708d.chunk.css.map": "/names/static/css/2.ab37708d.chunk.css.map",
-    "static/css/main.5efeaeb1.chunk.css.map": "/names/static/css/main.5efeaeb1.chunk.css.map",
-    "static/js/2.cce945ad.chunk.js.LICENSE.txt": "/names/static/js/2.cce945ad.chunk.js.LICENSE.txt",
-    "static/media/index.less": "/names/static/media/Montserrat-Regular.ee653992.ttf",
-    "static/media/backArrow.svg": "/names/static/media/backArrow.9849fc2e.svg",
-    "static/media/cosmWasmLogo.svg": "/names/static/media/cosmWasmLogo.15dccd19.svg",
-    "static/media/failIcon.svg": "/names/static/media/failIcon.71513020.svg",
-    "static/media/successIcon.svg": "/names/static/media/successIcon.2e305b66.svg"
+    "main.css": "/dApps/names/static/css/main.286c3914.chunk.css",
+    "main.js": "/dApps/names/static/js/main.6d68b5f7.chunk.js",
+    "main.js.map": "/dApps/names/static/js/main.6d68b5f7.chunk.js.map",
+    "runtime-main.js": "/dApps/names/static/js/runtime-main.2fe88d24.js",
+    "runtime-main.js.map": "/dApps/names/static/js/runtime-main.2fe88d24.js.map",
+    "static/css/2.ab37708d.chunk.css": "/dApps/names/static/css/2.ab37708d.chunk.css",
+    "static/js/2.e3c5ff13.chunk.js": "/dApps/names/static/js/2.e3c5ff13.chunk.js",
+    "static/js/2.e3c5ff13.chunk.js.map": "/dApps/names/static/js/2.e3c5ff13.chunk.js.map",
+    "index.html": "/dApps/names/index.html",
+    "precache-manifest.ea98b0adf646afcf8f4b9daa1768d476.js": "/dApps/names/precache-manifest.ea98b0adf646afcf8f4b9daa1768d476.js",
+    "service-worker.js": "/dApps/names/service-worker.js",
+    "static/css/2.ab37708d.chunk.css.map": "/dApps/names/static/css/2.ab37708d.chunk.css.map",
+    "static/css/main.286c3914.chunk.css.map": "/dApps/names/static/css/main.286c3914.chunk.css.map",
+    "static/js/2.e3c5ff13.chunk.js.LICENSE.txt": "/dApps/names/static/js/2.e3c5ff13.chunk.js.LICENSE.txt",
+    "static/media/index.less": "/dApps/names/static/media/Montserrat-Regular.ee653992.ttf",
+    "static/media/backArrow.svg": "/dApps/names/static/media/backArrow.9849fc2e.svg",
+    "static/media/cosmWasmLogo.svg": "/dApps/names/static/media/cosmWasmLogo.15dccd19.svg",
+    "static/media/failIcon.svg": "/dApps/names/static/media/failIcon.71513020.svg",
+    "static/media/successIcon.svg": "/dApps/names/static/media/successIcon.2e305b66.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.e1b92d9b.js",
+    "static/js/runtime-main.2fe88d24.js",
     "static/css/2.ab37708d.chunk.css",
-    "static/js/2.cce945ad.chunk.js",
-    "static/css/main.5efeaeb1.chunk.css",
-    "static/js/main.0792361f.chunk.js"
+    "static/js/2.e3c5ff13.chunk.js",
+    "static/css/main.286c3914.chunk.css",
+    "static/js/main.6d68b5f7.chunk.js"
   ]
 }
