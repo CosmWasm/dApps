@@ -18,9 +18,13 @@
     "format": "lerna run format",
     "lint": "lerna run lint",
     "lint-fix": "lerna run lint-fix",
-    "build": "lerna run build --stream"
+    "build": "lerna run build --stream",
+    "predeploy": "./gh-pages-config/.predeploy.sh",
+    "deploy": "gh-pages --dist gh-pages-config",
+    "postdeploy": "./gh-pages-config/.postdeploy.sh"
   },
   "devDependencies": {
+    "gh-pages": "^3.1.0",
     "lerna": "^3.22.1",
     "prettier": "^2.0.5"
   }
