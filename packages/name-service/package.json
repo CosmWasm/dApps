@@ -2,7 +2,7 @@
   "name": "name-service",
   "version": "0.1.0",
   "private": true,
-  "homepage": "./",
+  "homepage": "https://dapps.cosmwasm.com/names",
   "browserslist": [
     "last 2 chrome version",
     "last 2 firefox version",

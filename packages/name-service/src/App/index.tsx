@@ -15,7 +15,7 @@ function App(): JSX.Element {
     <ErrorProvider>
       <BurnerWalletProvider config={config}>
         <AccountProvider>
-          <Router>
+          <Router basename={process.env.PUBLIC_URL}>
             <Switch>
               <Route exact path="/" component={Login} />
               <Route exact path={pathLogin} component={Login} />
