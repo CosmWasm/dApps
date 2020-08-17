@@ -5,8 +5,8 @@ yarn-error.log*
 # Dependencies
 node_modules/
 
-# Built packages
-build/
+# Built packages are kept for GitHub Pages
+#build/
 
 # OS-specific
 .DS_Store
