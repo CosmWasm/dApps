@@ -1,0 +1,6 @@
+{
+  "short_name": "Wallet",
+  "name": "Wallet with CRA",
+  "start_url": ".",
+  "display": "standalone"
+}
