@@ -49,7 +49,7 @@ function Login(): JSX.Element {
         <img src={cosmWasmLogo} alt="CosmWasm logo" />
         <Stack className="WelcomeStack">
           <Typography>
-            <Title level={2}>Hello!</Title>
+            <Title level={2}>Name service</Title>
             <Text className="LightText">Select one of the following options to start:</Text>
           </Typography>
           <Button type="primary" onClick={init}>
