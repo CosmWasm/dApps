@@ -15,7 +15,7 @@ function Login(): JSX.Element {
         <Stack className="WelcomeStack">
           <Typography>
             <Title level={2}>Hello!</Title>
-            <Text className="LightText">Welcome to your Name service</Text>
+            <Text className="LightText">Welcome to your Wallet</Text>
             <Text className="LightText">Select one of the following options to start:</Text>
           </Typography>
           <Button disabled type="primary">
