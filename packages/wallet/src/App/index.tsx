@@ -1,7 +1,7 @@
+import { AccountProvider, BurnerWalletProvider, ErrorProvider } from "logic";
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { config } from "../config";
-import { AccountProvider, BurnerWalletProvider, ErrorProvider } from "../service";
 import Login from "./routes/Login";
 
 function App(): JSX.Element {
