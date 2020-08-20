@@ -1,0 +1,19 @@
+.StandardPageLayout {
+  padding: var(--s4);
+
+  @media (max-width: 379px) {
+    padding: var(--s-1) 0 var(--s-2) 0;
+  }
+
+  &.Center {
+    --max-width: 22rem;
+  }
+
+  .BackButton {
+    align-self: flex-start;
+  }
+
+  & > .Stack {
+    --gap: var(--s8);
+  }
+}
