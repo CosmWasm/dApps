@@ -1,7 +1,7 @@
 import { Button, Typography } from "antd";
+import { useAccount, useSdk } from "logic";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useAccount, useSdk } from "../../../service";
 import Center from "../../../theme/layout/Center";
 import Stack from "../../../theme/layout/Stack";
 import Loading from "../../components/Loading";

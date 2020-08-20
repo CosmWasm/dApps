@@ -1,9 +1,9 @@
 import { Contract } from "@cosmjs/cosmwasm";
 import { Button, Typography } from "antd";
+import { useError, useSdk } from "logic";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { config } from "../../../config";
-import { useError, useSdk } from "../../../service";
 import Center from "../../../theme/layout/Center";
 import Stack from "../../../theme/layout/Stack";
 import YourAccount from "../../components/YourAccount";

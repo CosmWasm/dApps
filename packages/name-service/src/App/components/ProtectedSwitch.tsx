@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect, Switch, SwitchProps } from "react-router-dom";
-import { useSdk } from "../../service";
+import { useSdk } from "logic";
 import { pathLogin } from "../paths";
 
 export interface RedirectLocation {
