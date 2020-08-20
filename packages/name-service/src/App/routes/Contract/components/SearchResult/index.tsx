@@ -1,7 +1,7 @@
+import { getErrorFromStackTrace, printableCoin, useAccount, useError, useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Button, Typography } from "antd";
 import copyToClipboard from "clipboard-copy";
-import { getErrorFromStackTrace, printableCoin, useAccount, useError, useSdk } from "logic";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Center from "../../../../../theme/layout/Center";

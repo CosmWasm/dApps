@@ -17,7 +17,7 @@
   "peerDependencies": {
     "react": ">=16"
   },
-  "name": "design",
+  "name": "@cosmicdapp/design",
   "author": "Abel Fernández",
   "module": "dist/design.esm.js",
   "devDependencies": {

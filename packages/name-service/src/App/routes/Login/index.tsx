@@ -1,5 +1,5 @@
+import { useAccount, useSdk } from "@cosmicdapp/logic";
 import { Button, Typography } from "antd";
-import { useAccount, useSdk } from "logic";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Center from "../../../theme/layout/Center";

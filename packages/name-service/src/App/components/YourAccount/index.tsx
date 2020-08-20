@@ -1,6 +1,6 @@
+import { printableBalance, useAccount } from "@cosmicdapp/logic";
 import { Button, Divider, Typography } from "antd";
 import copyToClipboard from "clipboard-copy";
-import { printableBalance, useAccount } from "logic";
 import React from "react";
 import Center, { CenterProps } from "../../../theme/layout/Center";
 import Stack from "../../../theme/layout/Stack";

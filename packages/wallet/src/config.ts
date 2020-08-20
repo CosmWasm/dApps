@@ -1,4 +1,4 @@
-import { AppConfig } from "logic";
+import { AppConfig } from "@cosmicdapp/logic";
 
 const local: AppConfig = {
   httpUrl: "http://localhost:1317",

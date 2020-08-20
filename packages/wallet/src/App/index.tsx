@@ -1,4 +1,4 @@
-import { AccountProvider, BurnerWalletProvider, ErrorProvider } from "logic";
+import { AccountProvider, BurnerWalletProvider, ErrorProvider } from "@cosmicdapp/logic";
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { config } from "../config";
