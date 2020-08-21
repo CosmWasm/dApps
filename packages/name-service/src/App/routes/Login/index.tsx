@@ -1,7 +1,7 @@
+import { useAccount, useSdk } from "@cosmicdapp/logic";
 import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useAccount, useSdk } from "../../../service";
 import Center from "../../../theme/layout/Center";
 import Stack from "../../../theme/layout/Stack";
 import Loading from "../../components/Loading";
@@ -50,6 +50,7 @@ function Login(): JSX.Element {
         <Stack className="WelcomeStack">
           <Typography>
             <Title level={2}>Hello!</Title>
+            <Text className="LightText">Welcome to your Name service</Text>
             <Text className="LightText">Select one of the following options to start:</Text>
           </Typography>
           <Button type="primary" onClick={init}>

@@ -1,12 +1,10 @@
+import { getErrorFromStackTrace, printableCoin, useAccount, useError, useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { useAccount, useError, useSdk } from "../../../service";
-import { printableCoin } from "../../../service/helpers";
 import Center from "../../../theme/layout/Center";
 import Stack from "../../../theme/layout/Stack";
-import { getErrorFromStackTrace } from "../../../utils/errors";
 import BackButton from "../../components/BackButton";
 import Loading from "../../components/Loading";
 import YourAccount from "../../components/YourAccount";

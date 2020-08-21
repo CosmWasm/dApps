@@ -1,8 +1,7 @@
+import { printableBalance, useAccount } from "@cosmicdapp/logic";
 import { Button, Divider, Typography } from "antd";
 import copyToClipboard from "clipboard-copy";
 import React from "react";
-import { useAccount } from "../../../service";
-import { printableBalance } from "../../../service/helpers";
 import Center, { CenterProps } from "../../../theme/layout/Center";
 import Stack from "../../../theme/layout/Stack";
 import "./YourAccount.less";

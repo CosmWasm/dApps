@@ -1,0 +1,6 @@
+{
+  "short_name": "Template dApp",
+  "name": "Template dApp with CRA",
+  "start_url": ".",
+  "display": "standalone"
+}
