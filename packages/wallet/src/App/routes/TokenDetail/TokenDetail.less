@@ -1,0 +1,34 @@
+/* Mixins: .StandardPageLayout() */
+@import "~@cosmicdapp/design/theme/layout/mixins.less";
+
+.TokenDetail {
+  .StandardPageLayout();
+
+  .MainStack {
+    --gap: var(--s7);
+  }
+
+  .AccountStack {
+    --gap: var(--s2);
+  }
+
+  .AmountStack > * {
+    --gap: var(--s3);
+  }
+
+  h1 {
+    margin: 0;
+  }
+
+  .Amount {
+    span {
+      font-size: var(--s4);
+      font-weight: bolder;
+      overflow-wrap: anywhere;
+    }
+
+    span + span {
+      font-size: var(--s1);
+    }
+  }
+}
