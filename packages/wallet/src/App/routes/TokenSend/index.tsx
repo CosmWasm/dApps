@@ -27,6 +27,8 @@ function TokenSend(): JSX.Element {
 
   const tokenDetailState: TokenDetailState = { tokenAmount };
 
+  const allowSend = tokenAmount && tokenAmount > 0;
+
   return (
     <Center tag="main" className="TokenSend">
       <Stack className="MainStack">
@@ -47,7 +49,9 @@ function TokenSend(): JSX.Element {
               <Input placeholder="Enter address" />
             </div>
           </Stack>
-          <Button type="primary">Send</Button>
+          <Button type="primary" disabled={!allowSend}>
+            Send
+          </Button>
         </Stack>
       </Stack>
     </Center>
