@@ -1,0 +1,38 @@
+/* Mixins: .StandardPageLayout() */
+@import "~@cosmicdapp/design/theme/layout/mixins.less";
+
+.TokenSend {
+  .StandardPageLayout();
+
+  .MainStack {
+    --gap: var(--s7);
+  }
+
+  .AccountStack {
+    --gap: var(--s2);
+  }
+
+  h1 {
+    margin: 0;
+  }
+
+  .SendStack {
+    --gap: var(--s5);
+  }
+
+  .FormStack > * {
+    --gap: var(--s0);
+
+    display: flex;
+    align-items: baseline;
+
+    span {
+      font-family: Iceland;
+      font-size: var(--s2);
+    }
+
+    & > * + * {
+      margin-left: var(--s0);
+    }
+  }
+}
