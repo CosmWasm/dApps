@@ -1,4 +1,4 @@
-import { Button, Input, Typography } from "antd";
+import { Button, Typography } from "antd";
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
 import Center from "../../../theme/layout/Center";
@@ -8,6 +8,10 @@ import YourAccount from "../../components/YourAccount";
 import { pathTokens } from "../../paths";
 import { TokenDetailState } from "../TokenDetail";
 import "./TokenSend.less";
+import { Formik } from "formik";
+import { Form, FormItem, Input } from "formik-antd";
+import { useSdk, useError } from "@cosmicdapp/logic";
+import { Coin } from "@cosmjs/launchpad";
 
 const { Title, Text } = Typography;
 
@@ -20,6 +24,8 @@ export interface TokenSendState {
 }
 
 function TokenSend(): JSX.Element {
+  const { getClient } = useSdk();
+  const { setError } = useError();
   const history = useHistory<TokenSendState>();
 
   const { tokenName }: TokenSendParams = useParams();
@@ -27,7 +33,14 @@ function TokenSend(): JSX.Element {
 
   const tokenDetailState: TokenDetailState = { tokenAmount };
 
-  const allowSend = tokenAmount && tokenAmount !== "0";
+  const SendTokensAction = (values) => {
+    const { address, amount } = values;
+
+    const recipientAddress: string = address;
+    const transferAmount: readonly Coin[] = [{ denom: tokenName, amount }];
+
+    getClient().sendTokens(recipientAddress, transferAmount).catch(setError);
+  };
 
   return (
     <Center tag="main" className="TokenSend">
@@ -38,20 +51,34 @@ function TokenSend(): JSX.Element {
           <YourAccount showTitle={false} />
         </Stack>
         <Stack className="SendStack">
-          <Stack className="FormStack">
-            <div>
-              <Text>Send</Text>
-              <Input placeholder="Enter amount" />
-              <Text>{tokenName}</Text>
-            </div>
-            <div>
-              <Text>to</Text>
-              <Input placeholder="Enter address" />
-            </div>
-          </Stack>
-          <Button type="primary" disabled={!allowSend}>
-            Send
-          </Button>
+          <Formik initialValues={{ amount: "", address: "" }} onSubmit={SendTokensAction}>
+            {(formikProps) => (
+              <Form>
+                <Stack className="FormStack">
+                  <div>
+                    <Text>Send</Text>
+                    <FormItem name="amount">
+                      <Input name="amount" placeholder="Enter amount" />
+                    </FormItem>
+                    <Text>{tokenName}</Text>
+                  </div>
+                  <div>
+                    <Text>to</Text>
+                    <FormItem name="address">
+                      <Input name="address" placeholder="Enter address" />
+                    </FormItem>
+                  </div>
+                </Stack>
+                <Button
+                  type="primary"
+                  onClick={formikProps.submitForm}
+                  disabled={!(formikProps.isValid && formikProps.dirty)}
+                >
+                  Send
+                </Button>
+              </Form>
+            )}
+          </Formik>
         </Stack>
       </Stack>
     </Center>
