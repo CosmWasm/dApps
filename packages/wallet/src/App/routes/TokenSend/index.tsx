@@ -50,7 +50,12 @@ function TokenSend(): JSX.Element {
 
     getClient()
       .sendTokens(recipientAddress, transferAmount)
-      .then(() => {
+      .then((result) => {
+        //Rudimentarily check if rawLog is error
+        if (result.rawLog.startsWith("\ngithub.com")) {
+          return Promise.reject(result.rawLog);
+        }
+
         accountProvider.refreshAccount();
 
         history.push({
