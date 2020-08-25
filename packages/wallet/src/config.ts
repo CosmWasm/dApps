@@ -7,7 +7,6 @@ const local: AppConfig = {
   faucetUrl: "http://localhost:8000/credit",
   faucetToken: "COSM",
   addressPrefix: "cosmos",
-  codeId: 2,
 };
 
 const coralnet: AppConfig = {
@@ -17,7 +16,6 @@ const coralnet: AppConfig = {
   faucetUrl: "https://faucet.coralnet.cosmwasm.com/credit",
   faucetToken: "SHELL",
   addressPrefix: "coral",
-  codeId: 5,
 };
 
 // REACT_APP_LOCAL is set via `yarn start:local`
