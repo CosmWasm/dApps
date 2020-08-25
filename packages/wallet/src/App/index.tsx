@@ -2,6 +2,7 @@ import { AccountProvider, BurnerWalletProvider, ErrorProvider } from "@cosmicdap
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { config } from "../config";
+import ProtectedSwitch from "./components/ProtectedSwitch";
 import { pathLogin, pathSend, pathTokens } from "./paths";
 import Login from "./routes/Login";
 import TokenDetail from "./routes/TokenDetail";
@@ -17,9 +18,11 @@ function App(): JSX.Element {
             <Switch>
               <Route exact path="/" component={Login} />
               <Route exact path={pathLogin} component={Login} />
-              <Route exact path={pathTokens} component={TokenList} />
-              <Route exact path={`${pathTokens}/:tokenName`} component={TokenDetail} />
-              <Route exact path={`${pathTokens}/:tokenName${pathSend}`} component={TokenSend} />
+              <ProtectedSwitch>
+                <Route exact path={pathTokens} component={TokenList} />
+                <Route exact path={`${pathTokens}/:tokenName`} component={TokenDetail} />
+                <Route exact path={`${pathTokens}/:tokenName${pathSend}`} component={TokenSend} />
+              </ProtectedSwitch>
             </Switch>
           </Router>
         </AccountProvider>
