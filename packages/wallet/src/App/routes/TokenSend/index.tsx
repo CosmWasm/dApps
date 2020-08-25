@@ -1,4 +1,4 @@
-import { Button, Typography, Input } from "antd";
+import { Button, Input, Typography } from "antd";
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
 import Center from "../../../theme/layout/Center";
@@ -16,7 +16,7 @@ interface TokenSendParams {
 }
 
 export interface TokenSendState {
-  readonly tokenAmount: number;
+  readonly tokenAmount: string;
 }
 
 function TokenSend(): JSX.Element {
@@ -27,7 +27,7 @@ function TokenSend(): JSX.Element {
 
   const tokenDetailState: TokenDetailState = { tokenAmount };
 
-  const allowSend = tokenAmount && tokenAmount > 0;
+  const allowSend = tokenAmount && tokenAmount !== "0";
 
   return (
     <Center tag="main" className="TokenSend">

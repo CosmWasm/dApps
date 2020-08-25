@@ -7,8 +7,8 @@ import Stack from "../../../theme/layout/Stack";
 import BackButton from "../../components/BackButton";
 import YourAccount from "../../components/YourAccount";
 import { pathSend, pathTokens } from "../../paths";
-import "./TokenDetail.less";
 import { TokenSendState } from "../TokenSend";
+import "./TokenDetail.less";
 
 const { Title, Text } = Typography;
 
@@ -17,7 +17,7 @@ interface TokenDetailParams {
 }
 
 export interface TokenDetailState {
-  readonly tokenAmount: number;
+  readonly tokenAmount: string;
 }
 
 function TokenDetail(): JSX.Element {
@@ -26,7 +26,7 @@ function TokenDetail(): JSX.Element {
   const { tokenName }: TokenDetailParams = useParams();
   const { tokenAmount }: TokenDetailState = history.location.state;
 
-  const [amountInteger, amountDecimal] = tokenAmount.toLocaleString("en").split(".");
+  const [amountInteger, amountDecimal] = tokenAmount.split(".");
 
   function goTokenSend() {
     history.push(`${pathTokens}/${tokenName}${pathSend}`, { tokenAmount } as TokenSendState);
