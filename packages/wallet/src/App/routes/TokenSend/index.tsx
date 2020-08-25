@@ -1,3 +1,4 @@
+import * as Yup from "yup";
 import { Button, Typography } from "antd";
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
@@ -12,6 +13,7 @@ import { Formik } from "formik";
 import { Form, FormItem, Input } from "formik-antd";
 import { useSdk, useError } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
+import { sendAddressValidationSchema } from "../../forms/validationSchemas";
 
 const { Title, Text } = Typography;
 
@@ -33,7 +35,7 @@ function TokenSend(): JSX.Element {
 
   const tokenDetailState: TokenDetailState = { tokenAmount };
 
-  const SendTokensAction = (values) => {
+  const sendTokensAction = (values) => {
     const { address, amount } = values;
 
     const recipientAddress: string = address;
@@ -41,6 +43,15 @@ function TokenSend(): JSX.Element {
 
     getClient().sendTokens(recipientAddress, transferAmount).catch(setError);
   };
+
+  const sendAmountValidationSchema = Yup.object().shape({
+    amount: Yup.number()
+      .required("An amount is required")
+      .positive("Amount should be positive")
+      .max(parseFloat(tokenAmount), "Amount cannot be greater than ${max}"),
+  });
+
+  const sendValidationSchema = sendAmountValidationSchema.concat(sendAddressValidationSchema);
 
   return (
     <Center tag="main" className="TokenSend">
@@ -51,7 +62,11 @@ function TokenSend(): JSX.Element {
           <YourAccount showTitle={false} />
         </Stack>
         <Stack className="SendStack">
-          <Formik initialValues={{ amount: "", address: "" }} onSubmit={SendTokensAction}>
+          <Formik
+            initialValues={{ amount: "", address: "" }}
+            onSubmit={sendTokensAction}
+            validationSchema={sendValidationSchema}
+          >
             {(formikProps) => (
               <Form>
                 <Stack className="FormStack">
