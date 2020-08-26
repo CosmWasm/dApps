@@ -1,11 +1,11 @@
-import { getErrorFromStackTrace, useAccount, useSdk } from "@cosmicdapp/logic";
-import { Coin } from "@cosmjs/launchpad";
+import { getErrorFromStackTrace, mapCoin, useAccount, useSdk } from "@cosmicdapp/logic";
 import { Button, Typography } from "antd";
 import { Formik } from "formik";
 import { Form, FormItem, Input } from "formik-antd";
 import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import * as Yup from "yup";
+import { config } from "../../../config";
 import Center from "../../../theme/layout/Center";
 import Stack from "../../../theme/layout/Stack";
 import BackButton from "../../components/BackButton";
@@ -46,7 +46,8 @@ function TokenSend(): JSX.Element {
     const { address, amount } = values;
 
     const recipientAddress: string = address;
-    const transferAmount: readonly Coin[] = [{ denom: tokenName, amount }];
+    const mappedCoin = mapCoin({ denom: tokenName, amount }, config.coinMap);
+    const transferAmount: readonly Coin[] = [mappedCoin];
 
     getClient()
       .sendTokens(recipientAddress, transferAmount)
