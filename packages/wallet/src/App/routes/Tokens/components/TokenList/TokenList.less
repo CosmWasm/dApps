@@ -1,23 +1,6 @@
-/* Mixins: .StandardPageLayout() */
-@import "~@cosmicdapp/design/theme/layout/mixins.less";
-
 .TokenList {
-  .StandardPageLayout();
-
-  .MainStack {
-    --gap: var(--s7);
-  }
-
-  .ant-form {
-    margin-top: var(--s7);
-  }
-
-  .TokenStack > * {
+  & > * {
     --gap: 0;
-  }
-
-  h1 {
-    margin: 0;
   }
 
   .tokenItem {
