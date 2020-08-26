@@ -1,4 +1,5 @@
 import { getErrorFromStackTrace, mapCoin, useAccount, useSdk } from "@cosmicdapp/logic";
+import { Coin, isPostTxFailure } from "@cosmjs/launchpad";
 import { Button, Typography } from "antd";
 import { Formik } from "formik";
 import { Form, FormItem, Input } from "formik-antd";
@@ -52,8 +53,7 @@ function TokenSend(): JSX.Element {
     getClient()
       .sendTokens(recipientAddress, transferAmount)
       .then((result) => {
-        //Rudimentarily check if rawLog is error
-        if (result.rawLog.startsWith("\ngithub.com")) {
+        if (isPostTxFailure(result)) {
           return Promise.reject(result.rawLog);
         }
 
