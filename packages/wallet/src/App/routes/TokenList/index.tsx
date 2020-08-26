@@ -1,8 +1,9 @@
-import { useError, useSdk } from "@cosmicdapp/logic";
+import { mapCoin, useError, useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { config } from "../../../config";
 import Center from "../../../theme/layout/Center";
 import Stack from "../../../theme/layout/Stack";
 import YourAccount from "../../components/YourAccount";
@@ -21,7 +22,10 @@ function TokenList(): JSX.Element {
   useEffect(() => {
     getClient()
       .getAccount()
-      .then(({ balance }) => setBalance(balance))
+      .then(({ balance }) => {
+        const mappedBalance: readonly Coin[] = balance.map((coin) => mapCoin(coin, config.coinMap));
+        setBalance(mappedBalance);
+      })
       .catch(setError);
   }, [getClient, setError]);
 
