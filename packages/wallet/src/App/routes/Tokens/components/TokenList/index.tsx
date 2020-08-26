@@ -1,4 +1,4 @@
-import { mapCoin, useAccount, useError, useSdk } from "@cosmicdapp/logic";
+import { nativeCoinToDisplay, useAccount, useError, useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
@@ -38,7 +38,10 @@ function TokenList({ currentAddress }: TokenListProps): JSX.Element {
   return (
     <Stack className="TokenList">
       {balance.map((nativeToken) => {
-        const { denom: denomToDisplay, amount: amountToDisplay } = mapCoin(nativeToken, config.coinMap);
+        const { denom: denomToDisplay, amount: amountToDisplay } = nativeCoinToDisplay(
+          nativeToken,
+          config.coinMap,
+        );
 
         return (
           <div

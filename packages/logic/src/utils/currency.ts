@@ -51,15 +51,36 @@ interface CoinMap {
   readonly [key: string]: MappedCoin;
 }
 
-function mapCoin(coin: Coin, coinMap: CoinMap): Coin {
+function nativeCoinToDisplay(coin: Coin, coinMap: CoinMap): Coin {
   if (!coinMap) return coin;
 
-  const mappedCoin = coinMap[coin.denom];
-  if (!mappedCoin) return coin;
+  const coinToDisplay = coinMap[coin.denom];
+  if (!coinToDisplay) return coin;
 
-  const mappedAmount = Decimal.fromAtomics(coin.amount, mappedCoin.fractionalDigits).toString();
+  const amountToDisplay = Decimal.fromAtomics(coin.amount, coinToDisplay.fractionalDigits).toString();
 
-  return { denom: mappedCoin.denom, amount: mappedAmount };
+  return { denom: coinToDisplay.denom, amount: amountToDisplay };
 }
 
-export { printableCoin, printableBalance, buildFeeTable, MappedCoin, CoinMap, mapCoin };
+// display amount is eg "12.0346", return is in native tokens
+// with 6 fractional digits, this would be eg. "12034600"
+function displayAmountToNative(amountToDisplay: string, coinMap: CoinMap, nativeDenom: string): string {
+  const fractionalDigits = coinMap[nativeDenom]?.fractionalDigits;
+  if (fractionalDigits) {
+    // use https://github.com/CosmWasm/cosmjs/blob/v0.22.2/packages/math/src/decimal.ts
+    const decimalAmount = Decimal.fromUserInput(amountToDisplay, fractionalDigits);
+    return decimalAmount.atomics;
+  }
+
+  return amountToDisplay;
+}
+
+export {
+  printableCoin,
+  printableBalance,
+  buildFeeTable,
+  MappedCoin,
+  CoinMap,
+  nativeCoinToDisplay,
+  displayAmountToNative,
+};
