@@ -1,4 +1,4 @@
-import { getErrorFromStackTrace, mapCoin, useAccount, useSdk } from "@cosmicdapp/logic";
+import { CoinMap, getErrorFromStackTrace, mapCoin, useAccount, useSdk } from "@cosmicdapp/logic";
 import { Coin, isPostTxFailure } from "@cosmjs/launchpad";
 import { Typography } from "antd";
 import React, { useState } from "react";
@@ -38,10 +38,17 @@ function TokenDetail(): JSX.Element {
   const sendTokensAction = (values) => {
     setLoading(true);
     const { address, amount } = values;
-
     const recipientAddress: string = address;
-    const mappedCoin = mapCoin({ denom: tokenName, amount }, config.coinMap);
-    const transferAmount: readonly Coin[] = [mappedCoin];
+
+    const fractionalDigits = (config.coinMap as CoinMap)[tokenName]?.fractionalDigits;
+
+    let amountToTransfer = amount;
+    if (fractionalDigits) {
+      amountToTransfer = (parseFloat(amount) * 10 ** fractionalDigits).toString();
+    }
+
+    const nativeTokenToTransfer: Coin = { denom: tokenName, amount: amountToTransfer };
+    const transferAmount: readonly Coin[] = [nativeTokenToTransfer];
 
     getClient()
       .sendTokens(recipientAddress, transferAmount)
@@ -80,16 +87,18 @@ function TokenDetail(): JSX.Element {
       });
   };
 
-  const [amountInteger, amountDecimal] = tokenAmount.split(".");
+  const nativeToken: Coin = { denom: tokenName, amount: tokenAmount };
+  const { denom: nameToDisplay, amount: amountToDisplay } = mapCoin(nativeToken, config.coinMap);
+  const [amountInteger, amountDecimal] = amountToDisplay.split(".");
 
   return (
-    (loading && <Loading loadingText={`Sending ${tokenName}...`} />) ||
+    (loading && <Loading loadingText={`Sending ${nameToDisplay}...`} />) ||
     (!loading && (
       <Center tag="main" className="TokenDetail">
         <Stack className="MainStack">
           <BackButton path={pathTokens} />
           <Stack className="AccountStack">
-            <Title>{tokenName}</Title>
+            <Title>{nameToDisplay}</Title>
             <YourAccount showTitle={false} />
           </Stack>
           <div className="Amount">
@@ -98,8 +107,8 @@ function TokenDetail(): JSX.Element {
             <Text>{" tokens"}</Text>
           </div>
           <FormSendTokens
-            tokenName={tokenName}
-            tokenAmount={tokenAmount}
+            tokenName={nameToDisplay}
+            tokenAmount={amountToDisplay}
             sendTokensAction={sendTokensAction}
           />
         </Stack>
