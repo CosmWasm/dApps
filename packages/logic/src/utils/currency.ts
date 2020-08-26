@@ -42,4 +42,30 @@ function buildFeeTable({ feeToken, gasPrice }: AppConfig): FeeTable {
   };
 }
 
-export { printableCoin, printableBalance, buildFeeTable };
+interface MappedCoin {
+  readonly denom: string;
+  readonly fractionalDigits: number;
+}
+
+interface CoinMap {
+  [key: string]: MappedCoin;
+}
+
+function mapCoin(coin: Coin, coinMap: CoinMap): Coin {
+  if (!coinMap) return coin;
+
+  const mappedCoin = coinMap[coin.denom];
+  if (!mappedCoin) return coin;
+
+  let mappedAmount = "0";
+
+  if (mappedCoin.fractionalDigits > 0) {
+    mappedAmount = Decimal.fromAtomics(coin.amount, mappedCoin.fractionalDigits).toString();
+  } else {
+    mappedAmount = (parseFloat(coin.amount) * 10 ** Math.abs(mappedCoin.fractionalDigits)).toString();
+  }
+
+  return { denom: mappedCoin.denom, amount: mappedAmount };
+}
+
+export { printableCoin, printableBalance, buildFeeTable, MappedCoin, CoinMap, mapCoin };
