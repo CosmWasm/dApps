@@ -8,6 +8,10 @@
     --gap: var(--s7);
   }
 
+  .ant-form {
+    margin-top: var(--s7);
+  }
+
   .TokenStack > * {
     --gap: 0;
   }
@@ -60,6 +64,15 @@
         font-weight: bolder;
         font-size: var(--s-1);
       }
+    }
+  }
+
+  .tokenItem[data-state="forbidden"] {
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: #333;
+      cursor: not-allowed;
     }
   }
 

@@ -1,4 +1,4 @@
-import { mapCoin, useError, useSdk } from "@cosmicdapp/logic";
+import { mapCoin, useError, useSdk, useAccount } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
@@ -6,28 +6,36 @@ import { useHistory } from "react-router-dom";
 import { config } from "../../../config";
 import Center from "../../../theme/layout/Center";
 import Stack from "../../../theme/layout/Stack";
+import { Formik } from "formik";
+import { Form, FormItem } from "formik-antd";
 import YourAccount from "../../components/YourAccount";
 import { pathTokens } from "../../paths";
 import { TokenDetailState } from "../TokenDetail";
 import "./TokenList.less";
+import Search from "../../forms/Search";
+import { searchValidationSchema } from "../../forms/validationSchemas";
 
 const { Title, Text } = Typography;
 
 function TokenList(): JSX.Element {
+  const { account } = useAccount();
   const { getClient } = useSdk();
   const { setError } = useError();
+
+  const [currentAddress, setCurrentAddress] = useState(account.address);
+  const amAllowed = account.address === currentAddress;
 
   const [balance, setBalance] = useState<readonly Coin[]>([]);
 
   useEffect(() => {
     getClient()
-      .getAccount()
+      .getAccount(currentAddress)
       .then(({ balance }) => {
         const mappedBalance: readonly Coin[] = balance.map((coin) => mapCoin(coin, config.coinMap));
         setBalance(mappedBalance);
       })
       .catch(setError);
-  }, [getClient, setError]);
+  }, [getClient, currentAddress, setError]);
 
   const history = useHistory<TokenDetailState>();
 
@@ -44,8 +52,9 @@ function TokenList(): JSX.Element {
             <div
               key={token.denom}
               className="tokenItem"
+              data-state={amAllowed ? "" : "forbidden"}
               onClick={() => {
-                goTokenDetail(token);
+                amAllowed && goTokenDetail(token);
               }}
             >
               <div className="borderContainer">
@@ -55,6 +64,26 @@ function TokenList(): JSX.Element {
             </div>
           ))}
         </Stack>
+        <Formik
+          initialValues={{ address: currentAddress }}
+          validationSchema={searchValidationSchema}
+          onSubmit={(values) => {
+            setCurrentAddress(values.address);
+          }}
+        >
+          {(formikProps) => (
+            <Form>
+              <FormItem name="address">
+                <Search
+                  name="address"
+                  placeholder="Enter address"
+                  enterButton
+                  onSearch={formikProps.submitForm}
+                />
+              </FormItem>
+            </Form>
+          )}
+        </Formik>
         <YourAccount />
       </Stack>
     </Center>
