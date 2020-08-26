@@ -23,10 +23,7 @@ function TokenList({ currentAddress }: TokenListProps): JSX.Element {
   useEffect(() => {
     getClient()
       .getAccount(currentAddress)
-      .then(({ balance }) => {
-        const mappedBalance: readonly Coin[] = balance.map((coin) => mapCoin(coin, config.coinMap));
-        setBalance(mappedBalance);
-      })
+      .then(({ balance }) => setBalance(balance))
       .catch(setError);
   }, [getClient, currentAddress, setError]);
 
@@ -40,21 +37,25 @@ function TokenList({ currentAddress }: TokenListProps): JSX.Element {
 
   return (
     <Stack className="TokenList">
-      {balance.map((token) => (
-        <div
-          key={token.denom}
-          className="tokenItem"
-          data-state={amAllowed ? "" : "forbidden"}
-          onClick={() => {
-            amAllowed && goTokenDetail(token);
-          }}
-        >
-          <div className="borderContainer">
-            <Text>{token.denom}</Text>
-            <Text>{token.amount !== "0" ? token.amount : "No tokens"}</Text>
+      {balance.map((nativeToken) => {
+        const { denom: denomToDisplay, amount: amountToDisplay } = mapCoin(nativeToken, config.coinMap);
+
+        return (
+          <div
+            key={nativeToken.denom}
+            className="tokenItem"
+            data-state={amAllowed ? "" : "forbidden"}
+            onClick={() => {
+              amAllowed && goTokenDetail(nativeToken);
+            }}
+          >
+            <div className="borderContainer">
+              <Text>{denomToDisplay}</Text>
+              <Text>{amountToDisplay !== "0" ? amountToDisplay : "No tokens"}</Text>
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </Stack>
   );
 }
