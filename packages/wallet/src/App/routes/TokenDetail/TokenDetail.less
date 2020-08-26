@@ -16,6 +16,26 @@
     --gap: var(--s3);
   }
 
+  .SendStack {
+    --gap: var(--s5);
+  }
+
+  .FormStack > * {
+    --gap: var(--s0);
+
+    display: flex;
+    align-items: baseline;
+
+    span {
+      font-family: Iceland;
+      font-size: var(--s2);
+    }
+
+    & > * + * {
+      margin-left: var(--s0);
+    }
+  }
+
   h1 {
     margin: 0;
   }
