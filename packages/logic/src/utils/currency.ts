@@ -48,7 +48,7 @@ interface MappedCoin {
 }
 
 interface CoinMap {
-  [key: string]: MappedCoin;
+  readonly [key: string]: MappedCoin;
 }
 
 function mapCoin(coin: Coin, coinMap: CoinMap): Coin {
@@ -57,13 +57,7 @@ function mapCoin(coin: Coin, coinMap: CoinMap): Coin {
   const mappedCoin = coinMap[coin.denom];
   if (!mappedCoin) return coin;
 
-  let mappedAmount = "0";
-
-  if (mappedCoin.fractionalDigits > 0) {
-    mappedAmount = Decimal.fromAtomics(coin.amount, mappedCoin.fractionalDigits).toString();
-  } else {
-    mappedAmount = (parseFloat(coin.amount) * 10 ** Math.abs(mappedCoin.fractionalDigits)).toString();
-  }
+  const mappedAmount = Decimal.fromAtomics(coin.amount, mappedCoin.fractionalDigits).toString();
 
   return { denom: mappedCoin.denom, amount: mappedAmount };
 }
