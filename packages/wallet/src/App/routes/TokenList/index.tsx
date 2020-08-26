@@ -1,6 +1,9 @@
+import { mapCoin, useError, useSdk } from "@cosmicdapp/logic";
+import { Coin } from "@cosmjs/launchpad";
 import { Typography } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { config } from "../../../config";
 import Center from "../../../theme/layout/Center";
 import Stack from "../../../theme/layout/Stack";
 import YourAccount from "../../components/YourAccount";
@@ -10,22 +13,26 @@ import "./TokenList.less";
 
 const { Title, Text } = Typography;
 
-interface TokenItem {
-  readonly name: string;
-  readonly amount: number;
-}
-
-const tokens: readonly TokenItem[] = [
-  { name: "ASH", amount: 123.887 },
-  { name: "JADE", amount: 23.87 },
-  { name: "WETH", amount: 0 },
-];
-
 function TokenList(): JSX.Element {
+  const { getClient } = useSdk();
+  const { setError } = useError();
+
+  const [balance, setBalance] = useState<readonly Coin[]>([]);
+
+  useEffect(() => {
+    getClient()
+      .getAccount()
+      .then(({ balance }) => {
+        const mappedBalance: readonly Coin[] = balance.map((coin) => mapCoin(coin, config.coinMap));
+        setBalance(mappedBalance);
+      })
+      .catch(setError);
+  }, [getClient, setError]);
+
   const history = useHistory<TokenDetailState>();
 
-  function goTokenDetail(token: TokenItem) {
-    history.push(`${pathTokens}/${token.name}`, { tokenAmount: token.amount });
+  function goTokenDetail(token: Coin) {
+    history.push(`${pathTokens}/${token.denom}`, { tokenAmount: token.amount });
   }
 
   return (
@@ -33,17 +40,17 @@ function TokenList(): JSX.Element {
       <Stack className="MainStack">
         <Title>Tokens</Title>
         <Stack className="TokenStack">
-          {tokens.map((token) => (
+          {balance.map((token) => (
             <div
-              key={token.name}
+              key={token.denom}
               className="tokenItem"
               onClick={() => {
                 goTokenDetail(token);
               }}
             >
               <div className="borderContainer">
-                <Text>{token.name}</Text>
-                <Text>{token.amount > 0 ? token.amount.toLocaleString("en") : "No tokens"}</Text>
+                <Text>{token.denom}</Text>
+                <Text>{token.amount !== "0" ? token.amount : "No tokens"}</Text>
               </div>
             </div>
           ))}

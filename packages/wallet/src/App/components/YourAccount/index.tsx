@@ -1,3 +1,4 @@
+import { useAccount } from "@cosmicdapp/logic";
 import { Button, Typography } from "antd";
 import copyToClipboard from "clipboard-copy";
 import React from "react";
@@ -12,15 +13,14 @@ interface YourAccountProps extends CenterProps {
 }
 
 function YourAccount({ showTitle, ...props }: YourAccountProps): JSX.Element {
+  const accountProvider = useAccount();
+
   return (
     <Center className="YourAccount" {...props}>
       <Stack>
         {showTitle || (typeof showTitle === "undefined" && <Title level={3}>Your Account</Title>)}
-        <Text>cosmos1jllyqyelctsqhdq6jkdnyf7900ollfnfkfop0090</Text>
-        <Button
-          type="primary"
-          onClick={() => copyToClipboard("cosmos1jllyqyelctsqhdq6jkdnyf7900ollfnfkfop0090")}
-        >
+        <Text>{accountProvider.account.address}</Text>
+        <Button type="primary" onClick={() => copyToClipboard(accountProvider.account.address)}>
           Copy Account Address
         </Button>
       </Stack>
