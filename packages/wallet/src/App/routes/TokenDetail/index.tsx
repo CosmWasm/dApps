@@ -1,4 +1,10 @@
-import { CoinMap, getErrorFromStackTrace, mapCoin, useAccount, useSdk } from "@cosmicdapp/logic";
+import {
+  displayAmountToNative,
+  getErrorFromStackTrace,
+  nativeCoinToDisplay,
+  useAccount,
+  useSdk,
+} from "@cosmicdapp/logic";
 import { Coin, isPostTxFailure } from "@cosmjs/launchpad";
 import { Typography } from "antd";
 import React, { useState } from "react";
@@ -40,12 +46,7 @@ function TokenDetail(): JSX.Element {
     const { address, amount } = values;
     const recipientAddress: string = address;
 
-    const fractionalDigits = (config.coinMap as CoinMap)[tokenName]?.fractionalDigits;
-
-    let amountToTransfer = amount;
-    if (fractionalDigits) {
-      amountToTransfer = (parseFloat(amount) * 10 ** fractionalDigits).toString();
-    }
+    const amountToTransfer = displayAmountToNative(amount, config.coinMap, tokenName);
 
     const nativeTokenToTransfer: Coin = { denom: tokenName, amount: amountToTransfer };
     const transferAmount: readonly Coin[] = [nativeTokenToTransfer];
@@ -88,7 +89,7 @@ function TokenDetail(): JSX.Element {
   };
 
   const nativeToken: Coin = { denom: tokenName, amount: tokenAmount };
-  const { denom: nameToDisplay, amount: amountToDisplay } = mapCoin(nativeToken, config.coinMap);
+  const { denom: nameToDisplay, amount: amountToDisplay } = nativeCoinToDisplay(nativeToken, config.coinMap);
   const [amountInteger, amountDecimal] = amountToDisplay.split(".");
 
   return (
