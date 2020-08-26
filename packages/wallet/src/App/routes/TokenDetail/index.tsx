@@ -1,20 +1,17 @@
 import { getErrorFromStackTrace, mapCoin, useAccount, useSdk } from "@cosmicdapp/logic";
 import { Coin, isPostTxFailure } from "@cosmjs/launchpad";
-import { Button, Typography } from "antd";
-import { Formik } from "formik";
-import { Form, FormItem, Input } from "formik-antd";
+import { Typography } from "antd";
 import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import * as Yup from "yup";
 import { config } from "../../../config";
 import Center from "../../../theme/layout/Center";
 import Stack from "../../../theme/layout/Stack";
 import BackButton from "../../components/BackButton";
 import Loading from "../../components/Loading";
 import YourAccount from "../../components/YourAccount";
-import { sendAddressValidationSchema } from "../../forms/validationSchemas";
 import { pathOperationResult, pathTokens } from "../../paths";
 import { OperationResultState } from "../OperationResult";
+import FormSendTokens from "./FormSendTokens";
 import "./TokenDetail.less";
 
 const { Title, Text } = Typography;
@@ -28,20 +25,15 @@ export interface TokenDetailState {
 }
 
 function TokenDetail(): JSX.Element {
+  const [loading, setLoading] = useState(false);
+
   const history = useHistory();
 
   const { tokenName }: TokenDetailParams = useParams();
   const { tokenAmount } = history.location.state as TokenDetailState;
 
-  const [amountInteger, amountDecimal] = tokenAmount.split(".");
-
   const { getClient } = useSdk();
   const accountProvider = useAccount();
-
-  const [loading, setLoading] = useState(false);
-
-  const tokenDetailPath = `${pathTokens}/${tokenName}`;
-  const tokenDetailState: TokenDetailState = { tokenAmount };
 
   const sendTokensAction = (values) => {
     setLoading(true);
@@ -72,6 +64,9 @@ function TokenDetail(): JSX.Element {
       .catch((stackTrace) => {
         console.error(stackTrace);
 
+        const tokenDetailPath = `${pathTokens}/${tokenName}`;
+        const tokenDetailState: TokenDetailState = { tokenAmount };
+
         history.push({
           pathname: pathOperationResult,
           state: {
@@ -85,14 +80,7 @@ function TokenDetail(): JSX.Element {
       });
   };
 
-  const sendAmountValidationSchema = Yup.object().shape({
-    amount: Yup.number()
-      .required("An amount is required")
-      .positive("Amount should be positive")
-      .max(parseFloat(tokenAmount), `Amount cannot be greater than ${tokenAmount}`),
-  });
-
-  const sendValidationSchema = sendAmountValidationSchema.concat(sendAddressValidationSchema);
+  const [amountInteger, amountDecimal] = tokenAmount.split(".");
 
   return (
     (loading && <Loading loadingText={`Sending ${tokenName}...`} />) ||
@@ -104,47 +92,16 @@ function TokenDetail(): JSX.Element {
             <Title>{tokenName}</Title>
             <YourAccount showTitle={false} />
           </Stack>
-          <Stack className="AmountStack">
-            <div className="Amount">
-              <Text>{`${amountInteger}${amountDecimal ? "." : ""}`}</Text>
-              {amountDecimal && <Text>{amountDecimal}</Text>}
-              <Text>{" tokens"}</Text>
-            </div>
-          </Stack>
-          <Stack className="SendStack">
-            <Formik
-              initialValues={{ amount: "", address: "" }}
-              onSubmit={sendTokensAction}
-              validationSchema={sendValidationSchema}
-            >
-              {(formikProps) => (
-                <Form>
-                  <Stack className="FormStack">
-                    <div>
-                      <Text>Send</Text>
-                      <FormItem name="amount">
-                        <Input name="amount" placeholder="Enter amount" />
-                      </FormItem>
-                      <Text>{tokenName}</Text>
-                    </div>
-                    <div>
-                      <Text>to</Text>
-                      <FormItem name="address">
-                        <Input name="address" placeholder="Enter address" />
-                      </FormItem>
-                    </div>
-                  </Stack>
-                  <Button
-                    type="primary"
-                    onClick={formikProps.submitForm}
-                    disabled={!(formikProps.isValid && formikProps.dirty)}
-                  >
-                    Send
-                  </Button>
-                </Form>
-              )}
-            </Formik>
-          </Stack>
+          <div className="Amount">
+            <Text>{`${amountInteger}${amountDecimal ? "." : ""}`}</Text>
+            {amountDecimal && <Text>{amountDecimal}</Text>}
+            <Text>{" tokens"}</Text>
+          </div>
+          <FormSendTokens
+            tokenName={tokenName}
+            tokenAmount={tokenAmount}
+            sendTokensAction={sendTokensAction}
+          />
         </Stack>
       </Center>
     ))

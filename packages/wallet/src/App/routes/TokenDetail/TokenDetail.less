@@ -5,39 +5,15 @@
   .StandardPageLayout();
 
   .MainStack {
-    --gap: var(--s7);
-  }
-
-  .AccountStack {
-    --gap: var(--s2);
-  }
-
-  .AmountStack > * {
-    --gap: var(--s3);
-  }
-
-  .SendStack {
-    --gap: var(--s5);
-  }
-
-  .FormStack > * {
-    --gap: var(--s0);
-
-    display: flex;
-    align-items: baseline;
-
-    span {
-      font-family: Iceland;
-      font-size: var(--s2);
-    }
-
-    & > * + * {
-      margin-left: var(--s0);
-    }
+    --gap: var(--s4);
   }
 
   h1 {
     margin: 0;
+  }
+
+  .AccountStack > * {
+    --gap: var(--s2);
   }
 
   .Amount {
@@ -49,6 +25,36 @@
 
     span + span {
       font-size: var(--s1);
+    }
+  }
+
+  .ant-form {
+    margin-top: var(--gap);
+  }
+
+  .FormStack {
+    --gap: var(--s0);
+
+    .formField {
+      display: flex;
+      align-items: baseline;
+
+      & > * + * {
+        margin-left: var(--s0);
+      }
+
+      span {
+        font-family: Iceland;
+        font-size: var(--s2);
+      }
+    }
+
+    .ant-form-item {
+      margin-bottom: 0;
+    }
+
+    button {
+      margin-top: var(--s2);
     }
   }
 }
