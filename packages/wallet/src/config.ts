@@ -11,9 +11,7 @@ const local: AppConfig = {
 
 const coinMap: CoinMap = {
   ushell: { denom: "SHELL", fractionalDigits: 6 },
-  SHELL: { denom: "ushell", fractionalDigits: -6 },
   ureef: { denom: "REEF", fractionalDigits: 6 },
-  REEF: { denom: "ureef", fractionalDigits: -6 },
 };
 
 const coralnet: AppConfig = {
