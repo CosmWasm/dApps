@@ -1,9 +1,8 @@
+import { Center, CenterProps, Stack } from "@cosmicdapp/design";
 import { printableBalance, useAccount } from "@cosmicdapp/logic";
 import { Button, Divider, Typography } from "antd";
 import copyToClipboard from "clipboard-copy";
 import React from "react";
-import Center, { CenterProps } from "../../../theme/layout/Center";
-import Stack from "../../../theme/layout/Stack";
 import "./YourAccount.less";
 
 const { Title, Text } = Typography;
@@ -12,8 +11,8 @@ function YourAccount(props: CenterProps): JSX.Element {
   const accountProvider = useAccount();
 
   return (
-    <Center className="YourAccount" {...props}>
-      <Stack>
+    <Center className="Center YourAccount" {...props}>
+      <Stack className="Stack">
         <header>
           <Title level={3}>Your Account</Title>
           <Divider />

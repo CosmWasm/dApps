@@ -1,9 +1,8 @@
+import { Center, Stack } from "@cosmicdapp/design";
 import { useAccount, useSdk } from "@cosmicdapp/logic";
 import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import Center from "../../../theme/layout/Center";
-import Stack from "../../../theme/layout/Stack";
 import Loading from "../../components/Loading";
 import { RedirectLocation } from "../../components/ProtectedSwitch";
 import { pathHome } from "../../paths";
@@ -44,10 +43,10 @@ function Login(): JSX.Element {
   return initializing ? (
     <Loading loadingText="Initializing app..." />
   ) : (
-    <Center tag="main" className="Login">
-      <Stack className="MainStack">
+    <Center tag="main" className="Center Login">
+      <Stack className="Stack MainStack">
         <img src={cosmWasmLogo} alt="CosmWasm logo" />
-        <Stack className="WelcomeStack">
+        <Stack className="Stack WelcomeStack">
           <Typography>
             <Title level={2}>Hello!</Title>
             <Text className="LightText">Welcome to your Name service</Text>

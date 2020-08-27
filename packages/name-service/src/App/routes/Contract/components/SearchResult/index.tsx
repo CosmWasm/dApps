@@ -1,11 +1,10 @@
+import { Center, Stack } from "@cosmicdapp/design";
 import { getErrorFromStackTrace, printableCoin, useAccount, useError, useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Button, Typography } from "antd";
 import copyToClipboard from "clipboard-copy";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import Center from "../../../../../theme/layout/Center";
-import Stack from "../../../../../theme/layout/Stack";
 import { pathContract, pathOperationResult, pathTransfer } from "../../../../paths";
 import { OperationResultState } from "../../../OperationResult";
 import "./SearchResult.less";
@@ -148,8 +147,8 @@ function SearchResult({ contractLabel, contractAddress, name, setLoading }: Sear
   );
 
   return (
-    <Center tag="main" className="SearchResult">
-      <Stack>
+    <Center tag="main" className="Center SearchResult">
+      <Stack className="Stack">
         <Text>{error}</Text>
         <Text className="SearchedName">{name}</Text>
         <Text className="LightText">{message}</Text>

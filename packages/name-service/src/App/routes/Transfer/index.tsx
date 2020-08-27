@@ -1,10 +1,9 @@
+import { Center, Stack } from "@cosmicdapp/design";
 import { getErrorFromStackTrace, printableCoin, useAccount, useError, useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import Center from "../../../theme/layout/Center";
-import Stack from "../../../theme/layout/Stack";
 import BackButton from "../../components/BackButton";
 import Loading from "../../components/Loading";
 import YourAccount from "../../components/YourAccount";
@@ -85,10 +84,10 @@ function Transfer(): JSX.Element {
   return (
     (loading && <Loading loadingText={`Transferring name: ${name}...`} />) ||
     (!loading && (
-      <Center tag="main" className="Transfer">
-        <Stack>
+      <Center tag="main" className="Center Transfer">
+        <Stack className="Stack">
           <BackButton path={fullContractPath} />
-          <Stack className="TransferStack">
+          <Stack className="Stack TransferStack">
             <Title>Transfer</Title>
             <Typography>
               <Text>Name: </Text>

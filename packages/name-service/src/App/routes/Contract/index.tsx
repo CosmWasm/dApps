@@ -1,15 +1,14 @@
+import { Center, Stack } from "@cosmicdapp/design";
 import { Typography } from "antd";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import Center from "../../../theme/layout/Center";
-import Stack from "../../../theme/layout/Stack";
 import BackButton from "../../components/BackButton";
 import Loading from "../../components/Loading";
 import YourAccount from "../../components/YourAccount";
+import { pathHome } from "../../paths";
 import FormSearchName from "./components/FormSearchName";
 import SearchResult from "./components/SearchResult";
 import "./Contract.less";
-import { pathHome } from "../../paths";
 
 const { Title, Text } = Typography;
 
@@ -32,11 +31,11 @@ function Contract(): JSX.Element {
   return (
     (loading && <Loading loadingText={`Registering name: ${searchedName}...`} />) ||
     (!loading && (
-      <Center tag="main" className="Contract">
-        <Stack>
+      <Center tag="main" className="Center Contract">
+        <Stack className="Stack">
           <BackButton path={pathHome} />
-          <Stack className="SearchAndResultStack">
-            <Stack className="SearchStack">
+          <Stack className="Stack SearchAndResultStack">
+            <Stack className="Stack SearchStack">
               <Title>{label}</Title>
               <Text>({address})</Text>
               <FormSearchName initialName={name} setSearchedName={setLowercaseSearchedName} />

@@ -1,9 +1,8 @@
+import { Center, Stack } from "@cosmicdapp/design";
 import { Button, Typography } from "antd";
 import { History } from "history";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import Center from "../../../theme/layout/Center";
-import Stack from "../../../theme/layout/Stack";
 import { pathHome } from "../../paths";
 import failIcon from "./assets/failIcon.svg";
 import successIcon from "./assets/successIcon.svg";
@@ -61,8 +60,8 @@ function OperationResult(): JSX.Element {
     : buttonAction;
 
   return (
-    <Center tag="main" className="OperationResult">
-      <Stack className="MainStack">
+    <Center tag="main" className="Center OperationResult">
+      <Stack className="Stack MainStack">
         <img src={icon} alt="Result icon" />
         <Text className={textClass}>{message}</Text>
         {error && <Text className={textClass}>{error}</Text>}
