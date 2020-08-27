@@ -19,7 +19,7 @@
     "lint": "lerna run lint",
     "lint-fix": "lerna run lint-fix",
     "build": "lerna run build --stream",
-    "build-deps": "cd packages/logic && yarn build",
+    "build-deps": "cd packages/logic && yarn build && cd ../design && yarn build",
     "predeploy": "./gh-pages-config/.predeploy.sh",
     "deploy": "gh-pages --dist gh-pages-config",
     "postdeploy": "./gh-pages-config/.postdeploy.sh"
