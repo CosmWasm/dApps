@@ -1,9 +1,8 @@
+import { Center, Stack } from "@cosmicdapp/design";
 import { Button, Typography } from "antd";
 import { History } from "history";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import Center from "../../../theme/layout/Center";
-import Stack from "../../../theme/layout/Stack";
 import { pathTokens } from "../../paths";
 import failIcon from "./assets/failIcon.svg";
 import successIcon from "./assets/successIcon.svg";

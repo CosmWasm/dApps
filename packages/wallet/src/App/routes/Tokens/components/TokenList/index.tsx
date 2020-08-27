@@ -1,10 +1,10 @@
+import { Stack } from "@cosmicdapp/design";
 import { nativeCoinToDisplay, useAccount, useError, useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { config } from "../../../../../config";
-import Stack from "../../../../../theme/layout/Stack";
 import { pathTokens } from "../../../../paths";
 import { TokenDetailState } from "../../../TokenDetail";
 import "./TokenList.less";

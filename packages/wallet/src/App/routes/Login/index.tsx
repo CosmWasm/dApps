@@ -1,9 +1,8 @@
+import { Center, Stack } from "@cosmicdapp/design";
 import { useAccount, useSdk } from "@cosmicdapp/logic";
 import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import Center from "../../../theme/layout/Center";
-import Stack from "../../../theme/layout/Stack";
 import Loading from "../../components/Loading";
 import { RedirectLocation } from "../../components/ProtectedSwitch";
 import { pathTokens } from "../../paths";

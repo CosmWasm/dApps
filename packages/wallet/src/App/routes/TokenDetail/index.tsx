@@ -1,3 +1,4 @@
+import { Center, Stack } from "@cosmicdapp/design";
 import {
   displayAmountToNative,
   getErrorFromStackTrace,
@@ -10,8 +11,6 @@ import { Typography } from "antd";
 import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { config } from "../../../config";
-import Center from "../../../theme/layout/Center";
-import Stack from "../../../theme/layout/Stack";
 import BackButton from "../../components/BackButton";
 import Loading from "../../components/Loading";
 import YourAccount from "../../components/YourAccount";

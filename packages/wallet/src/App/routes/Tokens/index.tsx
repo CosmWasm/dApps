@@ -1,8 +1,7 @@
+import { Center, Stack } from "@cosmicdapp/design";
 import { useAccount } from "@cosmicdapp/logic";
 import { Typography } from "antd";
 import React, { useState } from "react";
-import Center from "../../../theme/layout/Center";
-import Stack from "../../../theme/layout/Stack";
 import YourAccount from "../../components/YourAccount";
 import FormSearchName from "./components/FormSearchName";
 import TokenList from "./components/TokenList";

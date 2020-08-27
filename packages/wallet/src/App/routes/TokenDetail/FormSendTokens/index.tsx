@@ -1,9 +1,9 @@
+import { Stack } from "@cosmicdapp/design";
 import { Button, Typography } from "antd";
 import { Formik } from "formik";
 import { Form, FormItem, Input } from "formik-antd";
 import React from "react";
 import * as Yup from "yup";
-import Stack from "../../../../theme/layout/Stack";
 import { sendAddressValidationSchema } from "../../../forms/validationSchemas";
 import "./FormSendTokens.less";
 
