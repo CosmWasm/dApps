@@ -67,8 +67,8 @@ function OperationResult(): JSX.Element {
     : buttonAction;
 
   return (
-    <Center tag="main" className="OperationResult">
-      <Stack className="MainStack">
+    <Center tag="main" className="Center OperationResult">
+      <Stack className="Stack MainStack">
         <img src={icon} alt="Result icon" />
         <Text className={textClass}>{message}</Text>
         {error && <Text className={textClass}>{error}</Text>}

@@ -14,7 +14,7 @@ function Loading({ loadingText }: LoadingProps): JSX.Element {
   const tip = loadingText || "Loading...";
 
   return (
-    <Center tag="main" className="Loading">
+    <Center tag="main" className="Center Loading">
       <Spin indicator={spinIndicator} tip={tip} className="Spin" />
     </Center>
   );

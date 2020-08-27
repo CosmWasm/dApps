@@ -33,7 +33,7 @@ function FormSendTokens({ tokenName, tokenAmount, sendTokensAction }: FormSendTo
     >
       {(formikProps) => (
         <Form>
-          <Stack className="FormSendTokens">
+          <Stack className="Stack FormSendTokens">
             <div className="formField">
               <Text>Send</Text>
               <FormItem name="amount">

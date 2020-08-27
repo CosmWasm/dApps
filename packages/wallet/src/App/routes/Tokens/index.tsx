@@ -14,8 +14,8 @@ function Tokens(): JSX.Element {
   const [currentAddress, setCurrentAddress] = useState(account.address);
 
   return (
-    <Center tag="main" className="Tokens">
-      <Stack className="MainStack">
+    <Center tag="main" className="Center Tokens">
+      <Stack className="Stack MainStack">
         <Title>Tokens</Title>
         <FormSearchName currentAddress={currentAddress} setCurrentAddress={setCurrentAddress} />
         <TokenList currentAddress={currentAddress} />

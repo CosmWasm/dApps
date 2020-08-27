@@ -36,7 +36,7 @@ function TokenList({ currentAddress }: TokenListProps): JSX.Element {
   }
 
   return (
-    <Stack className="TokenList">
+    <Stack className="Stack TokenList">
       {balance.map((nativeToken) => {
         const { denom: denomToDisplay, amount: amountToDisplay } = nativeCoinToDisplay(
           nativeToken,

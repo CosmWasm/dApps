@@ -15,8 +15,8 @@ function YourAccount({ showTitle, ...props }: YourAccountProps): JSX.Element {
   const accountProvider = useAccount();
 
   return (
-    <Center className="YourAccount" {...props}>
-      <Stack className="MainStack">
+    <Center className="Center YourAccount" {...props}>
+      <Stack className="Stack MainStack">
         {showTitle || (typeof showTitle === "undefined" && <Title level={3}>Your Account</Title>)}
         <Text>{accountProvider.account.address}</Text>
         <Button type="primary" onClick={() => copyToClipboard(accountProvider.account.address)}>

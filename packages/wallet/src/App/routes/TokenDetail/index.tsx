@@ -94,10 +94,10 @@ function TokenDetail(): JSX.Element {
   return (
     (loading && <Loading loadingText={`Sending ${nameToDisplay}...`} />) ||
     (!loading && (
-      <Center tag="main" className="TokenDetail">
-        <Stack className="MainStack">
+      <Center tag="main" className="Center TokenDetail">
+        <Stack className="Stack MainStack">
           <BackButton path={pathTokens} />
-          <Stack className="AccountStack">
+          <Stack className="Stack AccountStack">
             <Title>{nameToDisplay}</Title>
             <YourAccount showTitle={false} />
           </Stack>
