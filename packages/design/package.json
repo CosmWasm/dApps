@@ -15,7 +15,8 @@
     "prepare": "tsdx build"
   },
   "peerDependencies": {
-    "react": ">=16"
+    "react": ">=16",
+    "styled-components": ">=5"
   },
   "name": "@cosmicdapp/design",
   "author": "Abel Fernández",
@@ -23,6 +24,7 @@
   "devDependencies": {
     "@types/react": "^16.9.46",
     "@types/react-dom": "^16.9.8",
+    "@types/styled-components": "^5.1.2",
     "husky": "^4.2.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
