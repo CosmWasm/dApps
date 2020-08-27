@@ -1,20 +1,19 @@
 {
   "files": {
-    "main.css": "/names/static/css/main.5efeaeb1.chunk.css",
-    "main.js": "/names/static/js/main.cab2d8ce.chunk.js",
-    "main.js.map": "/names/static/js/main.cab2d8ce.chunk.js.map",
+    "main.css": "/names/static/css/main.728d03eb.chunk.css",
+    "main.js": "/names/static/js/main.d3dc325f.chunk.js",
+    "main.js.map": "/names/static/js/main.d3dc325f.chunk.js.map",
     "runtime-main.js": "/names/static/js/runtime-main.e1b92d9b.js",
     "runtime-main.js.map": "/names/static/js/runtime-main.e1b92d9b.js.map",
     "static/css/2.ab37708d.chunk.css": "/names/static/css/2.ab37708d.chunk.css",
-    "static/js/2.cce945ad.chunk.js": "/names/static/js/2.cce945ad.chunk.js",
-    "static/js/2.cce945ad.chunk.js.map": "/names/static/js/2.cce945ad.chunk.js.map",
+    "static/js/2.7b3e62ac.chunk.js": "/names/static/js/2.7b3e62ac.chunk.js",
+    "static/js/2.7b3e62ac.chunk.js.map": "/names/static/js/2.7b3e62ac.chunk.js.map",
     "index.html": "/names/index.html",
-    "precache-manifest.3ddd516996f3f232e2f81a5132327619.js": "/names/precache-manifest.3ddd516996f3f232e2f81a5132327619.js",
+    "precache-manifest.1519a757f21b1749a00bca6cadac564a.js": "/names/precache-manifest.1519a757f21b1749a00bca6cadac564a.js",
     "service-worker.js": "/names/service-worker.js",
     "static/css/2.ab37708d.chunk.css.map": "/names/static/css/2.ab37708d.chunk.css.map",
-    "static/css/main.5efeaeb1.chunk.css.map": "/names/static/css/main.5efeaeb1.chunk.css.map",
-    "static/js/2.cce945ad.chunk.js.LICENSE.txt": "/names/static/js/2.cce945ad.chunk.js.LICENSE.txt",
-    "static/media/index.less": "/names/static/media/Montserrat-Regular.ee653992.ttf",
+    "static/css/main.728d03eb.chunk.css.map": "/names/static/css/main.728d03eb.chunk.css.map",
+    "static/js/2.7b3e62ac.chunk.js.LICENSE.txt": "/names/static/js/2.7b3e62ac.chunk.js.LICENSE.txt",
     "static/media/backArrow.svg": "/names/static/media/backArrow.9849fc2e.svg",
     "static/media/cosmWasmLogo.svg": "/names/static/media/cosmWasmLogo.15dccd19.svg",
     "static/media/failIcon.svg": "/names/static/media/failIcon.71513020.svg",
@@ -23,8 +22,8 @@
   "entrypoints": [
     "static/js/runtime-main.e1b92d9b.js",
     "static/css/2.ab37708d.chunk.css",
-    "static/js/2.cce945ad.chunk.js",
-    "static/css/main.5efeaeb1.chunk.css",
-    "static/js/main.cab2d8ce.chunk.js"
+    "static/js/2.7b3e62ac.chunk.js",
+    "static/css/main.728d03eb.chunk.css",
+    "static/js/main.d3dc325f.chunk.js"
   ]
 }
