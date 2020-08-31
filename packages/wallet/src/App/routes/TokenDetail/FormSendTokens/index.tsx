@@ -1,18 +1,17 @@
-import { Stack } from "@cosmicdapp/design";
 import { Button, Typography } from "antd";
 import { Formik } from "formik";
 import { Form, FormItem, Input } from "formik-antd";
 import React from "react";
 import * as Yup from "yup";
 import { sendAddressValidationSchema } from "../../../forms/validationSchemas";
-import "./FormSendTokens.less";
+import { FormField, FormStack } from "./style";
 
 const { Text } = Typography;
 
 interface FormSendTokensProps {
   readonly tokenName: string;
   readonly tokenAmount: string;
-  readonly sendTokensAction: (values: any) => void;
+  readonly sendTokensAction: (values: unknown) => void;
 }
 
 function FormSendTokens({ tokenName, tokenAmount, sendTokensAction }: FormSendTokensProps): JSX.Element {
@@ -33,20 +32,20 @@ function FormSendTokens({ tokenName, tokenAmount, sendTokensAction }: FormSendTo
     >
       {(formikProps) => (
         <Form>
-          <Stack className="Stack FormSendTokens">
-            <div className="formField">
+          <FormStack>
+            <FormField>
               <Text>Send</Text>
               <FormItem name="amount">
                 <Input name="amount" placeholder="Enter amount" />
               </FormItem>
               <Text>{tokenName}</Text>
-            </div>
-            <div className="formField">
+            </FormField>
+            <FormField>
               <Text>to</Text>
               <FormItem name="address">
                 <Input name="address" placeholder="Enter address" />
               </FormItem>
-            </div>
+            </FormField>
             <Button
               type="primary"
               onClick={formikProps.submitForm}
@@ -54,7 +53,7 @@ function FormSendTokens({ tokenName, tokenAmount, sendTokensAction }: FormSendTo
             >
               Send
             </Button>
-          </Stack>
+          </FormStack>
         </Form>
       )}
     </Formik>

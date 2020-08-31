@@ -1,4 +1,3 @@
-import { Center, Stack } from "@cosmicdapp/design";
 import {
   displayAmountToNative,
   getErrorFromStackTrace,
@@ -11,13 +10,14 @@ import { Typography } from "antd";
 import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { config } from "../../../config";
-import BackButton from "../../components/BackButton";
+import { BackButton } from "../../components/BackButton";
 import { Loading } from "../../components/Loading";
-import YourAccount from "../../components/YourAccount";
+import { PageLayout } from "../../components/PageLayout";
+import { YourAccount } from "../../components/YourAccount";
 import { pathOperationResult, pathTokens } from "../../paths";
 import { OperationResultState } from "../OperationResult";
 import FormSendTokens from "./FormSendTokens";
-import "./TokenDetail.less";
+import { AccountStack, Amount, MainStack } from "./style";
 
 const { Title, Text } = Typography;
 
@@ -45,6 +45,7 @@ function TokenDetail(): JSX.Element {
     const { address, amount } = values;
     const recipientAddress: string = address;
 
+    // TODO: Add try catch so it does not fail i.e. too many decimals
     const amountToTransfer = displayAmountToNative(amount, config.coinMap, tokenName);
 
     const nativeTokenToTransfer: Coin = { denom: tokenName, amount: amountToTransfer };
@@ -88,31 +89,32 @@ function TokenDetail(): JSX.Element {
   };
 
   const nativeToken: Coin = { denom: tokenName, amount: tokenAmount };
+  // TODO: Add try catch so it does not fail i.e. too many decimals
   const { denom: nameToDisplay, amount: amountToDisplay } = nativeCoinToDisplay(nativeToken, config.coinMap);
   const [amountInteger, amountDecimal] = amountToDisplay.split(".");
 
   return (
     (loading && <Loading loadingText={`Sending ${nameToDisplay}...`} />) ||
     (!loading && (
-      <Center tag="main" className="Center TokenDetail">
-        <Stack className="Stack MainStack">
+      <PageLayout>
+        <MainStack>
           <BackButton path={pathTokens} />
-          <Stack className="Stack AccountStack">
+          <AccountStack>
             <Title>{nameToDisplay}</Title>
             <YourAccount showTitle={false} />
-          </Stack>
-          <div className="Amount">
+          </AccountStack>
+          <Amount>
             <Text>{`${amountInteger}${amountDecimal ? "." : ""}`}</Text>
             {amountDecimal && <Text>{amountDecimal}</Text>}
             <Text>{" tokens"}</Text>
-          </div>
+          </Amount>
           <FormSendTokens
             tokenName={nameToDisplay}
             tokenAmount={amountToDisplay}
             sendTokensAction={sendTokensAction}
           />
-        </Stack>
-      </Center>
+        </MainStack>
+      </PageLayout>
     ))
   );
 }
