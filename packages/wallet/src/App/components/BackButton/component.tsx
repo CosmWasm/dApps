@@ -1,18 +1,15 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import backArrow from "./assets/backArrow.svg";
-import "./BackButton.less";
 
-interface BackButtonProps {
+interface BackButtonProps extends React.HTMLAttributes<HTMLOrSVGElement> {
   readonly path?: string;
   readonly state?: unknown;
 }
 
-function BackButton({ path, state }: BackButtonProps): JSX.Element {
+export function BackButton({ path, state, ...props }: BackButtonProps): JSX.Element {
   const history = useHistory();
   const goBack = path ? () => history.push(path, state) : history.goBack;
 
-  return <img src={backArrow} alt="Back arrow" className="BackButton" onClick={goBack} />;
+  return <img src={backArrow} alt="Back arrow" onClick={goBack} {...props} />;
 }
-
-export default BackButton;
