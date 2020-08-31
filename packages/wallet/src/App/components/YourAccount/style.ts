@@ -1,5 +1,8 @@
-.YourAccount {
-  .MainStack {
+import { Stack } from "@cosmicdapp/design";
+import styled from "styled-components";
+
+export const AccountStack = styled(Stack)`
+  & > * {
     --gap: var(--s0);
   }
 
@@ -30,4 +33,4 @@
   button span {
     font-size: var(--s0);
   }
-}
+`;

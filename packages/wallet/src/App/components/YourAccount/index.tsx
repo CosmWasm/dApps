@@ -1,30 +1,25 @@
-import { Center, CenterProps, Stack } from "@cosmicdapp/design";
 import { useAccount } from "@cosmicdapp/logic";
 import { Button, Typography } from "antd";
 import copyToClipboard from "clipboard-copy";
 import React from "react";
-import "./YourAccount.less";
+import { AccountStack } from "./style";
 
 const { Title, Text } = Typography;
 
-interface YourAccountProps extends CenterProps {
+interface YourAccountProps {
   readonly showTitle?: boolean;
 }
 
-function YourAccount({ showTitle, ...props }: YourAccountProps): JSX.Element {
+export function YourAccount({ showTitle }: YourAccountProps): JSX.Element {
   const accountProvider = useAccount();
 
   return (
-    <Center className="Center YourAccount" {...props}>
-      <Stack className="Stack MainStack">
-        {showTitle || (typeof showTitle === "undefined" && <Title level={3}>Your Account</Title>)}
-        <Text>{accountProvider.account.address}</Text>
-        <Button type="primary" onClick={() => copyToClipboard(accountProvider.account.address)}>
-          Copy Account Address
-        </Button>
-      </Stack>
-    </Center>
+    <AccountStack>
+      {showTitle !== false && <Title level={3}>Your Account</Title>}
+      <Text>{accountProvider.account.address}</Text>
+      <Button type="primary" onClick={() => copyToClipboard(accountProvider.account.address)}>
+        Copy Account Address
+      </Button>
+    </AccountStack>
   );
 }
-
-export default YourAccount;
