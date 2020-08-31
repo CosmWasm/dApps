@@ -1,4 +1,3 @@
-import { Stack } from "@cosmicdapp/design";
 import { nativeCoinToDisplay, useAccount, useError, useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Typography } from "antd";
@@ -7,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import { config } from "../../../../../config";
 import { pathTokens } from "../../../../paths";
 import { TokenDetailState } from "../../../TokenDetail";
-import "./TokenList.less";
+import { BorderContainer, TokenItem, TokenStack } from "./style";
 
 const { Text } = Typography;
 
@@ -36,7 +35,7 @@ function TokenList({ currentAddress }: TokenListProps): JSX.Element {
   }
 
   return (
-    <Stack className="Stack TokenList">
+    <TokenStack>
       {balance.map((nativeToken) => {
         const { denom: denomToDisplay, amount: amountToDisplay } = nativeCoinToDisplay(
           nativeToken,
@@ -44,22 +43,21 @@ function TokenList({ currentAddress }: TokenListProps): JSX.Element {
         );
 
         return (
-          <div
+          <TokenItem
             key={nativeToken.denom}
-            className="tokenItem"
             data-state={amAllowed ? "" : "forbidden"}
             onClick={() => {
               amAllowed && goTokenDetail(nativeToken);
             }}
           >
-            <div className="borderContainer">
+            <BorderContainer>
               <Text>{denomToDisplay}</Text>
               <Text>{amountToDisplay !== "0" ? amountToDisplay : "No tokens"}</Text>
-            </div>
-          </div>
+            </BorderContainer>
+          </TokenItem>
         );
       })}
-    </Stack>
+    </TokenStack>
   );
 }
 

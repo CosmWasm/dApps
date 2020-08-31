@@ -1,11 +1,11 @@
-import { Center, Stack } from "@cosmicdapp/design";
 import { useAccount } from "@cosmicdapp/logic";
 import { Typography } from "antd";
 import React, { useState } from "react";
-import YourAccount from "../../components/YourAccount";
+import { PageLayout } from "../../components/PageLayout";
+import { YourAccount } from "../../components/YourAccount";
 import FormSearchName from "./components/FormSearchName";
 import TokenList from "./components/TokenList";
-import "./Tokens.less";
+import { MainStack } from "./style";
 
 const { Title } = Typography;
 
@@ -14,14 +14,14 @@ function Tokens(): JSX.Element {
   const [currentAddress, setCurrentAddress] = useState(account.address);
 
   return (
-    <Center tag="main" className="Center Tokens">
-      <Stack className="Stack MainStack">
+    <PageLayout>
+      <MainStack>
         <Title>Tokens</Title>
         <FormSearchName currentAddress={currentAddress} setCurrentAddress={setCurrentAddress} />
         <TokenList currentAddress={currentAddress} />
         <YourAccount />
-      </Stack>
-    </Center>
+      </MainStack>
+    </PageLayout>
   );
 }
 
