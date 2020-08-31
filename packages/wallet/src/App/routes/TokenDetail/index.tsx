@@ -12,7 +12,7 @@ import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { config } from "../../../config";
 import BackButton from "../../components/BackButton";
-import Loading from "../../components/Loading";
+import { Loading } from "../../components/Loading";
 import YourAccount from "../../components/YourAccount";
 import { pathOperationResult, pathTokens } from "../../paths";
 import { OperationResultState } from "../OperationResult";
