@@ -1,10 +1,8 @@
-import { useAccount, useSdk } from "@cosmicdapp/logic";
+import { Loading, PageLayout } from "@cosmicdapp/design";
+import { RedirectLocation, useAccount, useSdk } from "@cosmicdapp/logic";
 import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Loading } from "../../components/Loading";
-import { PageLayout } from "../../components/PageLayout";
-import { RedirectLocation } from "../../components/ProtectedSwitch";
 import { pathTokens } from "../../paths";
 import cosmWasmLogo from "./assets/cosmWasmLogo.svg";
 import { LightText, MainStack, WelcomeStack } from "./style";

@@ -1,8 +1,7 @@
+import { PageLayout, YourAccount } from "@cosmicdapp/design";
 import { useAccount } from "@cosmicdapp/logic";
 import { Typography } from "antd";
 import React, { useState } from "react";
-import { PageLayout } from "../../components/PageLayout";
-import { YourAccount } from "../../components/YourAccount";
 import FormSearchName from "./components/FormSearchName";
 import TokenList from "./components/TokenList";
 import { MainStack } from "./style";
@@ -19,7 +18,7 @@ function Tokens(): JSX.Element {
         <Title>Tokens</Title>
         <FormSearchName currentAddress={currentAddress} setCurrentAddress={setCurrentAddress} />
         <TokenList currentAddress={currentAddress} />
-        <YourAccount />
+        <YourAccount hideTitle hideBalance />
       </MainStack>
     </PageLayout>
   );

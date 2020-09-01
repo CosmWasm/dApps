@@ -1,8 +1,8 @@
+import { PageLayout } from "@cosmicdapp/design";
 import { Button } from "antd";
 import { History } from "history";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { PageLayout } from "../../components/PageLayout";
 import { pathTokens } from "../../paths";
 import failIcon from "./assets/failIcon.svg";
 import successIcon from "./assets/successIcon.svg";

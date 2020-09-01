@@ -1,3 +1,4 @@
+import { BackButton, Loading, PageLayout, YourAccount } from "@cosmicdapp/design";
 import {
   displayAmountToNative,
   getErrorFromStackTrace,
@@ -10,10 +11,7 @@ import { Typography } from "antd";
 import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { config } from "../../../config";
-import { BackButton } from "../../components/BackButton";
-import { Loading } from "../../components/Loading";
-import { PageLayout } from "../../components/PageLayout";
-import { YourAccount } from "../../components/YourAccount";
+import backArrowIcon from "../../assets/backArrow.svg";
 import { pathOperationResult, pathTokens } from "../../paths";
 import { OperationResultState } from "../OperationResult";
 import FormSendTokens from "./FormSendTokens";
@@ -98,10 +96,10 @@ function TokenDetail(): JSX.Element {
     (!loading && (
       <PageLayout>
         <MainStack>
-          <BackButton path={pathTokens} />
+          <BackButton icon={backArrowIcon} path={pathTokens} />
           <AccountStack>
             <Title>{nameToDisplay}</Title>
-            <YourAccount showTitle={false} />
+            <YourAccount hideTitle hideBalance />
           </AccountStack>
           <Amount>
             <Text>{`${amountInteger}${amountDecimal ? "." : ""}`}</Text>
