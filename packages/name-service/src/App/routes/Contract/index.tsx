@@ -1,10 +1,8 @@
-import { Center, Stack } from "@cosmicdapp/design";
+import { BackButton, Center, Loading, Stack, YourAccount } from "@cosmicdapp/design";
 import { Typography } from "antd";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import BackButton from "../../components/BackButton";
-import Loading from "../../components/Loading";
-import YourAccount from "../../components/YourAccount";
+import backArrowIcon from "../../assets/backArrow.svg";
 import { pathHome } from "../../paths";
 import FormSearchName from "./components/FormSearchName";
 import SearchResult from "./components/SearchResult";
@@ -33,7 +31,7 @@ function Contract(): JSX.Element {
     (!loading && (
       <Center tag="main" className="Center Contract">
         <Stack className="Stack">
-          <BackButton path={pathHome} />
+          <BackButton icon={backArrowIcon} path={pathHome} />
           <Stack className="Stack SearchAndResultStack">
             <Stack className="Stack SearchStack">
               <Title>{label}</Title>

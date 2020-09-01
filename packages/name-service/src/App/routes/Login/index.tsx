@@ -1,10 +1,8 @@
-import { Center, Stack } from "@cosmicdapp/design";
-import { useAccount, useSdk } from "@cosmicdapp/logic";
+import { Center, Loading, Stack } from "@cosmicdapp/design";
+import { RedirectLocation, useAccount, useSdk } from "@cosmicdapp/logic";
 import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import Loading from "../../components/Loading";
-import { RedirectLocation } from "../../components/ProtectedSwitch";
 import { pathHome } from "../../paths";
 import cosmWasmLogo from "./assets/cosmWasmLogo.svg";
 import "./Login.less";

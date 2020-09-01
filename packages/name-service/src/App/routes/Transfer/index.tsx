@@ -1,12 +1,10 @@
-import { Center, Stack } from "@cosmicdapp/design";
+import { BackButton, Center, Loading, Stack, YourAccount } from "@cosmicdapp/design";
 import { getErrorFromStackTrace, printableCoin, useAccount, useError, useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import BackButton from "../../components/BackButton";
-import Loading from "../../components/Loading";
-import YourAccount from "../../components/YourAccount";
+import backArrowIcon from "../../assets/backArrow.svg";
 import { pathContract, pathOperationResult, pathTransfer } from "../../paths";
 import { OperationResultState } from "../OperationResult";
 import FormTransferName from "./FormTransferName";
@@ -86,7 +84,7 @@ function Transfer(): JSX.Element {
     (!loading && (
       <Center tag="main" className="Center Transfer">
         <Stack className="Stack">
-          <BackButton path={fullContractPath} />
+          <BackButton icon={backArrowIcon} path={fullContractPath} />
           <Stack className="Stack TransferStack">
             <Title>Transfer</Title>
             <Typography>

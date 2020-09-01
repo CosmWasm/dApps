@@ -1,11 +1,10 @@
-import { Center, Stack } from "@cosmicdapp/design";
+import { Center, Stack, YourAccount } from "@cosmicdapp/design";
 import { useError, useSdk } from "@cosmicdapp/logic";
 import { Contract } from "@cosmjs/cosmwasm";
 import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { config } from "../../../config";
-import YourAccount from "../../components/YourAccount";
 import { pathContract } from "../../paths";
 import "./Home.less";
 
