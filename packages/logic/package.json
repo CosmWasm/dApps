@@ -15,7 +15,12 @@
     "prepare": "tsdx build"
   },
   "peerDependencies": {
-    "react": ">=16"
+    "@cosmjs/cosmwasm": ">=0.22.2",
+    "@cosmjs/crypto": ">=0.22.2",
+    "@cosmjs/launchpad": ">=0.22.2",
+    "@cosmjs/math": ">=0.22.2",
+    "react": ">=16",
+    "react-router-dom": ">=5"
   },
   "name": "@cosmicdapp/logic",
   "author": "Abel Fernández",
