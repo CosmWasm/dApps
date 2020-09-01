@@ -15,7 +15,11 @@
     "prepare": "tsdx build"
   },
   "peerDependencies": {
+    "@ant-design/icons": ">=4",
+    "ant": ">=4",
+    "clipboard-copy": ">=3",
     "react": ">=16",
+    "react-router-dom": ">=5",
     "styled-components": ">=5"
   },
   "name": "@cosmicdapp/design",
