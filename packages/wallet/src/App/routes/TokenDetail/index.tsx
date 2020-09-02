@@ -1,4 +1,4 @@
-import { BackButton, Loading, PageLayout, YourAccount } from "@cosmicdapp/design";
+import { BackButton, Loading, OperationResultState, PageLayout, YourAccount } from "@cosmicdapp/design";
 import {
   displayAmountToNative,
   getErrorFromStackTrace,
@@ -13,7 +13,6 @@ import { useHistory, useParams } from "react-router-dom";
 import { config } from "../../../config";
 import backArrowIcon from "../../assets/backArrow.svg";
 import { pathOperationResult, pathTokens } from "../../paths";
-import { OperationResultState } from "../OperationResult";
 import FormSendTokens from "./FormSendTokens";
 import { AccountStack, Amount, MainStack } from "./style";
 
