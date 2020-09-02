@@ -4,7 +4,7 @@ import { useSdk } from "./wallet";
 
 interface RedirectLocation {
   readonly redirectPathname: string;
-  readonly redirectState: unknown;
+  readonly redirectState: any;
 }
 
 interface ProtectedSwitchProps extends SwitchProps {
