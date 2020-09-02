@@ -1,3 +1,4 @@
+import { OperationResultState } from "@cosmicdapp/design";
 import { getErrorFromStackTrace, printableCoin, useAccount, useError, useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Button, Typography } from "antd";
@@ -5,7 +6,6 @@ import copyToClipboard from "clipboard-copy";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { pathContract, pathOperationResult, pathTransfer } from "../../../../paths";
-import { OperationResultState } from "../../../OperationResult";
 import { BlackText, LightText, ResultStack } from "./style";
 
 const { Text } = Typography;

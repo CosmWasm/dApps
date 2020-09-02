@@ -1,4 +1,4 @@
-import { BackButton, Loading, PageLayout, YourAccount } from "@cosmicdapp/design";
+import { BackButton, Loading, OperationResultState, PageLayout, YourAccount } from "@cosmicdapp/design";
 import { getErrorFromStackTrace, printableCoin, useAccount, useError, useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Typography } from "antd";
@@ -6,7 +6,6 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import backArrowIcon from "../../assets/backArrow.svg";
 import { pathContract, pathOperationResult, pathTransfer } from "../../paths";
-import { OperationResultState } from "../OperationResult";
 import FormTransferName from "./FormTransferName";
 import { BackTransferStack, MainStack, TransferStack } from "./style";
 
