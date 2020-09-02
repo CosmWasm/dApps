@@ -1,3 +1,4 @@
+import { GlobalStyle } from "@cosmicdapp/design";
 import { AccountProvider, BurnerWalletProvider, ErrorProvider, ProtectedSwitch } from "@cosmicdapp/logic";
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -13,6 +14,7 @@ function App(): JSX.Element {
     <ErrorProvider>
       <BurnerWalletProvider config={config}>
         <AccountProvider>
+          <GlobalStyle />
           <Router basename={process.env.PUBLIC_URL}>
             <Switch>
               <Route exact path="/" component={Login} />
