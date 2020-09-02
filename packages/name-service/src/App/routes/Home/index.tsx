@@ -1,4 +1,4 @@
-import { Center, Stack, YourAccount } from "@cosmicdapp/design";
+import { PageLayout, YourAccount } from "@cosmicdapp/design";
 import { useError, useSdk } from "@cosmicdapp/logic";
 import { Contract } from "@cosmjs/cosmwasm";
 import { Button, Typography } from "antd";
@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { config } from "../../../config";
 import { pathContract } from "../../paths";
-import "./Home.less";
+import { ContractStack, MainStack } from "./style";
 
 const { Title } = Typography;
 
@@ -24,19 +24,19 @@ function Home(): JSX.Element {
   }, [getClient, setError]);
 
   return (
-    <Center tag="main" className="Center Home">
-      <Stack className="Stack">
+    <PageLayout>
+      <MainStack>
         <Title>Name Service</Title>
-        <Stack tag="nav" className="Stack">
+        <ContractStack tag="nav">
           {contracts.map(({ label, address }) => (
             <Link key={address} to={`${pathContract}/${label.toLowerCase()}/${address}`}>
               <Button type="primary">{label}</Button>
             </Link>
           ))}
-        </Stack>
+        </ContractStack>
         <YourAccount tag="footer" />
-      </Stack>
-    </Center>
+      </MainStack>
+    </PageLayout>
   );
 }
 
