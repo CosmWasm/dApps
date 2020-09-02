@@ -1,4 +1,4 @@
-import { BackButton, Center, Loading, Stack, YourAccount } from "@cosmicdapp/design";
+import { BackButton, Loading, PageLayout, YourAccount } from "@cosmicdapp/design";
 import { Typography } from "antd";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -6,7 +6,7 @@ import backArrowIcon from "../../assets/backArrow.svg";
 import { pathHome } from "../../paths";
 import FormSearchName from "./components/FormSearchName";
 import SearchResult from "./components/SearchResult";
-import "./Contract.less";
+import { BackSearchResultStack, MainStack, SearchStack } from "./style";
 
 const { Title, Text } = Typography;
 
@@ -29,15 +29,15 @@ function Contract(): JSX.Element {
   return (
     (loading && <Loading loadingText={`Registering name: ${searchedName}...`} />) ||
     (!loading && (
-      <Center tag="main" className="Center Contract">
-        <Stack className="Stack">
-          <BackButton icon={backArrowIcon} path={pathHome} />
-          <Stack className="Stack SearchAndResultStack">
-            <Stack className="Stack SearchStack">
+      <PageLayout>
+        <MainStack>
+          <BackSearchResultStack>
+            <BackButton icon={backArrowIcon} path={pathHome} />
+            <SearchStack>
               <Title>{label}</Title>
               <Text>({address})</Text>
               <FormSearchName initialName={name} setSearchedName={setLowercaseSearchedName} />
-            </Stack>
+            </SearchStack>
             {searchedName && (
               <SearchResult
                 contractLabel={label}
@@ -46,10 +46,10 @@ function Contract(): JSX.Element {
                 setLoading={setLoading}
               />
             )}
-          </Stack>
+          </BackSearchResultStack>
           <YourAccount tag="footer" />
-        </Stack>
-      </Center>
+        </MainStack>
+      </PageLayout>
     ))
   );
 }

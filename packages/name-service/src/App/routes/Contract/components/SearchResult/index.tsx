@@ -1,4 +1,3 @@
-import { Center, Stack } from "@cosmicdapp/design";
 import { getErrorFromStackTrace, printableCoin, useAccount, useError, useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Button, Typography } from "antd";
@@ -7,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { pathContract, pathOperationResult, pathTransfer } from "../../../../paths";
 import { OperationResultState } from "../../../OperationResult";
-import "./SearchResult.less";
+import { BlackText, LightText, ResultStack } from "./style";
 
 const { Text } = Typography;
 
@@ -147,16 +146,14 @@ function SearchResult({ contractLabel, contractAddress, name, setLoading }: Sear
   );
 
   return (
-    <Center tag="main" className="Center SearchResult">
-      <Stack className="Stack">
-        <Text>{error}</Text>
-        <Text className="SearchedName">{name}</Text>
-        <Text className="LightText">{message}</Text>
-        <Button type="primary" onClick={action}>
-          {actionText}
-        </Button>
-      </Stack>
-    </Center>
+    <ResultStack>
+      <Text>{error}</Text>
+      <BlackText>{name}</BlackText>
+      <LightText>{message}</LightText>
+      <Button type="primary" onClick={action}>
+        {actionText}
+      </Button>
+    </ResultStack>
   );
 }
 
