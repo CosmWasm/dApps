@@ -27,12 +27,18 @@
   "author": "Abel Fernández",
   "module": "dist/design.esm.js",
   "devDependencies": {
+    "@ant-design/icons": "^4.2.2",
+    "@cosmicdapp/logic": "^0.1.0",
     "@types/react": "^16.9.46",
     "@types/react-dom": "^16.9.8",
     "@types/styled-components": "^5.1.2",
+    "antd": "^4.5.4",
+    "clipboard-copy": "^3.1.0",
     "husky": "^4.2.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
+    "styled-components": "^5.1.1",
     "tsdx": "^0.13.2",
     "tslib": "^2.0.1",
     "typescript": "^3.9.7"
