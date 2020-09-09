@@ -43,7 +43,7 @@ const TokenItem = styled.div`
     align-items: baseline;
 
     span:first-child {
-      font-family: Iceland;
+      font-family: var(--ff-iceland);
       font-size: var(--s2);
     }
 

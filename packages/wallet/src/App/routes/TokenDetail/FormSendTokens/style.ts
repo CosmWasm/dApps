@@ -24,7 +24,7 @@ const FormField = styled.div`
   }
 
   span {
-    font-family: Iceland;
+    font-family: var(--ff-iceland);
     font-size: var(--s2);
   }
 `;
