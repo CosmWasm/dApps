@@ -11,7 +11,7 @@ const ResultStack = styled(Stack)`
 `;
 
 const BlackText = styled(Text)`
-  color: black;
+  color: var(--color-black);
 `;
 
 const LightText = styled(Text)`

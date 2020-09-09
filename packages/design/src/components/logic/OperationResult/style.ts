@@ -14,11 +14,11 @@ const ResultText = styled(Text)`
   font-size: var(--s-1);
 
   &[data-result="success"] {
-    color: green;
+    color: var(--color-green);
   }
 
-  &[data-result="fail"] {
-    color: red;
+  &[data-result="failure"] {
+    color: var(--color-red);
   }
 `;
 

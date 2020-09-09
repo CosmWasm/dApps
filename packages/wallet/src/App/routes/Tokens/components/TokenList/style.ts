@@ -57,7 +57,7 @@ const TokenItem = styled.div`
     &:hover,
     &:active,
     &:focus {
-      background-color: #333;
+      background-color: var(--color-black);
       cursor: not-allowed;
     }
   }
