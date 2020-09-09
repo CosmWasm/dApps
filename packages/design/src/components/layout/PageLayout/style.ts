@@ -7,6 +7,7 @@ export const StyledPageLayout = styled(PageLayout)`
 
   padding: var(--s4);
 
+  /* Reduces padding when width < 380px, but uses em for better media query support */
   @media (max-width: 23.6875em) {
     padding: var(--s-1) 0 var(--s-2) 0;
   }
