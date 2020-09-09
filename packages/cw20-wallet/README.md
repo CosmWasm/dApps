@@ -1,0 +1,1 @@
+# cw20-wallet
