@@ -1,0 +1,13 @@
+export const pathLogin = "/login";
+export const pathTokens = "/tokens";
+export const pathTokensAdd = "/tokens/add";
+export const pathTokenDetail = "/token/detail";
+//export const pathTokenDetail = "/token/detail/:contractAddress/:allowingAddress?";
+export const pathSend = "/token/send";
+//export const pathSend = "/token/send/:contractAddress/:allowingAddress?";
+export const pathAllowances = "/allowances";
+export const pathAllowanceAdd = "/allowances/add";
+//export const pathAllowances = "/allowance/:tokenName";
+export const pathAllowanceEdit = "/edit";
+//export const pathAllowanceEdit = "/allowance/:tokenName/edit/:allowedAddress";
+export const pathOperationResult = "/result";
