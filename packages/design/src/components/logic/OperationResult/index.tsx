@@ -6,7 +6,7 @@ import { PageLayout } from "../../layout/PageLayout";
 import { MainStack, ResultText } from "./style";
 
 interface ResultContent {
-  readonly result: "success" | "fail";
+  readonly result: "success" | "failure";
   readonly icon: string;
   readonly buttonText: string;
   readonly buttonAction: () => void;
@@ -50,7 +50,7 @@ function OperationResult({ defaultButtonAction, successIcon, failIcon }: Operati
     }
 
     return {
-      result: "fail",
+      result: "failure",
       icon: failIcon,
       buttonText: "Retry",
       buttonAction: history.goBack,
