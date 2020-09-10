@@ -19,9 +19,9 @@ const defaultContext: AccountContextType = {
 
 const AccountContext = React.createContext<AccountContextType>(defaultContext);
 
-const useAccount = (): AccountContextType => React.useContext(AccountContext);
+export const useAccount = (): AccountContextType => React.useContext(AccountContext);
 
-function AccountProvider({ children }: React.HTMLAttributes<HTMLOrSVGElement>): JSX.Element {
+export function AccountProvider({ children }: React.HTMLAttributes<HTMLOrSVGElement>): JSX.Element {
   const { setError } = useError();
   const sdk = useSdk();
 
@@ -47,5 +47,3 @@ function AccountProvider({ children }: React.HTMLAttributes<HTMLOrSVGElement>): 
 
   return <AccountContext.Provider value={context}>{children}</AccountContext.Provider>;
 }
-
-export { AccountProvider, useAccount };
