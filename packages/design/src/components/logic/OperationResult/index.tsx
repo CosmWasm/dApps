@@ -12,7 +12,7 @@ interface ResultContent {
   readonly buttonAction: () => void;
 }
 
-interface OperationResultState {
+export interface OperationResultState {
   readonly success: boolean;
   readonly message: string;
   readonly error?: string;
@@ -21,13 +21,17 @@ interface OperationResultState {
   readonly customButtonActionState?: any;
 }
 
-interface OperationResultProps {
+export interface OperationResultProps {
   readonly defaultButtonAction: (history: History) => void;
   readonly successIcon: string;
   readonly failIcon: string;
 }
 
-function OperationResult({ defaultButtonAction, successIcon, failIcon }: OperationResultProps): JSX.Element {
+export function OperationResult({
+  defaultButtonAction,
+  successIcon,
+  failIcon,
+}: OperationResultProps): JSX.Element {
   const history = useHistory();
 
   const {
@@ -77,5 +81,3 @@ function OperationResult({ defaultButtonAction, successIcon, failIcon }: Operati
     </PageLayout>
   );
 }
-
-export { OperationResult, OperationResultProps, OperationResultState };
