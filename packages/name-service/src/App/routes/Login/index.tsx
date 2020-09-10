@@ -3,8 +3,6 @@ import React from "react";
 import { pathHome } from "../../paths";
 import cosmWasmLogo from "./assets/cosmWasmLogo.svg";
 
-function Login(): JSX.Element {
+export function Login(): JSX.Element {
   return <LoginDesign pathAfterLogin={pathHome} appName="Name service" appLogo={cosmWasmLogo} />;
 }
-
-export default Login;

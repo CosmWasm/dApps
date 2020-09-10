@@ -60,7 +60,12 @@ interface SearchResultProps {
   readonly setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function SearchResult({ contractLabel, contractAddress, name, setLoading }: SearchResultProps): JSX.Element {
+export function SearchResult({
+  contractLabel,
+  contractAddress,
+  name,
+  setLoading,
+}: SearchResultProps): JSX.Element {
   const fullContractPath = `${pathContract}/${contractLabel}/${contractAddress}/${name}`;
 
   const history = useHistory();
@@ -156,5 +161,3 @@ function SearchResult({ contractLabel, contractAddress, name, setLoading }: Sear
     </ResultStack>
   );
 }
-
-export default SearchResult;

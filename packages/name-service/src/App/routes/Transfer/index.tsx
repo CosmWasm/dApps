@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import backArrowIcon from "../../assets/backArrow.svg";
 import { pathContract, pathOperationResult, pathTransfer } from "../../paths";
-import FormTransferName from "./FormTransferName";
+import { FormTransferName } from "./FormTransferName";
 import { BackTransferStack, MainStack, TransferStack } from "./style";
 
 const { Title, Text } = Typography;
@@ -17,7 +17,7 @@ interface TransferParams {
   readonly name: string;
 }
 
-function Transfer(): JSX.Element {
+export function Transfer(): JSX.Element {
   const { contractLabel, contractAddress, name } = useParams() as TransferParams;
   const fullContractPath = `${pathContract}/${contractLabel}/${contractAddress}/${name}`;
 
@@ -105,5 +105,3 @@ function Transfer(): JSX.Element {
     ))
   );
 }
-
-export default Transfer;

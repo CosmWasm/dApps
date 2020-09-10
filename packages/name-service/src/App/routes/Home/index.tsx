@@ -10,7 +10,7 @@ import { ContractStack, MainStack } from "./style";
 
 const { Title } = Typography;
 
-function Home(): JSX.Element {
+export function Home(): JSX.Element {
   const { setError } = useError();
   const { getClient } = useSdk();
 
@@ -39,5 +39,3 @@ function Home(): JSX.Element {
     </PageLayout>
   );
 }
-
-export default Home;

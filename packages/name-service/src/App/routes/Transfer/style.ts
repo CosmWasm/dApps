@@ -1,7 +1,7 @@
 import { Stack } from "@cosmicdapp/design";
 import styled from "styled-components";
 
-const MainStack = styled(Stack)`
+export const MainStack = styled(Stack)`
   h1 {
     margin: 0;
   }
@@ -12,13 +12,13 @@ const MainStack = styled(Stack)`
   }
 `;
 
-const BackTransferStack = styled(Stack)`
+export const BackTransferStack = styled(Stack)`
   & > * {
     --gap: var(--s4);
   }
 `;
 
-const TransferStack = styled(Stack)`
+export const TransferStack = styled(Stack)`
   & > * {
     --gap: var(--s3);
   }
@@ -27,5 +27,3 @@ const TransferStack = styled(Stack)`
     margin-top: var(--gap);
   }
 `;
-
-export { MainStack, BackTransferStack, TransferStack };

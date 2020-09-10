@@ -9,10 +9,8 @@ function goToHome(history: History) {
   history.push(pathHome);
 }
 
-function OperationResult(): JSX.Element {
+export function OperationResult(): JSX.Element {
   return (
     <OperationResultDesign defaultButtonAction={goToHome} successIcon={successIcon} failIcon={failIcon} />
   );
 }
-
-export default OperationResult;

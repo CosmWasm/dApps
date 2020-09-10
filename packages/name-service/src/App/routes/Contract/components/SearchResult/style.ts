@@ -4,18 +4,16 @@ import styled from "styled-components";
 
 const { Text } = Typography;
 
-const ResultStack = styled(Stack)`
+export const ResultStack = styled(Stack)`
   & > * {
     --gap: var(--s-3);
   }
 `;
 
-const BlackText = styled(Text)`
+export const BlackText = styled(Text)`
   color: var(--color-black);
 `;
 
-const LightText = styled(Text)`
+export const LightText = styled(Text)`
   font-weight: lighter;
 `;
-
-export { ResultStack, BlackText, LightText };

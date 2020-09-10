@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import backArrowIcon from "../../assets/backArrow.svg";
 import { pathHome } from "../../paths";
-import FormSearchName from "./components/FormSearchName";
-import SearchResult from "./components/SearchResult";
+import { FormSearchName } from "./components/FormSearchName";
+import { SearchResult } from "./components/SearchResult";
 import { BackSearchResultStack, MainStack, SearchStack } from "./style";
 
 const { Title, Text } = Typography;
@@ -16,7 +16,7 @@ interface ContractParams {
   readonly name?: string;
 }
 
-function Contract(): JSX.Element {
+export function Contract(): JSX.Element {
   const { label, address, name } = useParams() as ContractParams;
 
   const [loading, setLoading] = useState(false);
@@ -53,5 +53,3 @@ function Contract(): JSX.Element {
     ))
   );
 }
-
-export default Contract;

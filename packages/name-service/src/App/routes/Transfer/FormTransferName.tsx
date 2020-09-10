@@ -10,7 +10,7 @@ interface FormTransferNameProps {
   readonly transferButtonAction: () => void;
 }
 
-function FormTransferName({
+export function FormTransferName({
   setNewOwnerAddress,
   transferButtonText,
   transferButtonAction,
@@ -44,5 +44,3 @@ function FormTransferName({
     </Formik>
   );
 }
-
-export default FormTransferName;

@@ -1,7 +1,7 @@
 import { Stack } from "@cosmicdapp/design";
 import styled from "styled-components";
 
-const MainStack = styled(Stack)`
+export const MainStack = styled(Stack)`
   h1 {
     margin: 0;
     text-transform: capitalize;
@@ -13,13 +13,13 @@ const MainStack = styled(Stack)`
   }
 `;
 
-const BackSearchResultStack = styled(Stack)`
+export const BackSearchResultStack = styled(Stack)`
   & > * {
     --gap: var(--s4);
   }
 `;
 
-const SearchStack = styled(Stack)`
+export const SearchStack = styled(Stack)`
   & > * {
     --gap: var(--s2);
   }
@@ -28,5 +28,3 @@ const SearchStack = styled(Stack)`
     margin-top: var(--gap);
   }
 `;
-
-export { MainStack, BackSearchResultStack, SearchStack };
