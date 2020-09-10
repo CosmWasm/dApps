@@ -4,12 +4,12 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { config } from "../config";
 import { pathLogin, pathOperationResult, pathTokens } from "./paths";
-import Login from "./routes/Login";
-import OperationResult from "./routes/OperationResult";
-import TokenDetail from "./routes/TokenDetail";
-import Tokens from "./routes/Tokens";
+import { Login } from "./routes/Login";
+import { OperationResult } from "./routes/OperationResult";
+import { TokenDetail } from "./routes/TokenDetail";
+import { Tokens } from "./routes/Tokens";
 
-function App(): JSX.Element {
+export function App(): JSX.Element {
   return (
     <ErrorProvider>
       <BurnerWalletProvider config={config}>
@@ -31,5 +31,3 @@ function App(): JSX.Element {
     </ErrorProvider>
   );
 }
-
-export default App;

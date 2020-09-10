@@ -9,7 +9,7 @@ function goToTokensList(history: History) {
   history.push(pathTokens);
 }
 
-function OperationResult(): JSX.Element {
+export function OperationResult(): JSX.Element {
   return (
     <OperationResultDesign
       defaultButtonAction={goToTokensList}
@@ -18,5 +18,3 @@ function OperationResult(): JSX.Element {
     />
   );
 }
-
-export default OperationResult;

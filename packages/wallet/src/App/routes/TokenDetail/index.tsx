@@ -13,7 +13,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { config } from "../../../config";
 import backArrowIcon from "../../assets/backArrow.svg";
 import { pathOperationResult, pathTokens } from "../../paths";
-import FormSendTokens from "./FormSendTokens";
+import { FormSendTokens } from "./FormSendTokens";
 import { AccountStack, Amount, MainStack } from "./style";
 
 const { Title, Text } = Typography;
@@ -26,7 +26,7 @@ export interface TokenDetailState {
   readonly tokenAmount: string;
 }
 
-function TokenDetail(): JSX.Element {
+export function TokenDetail(): JSX.Element {
   const [loading, setLoading] = useState(false);
 
   const history = useHistory();
@@ -115,5 +115,3 @@ function TokenDetail(): JSX.Element {
     ))
   );
 }
-
-export default TokenDetail;

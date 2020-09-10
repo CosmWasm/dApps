@@ -14,7 +14,11 @@ interface FormSendTokensProps {
   readonly sendTokensAction: (values: unknown) => void;
 }
 
-function FormSendTokens({ tokenName, tokenAmount, sendTokensAction }: FormSendTokensProps): JSX.Element {
+export function FormSendTokens({
+  tokenName,
+  tokenAmount,
+  sendTokensAction,
+}: FormSendTokensProps): JSX.Element {
   const sendAmountValidationSchema = Yup.object().shape({
     amount: Yup.number()
       .required("An amount is required")
@@ -59,5 +63,3 @@ function FormSendTokens({ tokenName, tokenAmount, sendTokensAction }: FormSendTo
     </Formik>
   );
 }
-
-export default FormSendTokens;

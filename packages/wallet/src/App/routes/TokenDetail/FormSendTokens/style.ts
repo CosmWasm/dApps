@@ -1,7 +1,7 @@
 import { Stack } from "@cosmicdapp/design";
 import styled from "styled-components";
 
-const FormStack = styled(Stack)`
+export const FormStack = styled(Stack)`
   & > * {
     --gap: var(--s0);
   }
@@ -15,7 +15,7 @@ const FormStack = styled(Stack)`
   }
 `;
 
-const FormField = styled.div`
+export const FormField = styled.div`
   display: flex;
   align-items: baseline;
 
@@ -28,5 +28,3 @@ const FormField = styled.div`
     font-size: var(--s2);
   }
 `;
-
-export { FormStack, FormField };

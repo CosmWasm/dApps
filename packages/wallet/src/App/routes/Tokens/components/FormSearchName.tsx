@@ -9,7 +9,7 @@ interface FormSearchNameProps {
   readonly setCurrentAddress: (value: React.SetStateAction<string>) => void;
 }
 
-function FormSearchName({ currentAddress, setCurrentAddress }: FormSearchNameProps): JSX.Element {
+export function FormSearchName({ currentAddress, setCurrentAddress }: FormSearchNameProps): JSX.Element {
   return (
     <Formik
       initialValues={{ address: currentAddress }}
@@ -33,5 +33,3 @@ function FormSearchName({ currentAddress, setCurrentAddress }: FormSearchNamePro
     </Formik>
   );
 }
-
-export default FormSearchName;

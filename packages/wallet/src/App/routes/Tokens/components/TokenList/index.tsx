@@ -14,7 +14,7 @@ interface TokenListProps {
   readonly currentAddress: string;
 }
 
-function TokenList({ currentAddress }: TokenListProps): JSX.Element {
+export function TokenList({ currentAddress }: TokenListProps): JSX.Element {
   const { getClient } = useSdk();
   const { setError } = useError();
   const [balance, setBalance] = useState<readonly Coin[]>([]);
@@ -60,5 +60,3 @@ function TokenList({ currentAddress }: TokenListProps): JSX.Element {
     </TokenStack>
   );
 }
-
-export default TokenList;

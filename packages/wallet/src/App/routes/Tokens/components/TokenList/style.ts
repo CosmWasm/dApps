@@ -1,13 +1,13 @@
 import { Stack } from "@cosmicdapp/design";
 import styled from "styled-components";
 
-const TokenStack = styled(Stack)`
+export const TokenStack = styled(Stack)`
   & > * {
     --gap: 0;
   }
 `;
 
-const TokenItem = styled.div`
+export const TokenItem = styled.div`
   --v-padding: var(--s-2);
   --border-size: 1px;
 
@@ -63,10 +63,8 @@ const TokenItem = styled.div`
   }
 `;
 
-const BorderContainer = styled.div`
+export const BorderContainer = styled.div`
   border-top: var(--border-size) solid var(--color-primary);
   padding-top: var(--v-padding);
   margin-top: calc(-1 * var(--v-padding));
 `;
-
-export { TokenStack, TokenItem, BorderContainer };
