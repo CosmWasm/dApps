@@ -1,7 +1,10 @@
 {
+  "name": "@cosmicdapp/logic",
   "version": "0.1.0",
+  "private": true,
   "license": "MIT",
   "main": "dist/index.js",
+  "module": "dist/logic.esm.js",
   "typings": "dist/index.d.ts",
   "files": [
     "dist",
@@ -14,22 +17,17 @@
     "lint": "tsdx lint",
     "prepare": "tsdx build"
   },
-  "peerDependencies": {
-    "@cosmjs/cosmwasm": ">=0.22.2",
-    "@cosmjs/crypto": ">=0.22.2",
-    "@cosmjs/launchpad": ">=0.22.2",
-    "@cosmjs/math": ">=0.22.2",
-    "react": ">=16",
-    "react-router-dom": ">=5"
-  },
-  "name": "@cosmicdapp/logic",
-  "author": "Abel Fernández",
-  "module": "dist/logic.esm.js",
-  "devDependencies": {
+  "dependencies": {
     "@cosmjs/cosmwasm": "^0.22.2",
     "@cosmjs/crypto": "^0.22.2",
     "@cosmjs/launchpad": "^0.22.2",
-    "@cosmjs/math": "^0.22.2",
+    "@cosmjs/math": "^0.22.2"
+  },
+  "peerDependencies": {
+    "react": ">=16",
+    "react-router-dom": ">=5"
+  },
+  "devDependencies": {
     "@types/react": "^16.9.46",
     "@types/react-dom": "^16.9.8",
     "husky": "^4.2.5",
