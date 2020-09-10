@@ -19,7 +19,7 @@
     "lint": "lerna run lint",
     "lint-fix": "lerna run lint-fix",
     "build": "lerna run build --stream",
-    "build-deps": "lerna run --scope @cosmicdapp/logic --scope @cosmicdapp/design build",
+    "build-deps": "lerna run --scope '{@cosmicdapp/logic,@cosmicdapp/design}' build",
     "predeploy": "./gh-pages-config/.predeploy.sh",
     "deploy": "gh-pages --dist gh-pages-config",
     "postdeploy": "./gh-pages-config/.postdeploy.sh"
