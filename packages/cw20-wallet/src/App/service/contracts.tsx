@@ -25,7 +25,7 @@ function ContractsProvider({ children }: React.HTMLAttributes<HTMLOrSVGElement>)
       (contract) => contract.contractAddress === newContract.contractAddress,
     );
 
-    if (notPresent) setContracts([...contracts, newContract]);
+    if (notPresent) setContracts((contracts) => [...contracts, newContract]);
   }
 
   const value: ContractsContextType = { contracts, addContract };
