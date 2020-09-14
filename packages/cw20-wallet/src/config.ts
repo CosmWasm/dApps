@@ -22,7 +22,7 @@ const coralnet: AppConfig = {
   faucetToken: "SHELL",
   addressPrefix: "coral",
   coinMap: coinMap,
-  codeId: 28,
+  codeId: 40,
 };
 
 // REACT_APP_LOCAL is set via `yarn start:local`
