@@ -4,7 +4,7 @@ import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import backArrowIcon from "../../assets/backArrow.svg";
-import { pathAllowances, pathSend, pathTokens } from "../../paths";
+import { pathAllowances, pathTokenSend, pathTokens } from "../../paths";
 import { CW20 } from "../../service/cw20";
 import FormSearchAllowing from "./FormSearchAllowing";
 import { AccountStack, Amount, MainStack } from "./style";
@@ -54,7 +54,7 @@ function TokenDetail(): JSX.Element {
 
   function goToSend() {
     const optionalAllowingAddress = allowingAddress ? allowingAddress : "";
-    history.push(`${pathSend}/${contractAddress}/${optionalAllowingAddress}`);
+    history.push(`${pathTokenSend}/${contractAddress}/${optionalAllowingAddress}`);
   }
 
   function goToAllowances() {
