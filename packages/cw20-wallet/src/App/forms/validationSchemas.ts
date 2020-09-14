@@ -23,3 +23,4 @@ export const contractValidationSchema = Yup.object().shape({
 });
 
 export const searchAddressValidationSchema = Yup.object().shape({ address: addressField });
+export const sendAddressValidationSchema = Yup.object().shape({ address: requiredAddressField });
