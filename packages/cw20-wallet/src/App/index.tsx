@@ -3,12 +3,22 @@ import { AccountProvider, BurnerWalletProvider, ErrorProvider, ProtectedSwitch }
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { config } from "../config";
-import { pathLogin, pathOperationResult, pathTokenDetail, pathTokens, pathTokensAdd } from "./paths";
+import {
+  pathAllowances,
+  pathLogin,
+  pathOperationResult,
+  pathTokenDetail,
+  pathTokens,
+  pathTokensAdd,
+  pathTokenSend,
+} from "./paths";
+import Allowances from "./routes/Allowances";
 import Login from "./routes/Login";
 import OperationResult from "./routes/OperationResult";
 import TokenDetail from "./routes/TokenDetail";
 import Tokens from "./routes/Tokens";
 import TokensAdd from "./routes/TokensAdd";
+import TokenSend from "./routes/TokenSend";
 import { ContractsProvider } from "./service/contracts";
 
 function App(): JSX.Element {
@@ -30,6 +40,12 @@ function App(): JSX.Element {
                     path={`${pathTokenDetail}/:contractAddress/:allowingAddress?`}
                     component={TokenDetail}
                   />
+                  <Route
+                    exact
+                    path={`${pathTokenSend}/:contractAddress/:allowingAddress?`}
+                    component={TokenSend}
+                  />
+                  <Route exact path={`${pathAllowances}/:contractAddress`} component={Allowances} />
                   <Route exact path={pathOperationResult} component={OperationResult} />
                 </ProtectedSwitch>
               </Switch>
