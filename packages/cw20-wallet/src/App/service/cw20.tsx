@@ -7,7 +7,7 @@ interface AllowanceResponse {
   readonly expires: Expiration;
 }
 
-interface AllowanceInfo {
+export interface AllowanceInfo {
   readonly allowance: string; // integer as string
   readonly spender: string; // bech32 address
   readonly expires: Expiration;
