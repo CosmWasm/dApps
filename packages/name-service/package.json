@@ -14,13 +14,10 @@
     "test": "craco test"
   },
   "dependencies": {
-    "@ant-design/icons": "^4.2.2",
     "@cosmicdapp/design": "^0.1.0",
     "@cosmicdapp/logic": "^0.1.0",
     "@cosmjs/cosmwasm": "^0.22.2",
-    "@cosmjs/crypto": "^0.22.2",
     "@cosmjs/launchpad": "^0.22.2",
-    "@cosmjs/math": "^0.22.2",
     "antd": "^4.5.4",
     "clipboard-copy": "^3.1.0",
     "formik": "^2.1.5",
@@ -28,6 +25,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
+    "styled-components": "^5.1.1",
     "yup": "^0.29.3"
   },
   "devDependencies": {

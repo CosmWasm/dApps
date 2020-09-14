@@ -4,10 +4,9 @@ import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { config } from "../../../../../config";
-import Stack from "../../../../../theme/layout/Stack";
 import { pathTokens } from "../../../../paths";
 import { TokenDetailState } from "../../../TokenDetail";
-import "./TokenList.less";
+import { BorderContainer, TokenItem, TokenStack } from "./style";
 
 const { Text } = Typography;
 
@@ -15,7 +14,7 @@ interface TokenListProps {
   readonly currentAddress: string;
 }
 
-function TokenList({ currentAddress }: TokenListProps): JSX.Element {
+export function TokenList({ currentAddress }: TokenListProps): JSX.Element {
   const { getClient } = useSdk();
   const { setError } = useError();
   const [balance, setBalance] = useState<readonly Coin[]>([]);
@@ -36,7 +35,7 @@ function TokenList({ currentAddress }: TokenListProps): JSX.Element {
   }
 
   return (
-    <Stack className="TokenList">
+    <TokenStack>
       {balance.map((nativeToken) => {
         const { denom: denomToDisplay, amount: amountToDisplay } = nativeCoinToDisplay(
           nativeToken,
@@ -44,23 +43,20 @@ function TokenList({ currentAddress }: TokenListProps): JSX.Element {
         );
 
         return (
-          <div
+          <TokenItem
             key={nativeToken.denom}
-            className="tokenItem"
             data-state={amAllowed ? "" : "forbidden"}
             onClick={() => {
               amAllowed && goTokenDetail(nativeToken);
             }}
           >
-            <div className="borderContainer">
+            <BorderContainer>
               <Text>{denomToDisplay}</Text>
               <Text>{amountToDisplay !== "0" ? amountToDisplay : "No tokens"}</Text>
-            </div>
-          </div>
+            </BorderContainer>
+          </TokenItem>
         );
       })}
-    </Stack>
+    </TokenStack>
   );
 }
-
-export default TokenList;

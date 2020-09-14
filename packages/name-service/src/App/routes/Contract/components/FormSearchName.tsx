@@ -9,7 +9,7 @@ interface FormSearchNameProps {
   readonly setSearchedName: (value: React.SetStateAction<string>) => void;
 }
 
-function FormSearchName({ initialName, setSearchedName }: FormSearchNameProps): JSX.Element {
+export function FormSearchName({ initialName, setSearchedName }: FormSearchNameProps): JSX.Element {
   return (
     <Formik
       initialValues={{ name: initialName }}
@@ -35,5 +35,3 @@ function FormSearchName({ initialName, setSearchedName }: FormSearchNameProps): 
     </Formik>
   );
 }
-
-export default FormSearchName;

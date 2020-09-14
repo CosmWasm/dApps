@@ -17,9 +17,9 @@ const defaultContext: ErrorContextType = {
 
 const ErrorContext = React.createContext<ErrorContextType>(defaultContext);
 
-const useError = (): ErrorContextType => React.useContext(ErrorContext);
+export const useError = (): ErrorContextType => React.useContext(ErrorContext);
 
-function ErrorProvider({ children }: React.HTMLAttributes<HTMLOrSVGElement>): JSX.Element {
+export function ErrorProvider({ children }: React.HTMLAttributes<HTMLOrSVGElement>): JSX.Element {
   const [error, setError] = React.useState<string>();
 
   const context: ErrorContextType = {
@@ -32,5 +32,3 @@ function ErrorProvider({ children }: React.HTMLAttributes<HTMLOrSVGElement>): JS
 
   return <ErrorContext.Provider value={context}>{children}</ErrorContext.Provider>;
 }
-
-export { ErrorProvider, useError };

@@ -1,15 +1,12 @@
+import { BackButton, Loading, PageLayout, YourAccount } from "@cosmicdapp/design";
 import { Typography } from "antd";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import Center from "../../../theme/layout/Center";
-import Stack from "../../../theme/layout/Stack";
-import BackButton from "../../components/BackButton";
-import Loading from "../../components/Loading";
-import YourAccount from "../../components/YourAccount";
-import FormSearchName from "./components/FormSearchName";
-import SearchResult from "./components/SearchResult";
-import "./Contract.less";
+import backArrowIcon from "../../assets/backArrow.svg";
 import { pathHome } from "../../paths";
+import { FormSearchName } from "./components/FormSearchName";
+import { SearchResult } from "./components/SearchResult";
+import { BackSearchResultStack, MainStack, SearchStack } from "./style";
 
 const { Title, Text } = Typography;
 
@@ -19,7 +16,7 @@ interface ContractParams {
   readonly name?: string;
 }
 
-function Contract(): JSX.Element {
+export function Contract(): JSX.Element {
   const { label, address, name } = useParams() as ContractParams;
 
   const [loading, setLoading] = useState(false);
@@ -32,15 +29,15 @@ function Contract(): JSX.Element {
   return (
     (loading && <Loading loadingText={`Registering name: ${searchedName}...`} />) ||
     (!loading && (
-      <Center tag="main" className="Contract">
-        <Stack>
-          <BackButton path={pathHome} />
-          <Stack className="SearchAndResultStack">
-            <Stack className="SearchStack">
+      <PageLayout>
+        <MainStack>
+          <BackSearchResultStack>
+            <BackButton icon={backArrowIcon} path={pathHome} />
+            <SearchStack>
               <Title>{label}</Title>
               <Text>({address})</Text>
               <FormSearchName initialName={name} setSearchedName={setLowercaseSearchedName} />
-            </Stack>
+            </SearchStack>
             {searchedName && (
               <SearchResult
                 contractLabel={label}
@@ -49,12 +46,10 @@ function Contract(): JSX.Element {
                 setLoading={setLoading}
               />
             )}
-          </Stack>
+          </BackSearchResultStack>
           <YourAccount tag="footer" />
-        </Stack>
-      </Center>
+        </MainStack>
+      </PageLayout>
     ))
   );
 }
-
-export default Contract;

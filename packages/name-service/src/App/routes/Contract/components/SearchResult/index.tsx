@@ -1,14 +1,12 @@
+import { OperationResultState } from "@cosmicdapp/design";
 import { getErrorFromStackTrace, printableCoin, useAccount, useError, useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Button, Typography } from "antd";
 import copyToClipboard from "clipboard-copy";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import Center from "../../../../../theme/layout/Center";
-import Stack from "../../../../../theme/layout/Stack";
 import { pathContract, pathOperationResult, pathTransfer } from "../../../../paths";
-import { OperationResultState } from "../../../OperationResult";
-import "./SearchResult.less";
+import { BlackText, LightText, ResultStack } from "./style";
 
 const { Text } = Typography;
 
@@ -62,7 +60,12 @@ interface SearchResultProps {
   readonly setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function SearchResult({ contractLabel, contractAddress, name, setLoading }: SearchResultProps): JSX.Element {
+export function SearchResult({
+  contractLabel,
+  contractAddress,
+  name,
+  setLoading,
+}: SearchResultProps): JSX.Element {
   const fullContractPath = `${pathContract}/${contractLabel}/${contractAddress}/${name}`;
 
   const history = useHistory();
@@ -148,17 +151,13 @@ function SearchResult({ contractLabel, contractAddress, name, setLoading }: Sear
   );
 
   return (
-    <Center tag="main" className="SearchResult">
-      <Stack>
-        <Text>{error}</Text>
-        <Text className="SearchedName">{name}</Text>
-        <Text className="LightText">{message}</Text>
-        <Button type="primary" onClick={action}>
-          {actionText}
-        </Button>
-      </Stack>
-    </Center>
+    <ResultStack>
+      <Text>{error}</Text>
+      <BlackText>{name}</BlackText>
+      <LightText>{message}</LightText>
+      <Button type="primary" onClick={action}>
+        {actionText}
+      </Button>
+    </ResultStack>
   );
 }
-
-export default SearchResult;

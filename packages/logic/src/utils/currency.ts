@@ -6,7 +6,7 @@ import { AppConfig } from "../config";
 // NARROW NO-BREAK SPACE (U+202F)
 const thinSpace = "\u202F";
 
-function printableCoin(coin?: Coin): string {
+export function printableCoin(coin?: Coin): string {
   if (!coin) {
     return "0";
   }
@@ -18,12 +18,12 @@ function printableCoin(coin?: Coin): string {
   }
 }
 
-function printableBalance(balance?: readonly Coin[]): string {
+export function printableBalance(balance?: readonly Coin[]): string {
   if (!balance || balance.length === 0) return "–";
   return balance.map(printableCoin).join(", ");
 }
 
-function buildFeeTable({ feeToken, gasPrice }: AppConfig): FeeTable {
+export function buildFeeTable({ feeToken, gasPrice }: AppConfig): FeeTable {
   const stdFee = (gas: number, denom: string, price: number) => {
     const amount = Math.floor(gas * price);
     return {
@@ -42,16 +42,16 @@ function buildFeeTable({ feeToken, gasPrice }: AppConfig): FeeTable {
   };
 }
 
-interface MappedCoin {
+export interface MappedCoin {
   readonly denom: string;
   readonly fractionalDigits: number;
 }
 
-interface CoinMap {
+export interface CoinMap {
   readonly [key: string]: MappedCoin;
 }
 
-function nativeCoinToDisplay(coin: Coin, coinMap: CoinMap): Coin {
+export function nativeCoinToDisplay(coin: Coin, coinMap: CoinMap): Coin {
   if (!coinMap) return coin;
 
   const coinToDisplay = coinMap[coin.denom];
@@ -64,7 +64,11 @@ function nativeCoinToDisplay(coin: Coin, coinMap: CoinMap): Coin {
 
 // display amount is eg "12.0346", return is in native tokens
 // with 6 fractional digits, this would be eg. "12034600"
-function displayAmountToNative(amountToDisplay: string, coinMap: CoinMap, nativeDenom: string): string {
+export function displayAmountToNative(
+  amountToDisplay: string,
+  coinMap: CoinMap,
+  nativeDenom: string,
+): string {
   const fractionalDigits = coinMap[nativeDenom]?.fractionalDigits;
   if (fractionalDigits) {
     // use https://github.com/CosmWasm/cosmjs/blob/v0.22.2/packages/math/src/decimal.ts
@@ -74,13 +78,3 @@ function displayAmountToNative(amountToDisplay: string, coinMap: CoinMap, native
 
   return amountToDisplay;
 }
-
-export {
-  printableCoin,
-  printableBalance,
-  buildFeeTable,
-  MappedCoin,
-  CoinMap,
-  nativeCoinToDisplay,
-  displayAmountToNative,
-};

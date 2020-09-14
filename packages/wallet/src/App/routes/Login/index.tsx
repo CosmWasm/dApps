@@ -1,68 +1,8 @@
-import { useAccount, useSdk } from "@cosmicdapp/logic";
-import { Button, Typography } from "antd";
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import Center from "../../../theme/layout/Center";
-import Stack from "../../../theme/layout/Stack";
-import Loading from "../../components/Loading";
-import { RedirectLocation } from "../../components/ProtectedSwitch";
+import { Login as LoginDesign } from "@cosmicdapp/design";
+import React from "react";
 import { pathTokens } from "../../paths";
 import cosmWasmLogo from "./assets/cosmWasmLogo.svg";
-import "./Login.less";
 
-const { Title, Text } = Typography;
-
-function Login(): JSX.Element {
-  const history = useHistory();
-  const state = history.location.state as RedirectLocation;
-  const sdk = useSdk();
-  const { refreshAccount, account } = useAccount();
-
-  const [initializing, setInitializing] = useState(false);
-
-  function init() {
-    setInitializing(true);
-    sdk.init();
-  }
-
-  useEffect(() => {
-    if (sdk.initialized) {
-      refreshAccount();
-    }
-  }, [sdk.initialized, refreshAccount]);
-
-  useEffect(() => {
-    if (account) {
-      if (state) {
-        history.push(state.redirectPathname, state.redirectState);
-      } else {
-        history.push(pathTokens);
-      }
-    }
-  }, [account, state, history]);
-
-  return initializing ? (
-    <Loading loadingText="Initializing app..." />
-  ) : (
-    <Center tag="main" className="Login">
-      <Stack className="MainStack">
-        <img src={cosmWasmLogo} alt="CosmWasm logo" />
-        <Stack className="WelcomeStack">
-          <Typography>
-            <Title level={2}>Hello!</Title>
-            <Text className="LightText">Welcome to your Wallet</Text>
-            <Text className="LightText">Select one of the following options to start:</Text>
-          </Typography>
-          <Button type="primary" onClick={init}>
-            Browser (Demo)
-          </Button>
-          <Button disabled type="primary">
-            Keplr (Secure)
-          </Button>
-        </Stack>
-      </Stack>
-    </Center>
-  );
+export function Login(): JSX.Element {
+  return <LoginDesign pathAfterLogin={pathTokens} appName="Wallet" appLogo={cosmWasmLogo} />;
 }
-
-export default Login;

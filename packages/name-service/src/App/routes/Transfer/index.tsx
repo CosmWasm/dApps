@@ -1,17 +1,13 @@
+import { BackButton, Loading, OperationResultState, PageLayout, YourAccount } from "@cosmicdapp/design";
 import { getErrorFromStackTrace, printableCoin, useAccount, useError, useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import Center from "../../../theme/layout/Center";
-import Stack from "../../../theme/layout/Stack";
-import BackButton from "../../components/BackButton";
-import Loading from "../../components/Loading";
-import YourAccount from "../../components/YourAccount";
+import backArrowIcon from "../../assets/backArrow.svg";
 import { pathContract, pathOperationResult, pathTransfer } from "../../paths";
-import { OperationResultState } from "../OperationResult";
-import FormTransferName from "./FormTransferName";
-import "./Transfer.less";
+import { FormTransferName } from "./FormTransferName";
+import { BackTransferStack, MainStack, TransferStack } from "./style";
 
 const { Title, Text } = Typography;
 
@@ -21,7 +17,7 @@ interface TransferParams {
   readonly name: string;
 }
 
-function Transfer(): JSX.Element {
+export function Transfer(): JSX.Element {
   const { contractLabel, contractAddress, name } = useParams() as TransferParams;
   const fullContractPath = `${pathContract}/${contractLabel}/${contractAddress}/${name}`;
 
@@ -85,27 +81,27 @@ function Transfer(): JSX.Element {
   return (
     (loading && <Loading loadingText={`Transferring name: ${name}...`} />) ||
     (!loading && (
-      <Center tag="main" className="Transfer">
-        <Stack>
-          <BackButton path={fullContractPath} />
-          <Stack className="TransferStack">
-            <Title>Transfer</Title>
-            <Typography>
-              <Text>Name: </Text>
-              <Text>{name}</Text>
-            </Typography>
-            <Text>to</Text>
-            <FormTransferName
-              setNewOwnerAddress={setNewOwnerAddress}
-              transferButtonText={`Transfer ${printableCoin(transferPrice)}`}
-              transferButtonAction={tryTransfer}
-            />
-          </Stack>
+      <PageLayout>
+        <MainStack>
+          <BackTransferStack>
+            <BackButton icon={backArrowIcon} path={fullContractPath} />
+            <TransferStack>
+              <Title>Transfer</Title>
+              <Typography>
+                <Text>Name: </Text>
+                <Text>{name}</Text>
+              </Typography>
+              <Text>to</Text>
+              <FormTransferName
+                setNewOwnerAddress={setNewOwnerAddress}
+                transferButtonText={`Transfer ${printableCoin(transferPrice)}`}
+                transferButtonAction={tryTransfer}
+              />
+            </TransferStack>
+          </BackTransferStack>
           <YourAccount tag="footer" />
-        </Stack>
-      </Center>
+        </MainStack>
+      </PageLayout>
     ))
   );
 }
-
-export default Transfer;

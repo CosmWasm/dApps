@@ -1,3 +1,4 @@
+import { BackButton, Loading, OperationResultState, PageLayout, YourAccount } from "@cosmicdapp/design";
 import {
   displayAmountToNative,
   getErrorFromStackTrace,
@@ -10,15 +11,10 @@ import { Typography } from "antd";
 import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { config } from "../../../config";
-import Center from "../../../theme/layout/Center";
-import Stack from "../../../theme/layout/Stack";
-import BackButton from "../../components/BackButton";
-import Loading from "../../components/Loading";
-import YourAccount from "../../components/YourAccount";
+import backArrowIcon from "../../assets/backArrow.svg";
 import { pathOperationResult, pathTokens } from "../../paths";
-import { OperationResultState } from "../OperationResult";
-import FormSendTokens from "./FormSendTokens";
-import "./TokenDetail.less";
+import { FormSendTokens } from "./FormSendTokens";
+import { AccountStack, Amount, MainStack } from "./style";
 
 const { Title, Text } = Typography;
 
@@ -30,7 +26,7 @@ export interface TokenDetailState {
   readonly tokenAmount: string;
 }
 
-function TokenDetail(): JSX.Element {
+export function TokenDetail(): JSX.Element {
   const [loading, setLoading] = useState(false);
 
   const history = useHistory();
@@ -46,6 +42,7 @@ function TokenDetail(): JSX.Element {
     const { address, amount } = values;
     const recipientAddress: string = address;
 
+    // TODO: Add try catch so it does not fail i.e. too many decimals
     const amountToTransfer = displayAmountToNative(amount, config.coinMap, tokenName);
 
     const nativeTokenToTransfer: Coin = { denom: tokenName, amount: amountToTransfer };
@@ -89,33 +86,32 @@ function TokenDetail(): JSX.Element {
   };
 
   const nativeToken: Coin = { denom: tokenName, amount: tokenAmount };
+  // TODO: Add try catch so it does not fail i.e. too many decimals
   const { denom: nameToDisplay, amount: amountToDisplay } = nativeCoinToDisplay(nativeToken, config.coinMap);
   const [amountInteger, amountDecimal] = amountToDisplay.split(".");
 
   return (
     (loading && <Loading loadingText={`Sending ${nameToDisplay}...`} />) ||
     (!loading && (
-      <Center tag="main" className="TokenDetail">
-        <Stack className="MainStack">
-          <BackButton path={pathTokens} />
-          <Stack className="AccountStack">
+      <PageLayout>
+        <MainStack>
+          <BackButton icon={backArrowIcon} path={pathTokens} />
+          <AccountStack>
             <Title>{nameToDisplay}</Title>
-            <YourAccount showTitle={false} />
-          </Stack>
-          <div className="Amount">
+            <YourAccount hideTitle hideBalance />
+          </AccountStack>
+          <Amount>
             <Text>{`${amountInteger}${amountDecimal ? "." : ""}`}</Text>
             {amountDecimal && <Text>{amountDecimal}</Text>}
             <Text>{" tokens"}</Text>
-          </div>
+          </Amount>
           <FormSendTokens
             tokenName={nameToDisplay}
             tokenAmount={amountToDisplay}
             sendTokensAction={sendTokensAction}
           />
-        </Stack>
-      </Center>
+        </MainStack>
+      </PageLayout>
     ))
   );
 }
-
-export default TokenDetail;
