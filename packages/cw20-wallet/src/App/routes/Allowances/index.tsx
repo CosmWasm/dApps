@@ -1,10 +1,10 @@
 import { BackButton, PageLayout } from "@cosmicdapp/design";
 import { useAccount, useSdk } from "@cosmicdapp/logic";
-import { Divider, Typography } from "antd";
+import { Button, Divider, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import backArrowIcon from "../../assets/backArrow.svg";
-import { pathAllowanceEdit, pathAllowances, pathTokens } from "../../paths";
+import { pathAllowanceAdd, pathAllowanceEdit, pathAllowances, pathTokens } from "../../paths";
 import { AllowanceInfo, CW20 } from "../../service/cw20";
 import { AllowanceItem, Amount, MainStack, TitleAmountStack } from "./style";
 
@@ -33,8 +33,12 @@ function Allowances(): JSX.Element {
     cw20Contract.allAllowances(account.address, "0", 20).then(({ allowances }) => setAllowances(allowances));
   }, [getClient, contractAddress, account.address]);
 
-  function goEdit(spender: string) {
+  function goToAllowancesEdit(spender: string) {
     history.push(`${pathAllowances}/${contractAddress}${pathAllowanceEdit}/${spender}`);
+  }
+
+  function goToAllowancesAdd() {
+    history.push(`${pathAllowances}/${contractAddress}${pathAllowanceAdd}`);
   }
 
   const [amountInteger, maybeAmountDecimal] = tokenAmount.split(".");
@@ -60,10 +64,13 @@ function Allowances(): JSX.Element {
             <AllowanceItem>
               <Text>{allowanceInfo.spender}</Text>
               <Text>{allowanceInfo.allowance}</Text>
-              <div onClick={() => goEdit(allowanceInfo.spender)}>edit</div>
+              <div onClick={() => goToAllowancesEdit(allowanceInfo.spender)}>edit</div>
             </AllowanceItem>
           </>
         ))}
+        <Button type="primary" onClick={goToAllowancesAdd}>
+          Add New
+        </Button>
       </MainStack>
     </PageLayout>
   );
