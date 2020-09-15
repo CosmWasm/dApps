@@ -4,6 +4,8 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { config } from "../config";
 import {
+  pathAllowanceAdd,
+  pathAllowanceEdit,
   pathAllowances,
   pathLogin,
   pathOperationResult,
@@ -12,6 +14,8 @@ import {
   pathTokensAdd,
   pathTokenSend,
 } from "./paths";
+import AllowanceAdd from "./routes/AllowanceAdd";
+import AllowanceEdit from "./routes/AllowanceEdit";
 import Allowances from "./routes/Allowances";
 import Login from "./routes/Login";
 import OperationResult from "./routes/OperationResult";
@@ -46,6 +50,16 @@ function App(): JSX.Element {
                     component={TokenSend}
                   />
                   <Route exact path={`${pathAllowances}/:contractAddress`} component={Allowances} />
+                  <Route
+                    exact
+                    path={`${pathAllowances}/:contractAddress${pathAllowanceAdd}`}
+                    component={AllowanceAdd}
+                  />
+                  <Route
+                    exact
+                    path={`${pathAllowances}/:contractAddress${pathAllowanceEdit}/:spenderAddress`}
+                    component={AllowanceEdit}
+                  />
                   <Route exact path={pathOperationResult} component={OperationResult} />
                 </ProtectedSwitch>
               </Switch>
