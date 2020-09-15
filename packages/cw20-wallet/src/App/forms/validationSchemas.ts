@@ -6,8 +6,8 @@ const regexStartsWithPrefix = new RegExp(`^${config.addressPrefix}`);
 const addressField = Yup.string()
   .matches(regexStartsWithPrefix, `"${config.addressPrefix}" prefix required`)
   .length(39 + config.addressPrefix.length, "Address invalid");
-
 const requiredAddressField = addressField.required("An address is required");
+const amountField = Yup.number().required("An amount is required").positive("Amount should be positive");
 
 export const contractValidationSchema = Yup.object().shape({
   contract: Yup.lazy((value) => {
@@ -21,6 +21,10 @@ export const contractValidationSchema = Yup.object().shape({
     }
   }),
 });
-
 export const searchAddressValidationSchema = Yup.object().shape({ address: addressField });
 export const sendAddressValidationSchema = Yup.object().shape({ address: requiredAddressField });
+export const setAllowanceValidationSchema = Yup.object().shape({ newAmount: amountField });
+export const addAllowanceValidationSchema = Yup.object().shape({
+  address: requiredAddressField,
+  amount: amountField,
+});
