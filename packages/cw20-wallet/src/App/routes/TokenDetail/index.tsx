@@ -58,7 +58,7 @@ function TokenDetail(): JSX.Element {
   }
 
   function goToAllowances() {
-    history.push(`${pathAllowances}/${tokenName}`);
+    history.push(`${pathAllowances}/${contractAddress}`);
   }
 
   const [amountInteger, amountDecimal] = tokenAmount.split(".");
