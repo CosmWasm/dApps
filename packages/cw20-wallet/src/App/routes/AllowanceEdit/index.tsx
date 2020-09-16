@@ -48,7 +48,7 @@ function AllowanceEdit(): JSX.Element {
     const { amount } = values;
     const newAmount: string = amount;
 
-    const decNewAmount = Decimal.fromAtomics(newAmount, tokenDecimals);
+    const decNewAmount = Decimal.fromUserInput(newAmount, tokenDecimals);
     const decCurrentAmount = Decimal.fromAtomics(allowanceAmount, tokenDecimals);
     const cw20Contract = CW20(getClient()).use(contractAddress);
 
@@ -58,12 +58,12 @@ function AllowanceEdit(): JSX.Element {
       if (decNewAmount.isGreaterThan(decCurrentAmount)) {
         allowanceOperation = cw20Contract.increaseAllowance(
           spenderAddress,
-          decNewAmount.minus(decCurrentAmount).toString(),
+          decNewAmount.minus(decCurrentAmount).atomics,
         );
       } else {
         allowanceOperation = cw20Contract.decreaseAllowance(
           spenderAddress,
-          decCurrentAmount.minus(decNewAmount).toString(),
+          decCurrentAmount.minus(decNewAmount).atomics,
         );
       }
 
@@ -92,6 +92,8 @@ function AllowanceEdit(): JSX.Element {
     }
   };
 
+  const amountToDisplay = Decimal.fromAtomics(allowanceAmount, tokenDecimals).toString();
+
   return (
     (loading && <Loading loadingText={`Changing allowance...`} />) ||
     (!loading && (
@@ -102,7 +104,7 @@ function AllowanceEdit(): JSX.Element {
           <Text>{spenderAddress}</Text>
           <Amount>
             <Text>Current</Text>
-            <Text>{allowanceAmount}</Text>
+            <Text>{amountToDisplay}</Text>
             <Text>{tokenName}</Text>
           </Amount>
           <FormChangeAmount submitChangeAmount={submitChangeAmount} />

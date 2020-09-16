@@ -1,5 +1,6 @@
 import { BackButton, PageLayout } from "@cosmicdapp/design";
 import { useAccount, useSdk } from "@cosmicdapp/logic";
+import { Decimal } from "@cosmjs/math";
 import { Button, Divider, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
@@ -24,11 +25,15 @@ function Allowances(): JSX.Element {
   const [allowances, setAllowances] = useState<readonly AllowanceInfo[]>([]);
   const [tokenName, setTokenName] = useState("");
   const [tokenAmount, setTokenAmount] = useState("0");
+  const [fractionalDigits, setFractionalDigits] = useState(0);
 
   useEffect(() => {
     const cw20Contract = CW20(getClient()).use(contractAddress);
 
-    cw20Contract.tokenInfo().then(({ symbol }) => setTokenName(symbol));
+    cw20Contract.tokenInfo().then(({ symbol, decimals }) => {
+      setTokenName(symbol);
+      setFractionalDigits(decimals);
+    });
     cw20Contract.balance(account.address).then((balance) => setTokenAmount(balance));
     cw20Contract.allAllowances(account.address, "0", 20).then(({ allowances }) => setAllowances(allowances));
   }, [getClient, contractAddress, account.address]);
@@ -41,7 +46,8 @@ function Allowances(): JSX.Element {
     history.push(`${pathAllowances}/${contractAddress}${pathAllowanceAdd}`);
   }
 
-  const [amountInteger, maybeAmountDecimal] = tokenAmount.split(".");
+  const amountToDisplay = Decimal.fromAtomics(tokenAmount, fractionalDigits).toString();
+  const [amountInteger, maybeAmountDecimal] = amountToDisplay.split(".");
   const amountDecimal = maybeAmountDecimal ?? "";
 
   return (
@@ -58,16 +64,23 @@ function Allowances(): JSX.Element {
             <Text>{" tokens"}</Text>
           </Amount>
         </TitleAmountStack>
-        {allowances.map((allowanceInfo, index) => (
-          <>
-            {index > 0 && <Divider />}
-            <AllowanceItem>
-              <Text>{allowanceInfo.spender}</Text>
-              <Text>{allowanceInfo.allowance}</Text>
-              <div onClick={() => goToAllowancesEdit(allowanceInfo.spender)}>edit</div>
-            </AllowanceItem>
-          </>
-        ))}
+        {allowances.map((allowanceInfo, index) => {
+          const allowanceToDisplay = Decimal.fromAtomics(
+            allowanceInfo.allowance,
+            fractionalDigits,
+          ).toString();
+
+          return (
+            <>
+              {index > 0 && <Divider />}
+              <AllowanceItem>
+                <Text>{allowanceInfo.spender}</Text>
+                <Text>{allowanceToDisplay}</Text>
+                <div onClick={() => goToAllowancesEdit(allowanceInfo.spender)}>edit</div>
+              </AllowanceItem>
+            </>
+          );
+        })}
         <Button type="primary" onClick={goToAllowancesAdd}>
           Add New
         </Button>

@@ -52,7 +52,7 @@ function AllowanceAdd(): JSX.Element {
     const cw20Contract = CW20(getClient()).use(contractAddress);
 
     cw20Contract.allowance(account.address, spenderAddress).then(({ allowance }) => {
-      const decNewAmount = Decimal.fromAtomics(newAmount, tokenDecimals);
+      const decNewAmount = Decimal.fromUserInput(newAmount, tokenDecimals);
       const decCurrentAmount = Decimal.fromAtomics(allowance, tokenDecimals);
 
       try {
@@ -61,12 +61,12 @@ function AllowanceAdd(): JSX.Element {
         if (decNewAmount.isGreaterThan(decCurrentAmount)) {
           allowanceOperation = cw20Contract.increaseAllowance(
             spenderAddress,
-            decNewAmount.minus(decCurrentAmount).toString(),
+            decNewAmount.minus(decCurrentAmount).atomics,
           );
         } else {
           allowanceOperation = cw20Contract.decreaseAllowance(
             spenderAddress,
-            decCurrentAmount.minus(decNewAmount).toString(),
+            decCurrentAmount.minus(decNewAmount).atomics,
           );
         }
 

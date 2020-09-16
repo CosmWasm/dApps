@@ -1,3 +1,4 @@
+import { Decimal } from "@cosmjs/math";
 import { Button, Typography } from "antd";
 import { Formik } from "formik";
 import { Form, FormItem, Input } from "formik-antd";
@@ -8,29 +9,30 @@ import { FormField, FormStack } from "./style";
 
 const { Text } = Typography;
 
+export interface FormSendTokensFields {
+  readonly amount: string;
+  readonly address: string;
+}
+
 interface FormSendTokensProps {
   readonly tokenName: string;
-  readonly tokenAmount: string;
+  readonly maxAmount: Decimal;
   readonly sendTokensAction: (values: unknown) => void;
 }
 
-export function FormSendTokens({
-  tokenName,
-  tokenAmount,
-  sendTokensAction,
-}: FormSendTokensProps): JSX.Element {
+export function FormSendTokens({ tokenName, maxAmount, sendTokensAction }: FormSendTokensProps): JSX.Element {
   const sendAmountValidationSchema = Yup.object().shape({
     amount: Yup.number()
       .required("An amount is required")
       .positive("Amount should be positive")
-      .max(parseFloat(tokenAmount), `Amount cannot be greater than ${tokenAmount}`),
+      .max(maxAmount.toFloatApproximation(), `Amount cannot be greater than ${maxAmount.toString()}`),
   });
 
   const sendValidationSchema = sendAmountValidationSchema.concat(sendAddressValidationSchema);
 
   return (
     <Formik
-      initialValues={{ amount: "", address: "" }}
+      initialValues={{ amount: "", address: "" } as FormSendTokensFields}
       onSubmit={sendTokensAction}
       validationSchema={sendValidationSchema}
     >

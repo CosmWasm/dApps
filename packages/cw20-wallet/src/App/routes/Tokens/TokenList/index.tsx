@@ -1,5 +1,6 @@
-import { nativeCoinToDisplay, useSdk } from "@cosmicdapp/logic";
+import { useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
+import { Decimal } from "@cosmjs/math";
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -11,16 +12,18 @@ import { BorderContainer, TokenItem, TokenStack } from "./style";
 
 const { Text } = Typography;
 
-interface TokenWithAddress {
-  readonly token: Coin;
+interface TokenData {
+  readonly coin: Coin;
+  readonly fractionalDigits: number;
   readonly address: string;
 }
 
-async function getCoin(contract: CW20Instance): Promise<Coin> {
-  const denom = (await contract.tokenInfo()).symbol;
+async function getTokenData(contract: CW20Instance): Promise<TokenData> {
+  const { symbol: denom, decimals: fractionalDigits } = await contract.tokenInfo();
+  const address = contract.contractAddress;
   const amount = await contract.balance();
 
-  return { denom, amount };
+  return { coin: { denom, amount }, fractionalDigits, address };
 }
 
 function TokenList(): JSX.Element {
@@ -28,7 +31,7 @@ function TokenList(): JSX.Element {
   const { getClient } = useSdk();
   const { contracts: cw20Contracts, addContract } = useContracts();
 
-  const [tokens, setTokens] = useState<readonly TokenWithAddress[]>([]);
+  const [tokens, setTokens] = useState<readonly TokenData[]>([]);
 
   useEffect(() => {
     setTokens([]);
@@ -45,9 +48,7 @@ function TokenList(): JSX.Element {
       })
       .then(() => {
         cw20Contracts.forEach((contract) =>
-          getCoin(contract).then((token) =>
-            setTokens((tokens) => [...tokens, { token, address: contract.contractAddress }]),
-          ),
+          getTokenData(contract).then((token) => setTokens((tokens) => [...tokens, token])),
         );
       });
   }, [getClient, addContract, cw20Contracts]);
@@ -59,15 +60,12 @@ function TokenList(): JSX.Element {
   return (
     <TokenStack>
       {tokens.map((token) => {
-        const { denom: denomToDisplay, amount: amountToDisplay } = nativeCoinToDisplay(
-          token.token,
-          config.coinMap,
-        );
+        const amountToDisplay = Decimal.fromAtomics(token.coin.amount, token.fractionalDigits).toString();
 
         return (
-          <TokenItem key={token.token.denom} onClick={() => goTokenDetail(token.address)}>
+          <TokenItem key={token.address} onClick={() => goTokenDetail(token.address)}>
             <BorderContainer>
-              <Text>{denomToDisplay}</Text>
+              <Text>{token.coin.denom}</Text>
               <Text>{amountToDisplay !== "0" ? amountToDisplay : "No tokens"}</Text>
             </BorderContainer>
           </TokenItem>

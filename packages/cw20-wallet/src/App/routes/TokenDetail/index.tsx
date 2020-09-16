@@ -1,10 +1,11 @@
 import { BackButton, PageLayout, YourAccount } from "@cosmicdapp/design";
 import { useAccount, useSdk } from "@cosmicdapp/logic";
+import { Decimal } from "@cosmjs/math";
 import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import backArrowIcon from "../../assets/backArrow.svg";
-import { pathAllowances, pathTokenSend, pathTokens } from "../../paths";
+import { pathAllowances, pathTokens, pathTokenSend } from "../../paths";
 import { CW20 } from "../../service/cw20";
 import FormSearchAllowing from "./FormSearchAllowing";
 import { AccountStack, Amount, MainStack } from "./style";
@@ -28,12 +29,16 @@ function TokenDetail(): JSX.Element {
 
   const [tokenName, setTokenName] = useState("");
   const [tokenAmount, setTokenAmount] = useState("0");
+  const [fractionalDigits, setFractionalDigits] = useState(0);
 
   useEffect(() => {
     const cw20Contract = CW20(getClient()).use(contractAddress);
     const tokenAddress = allowingAddress ?? account.address;
 
-    cw20Contract.tokenInfo().then(({ symbol }) => setTokenName(symbol));
+    cw20Contract.tokenInfo().then(({ symbol, decimals }) => {
+      setTokenName(symbol);
+      setFractionalDigits(decimals);
+    });
     cw20Contract.balance(tokenAddress).then((balance) => setTokenAmount(balance));
   }, [getClient, contractAddress, allowingAddress, account.address]);
 
@@ -61,7 +66,8 @@ function TokenDetail(): JSX.Element {
     history.push(`${pathAllowances}/${contractAddress}`);
   }
 
-  const [amountInteger, amountDecimal] = tokenAmount.split(".");
+  const amountToDisplay = Decimal.fromAtomics(tokenAmount, fractionalDigits).toString();
+  const [amountInteger, amountDecimal] = amountToDisplay.split(".");
 
   const showCurrentAllowance = !!allowance && allowance !== "0";
   const showSendButton = !allowance || allowance !== "0";
