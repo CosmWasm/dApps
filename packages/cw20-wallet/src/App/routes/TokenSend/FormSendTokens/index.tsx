@@ -4,7 +4,7 @@ import { Formik } from "formik";
 import { Form, FormItem, Input } from "formik-antd";
 import React from "react";
 import * as Yup from "yup";
-import { sendAddressValidationSchema } from "../../../forms/validationSchemas";
+import { amountField, sendAddressValidationSchema } from "../../../forms/validationSchemas";
 import { FormField, FormStack } from "./style";
 
 const { Text } = Typography;
@@ -22,10 +22,10 @@ interface FormSendTokensProps {
 
 export function FormSendTokens({ tokenName, maxAmount, sendTokensAction }: FormSendTokensProps): JSX.Element {
   const sendAmountValidationSchema = Yup.object().shape({
-    amount: Yup.number()
-      .required("An amount is required")
-      .positive("Amount should be positive")
-      .max(maxAmount.toFloatApproximation(), `Amount cannot be greater than ${maxAmount.toString()}`),
+    amount: amountField.max(
+      maxAmount.toFloatApproximation(),
+      `Amount cannot be greater than ${maxAmount.toString()}`,
+    ),
   });
 
   const sendValidationSchema = sendAmountValidationSchema.concat(sendAddressValidationSchema);
