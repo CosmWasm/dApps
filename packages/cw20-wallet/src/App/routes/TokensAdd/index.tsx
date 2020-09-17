@@ -7,6 +7,7 @@ import { Form, FormItem, Input, Transfer } from "formik-antd";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import backArrowIcon from "../../assets/backArrow.svg";
+import { contractValidationSchema } from "../../forms/validationSchemas";
 import { pathOperationResult, pathTokens, pathTokensAdd } from "../../paths";
 import { useContracts } from "../../service/contracts";
 import { CW20 } from "../../service/cw20";
@@ -112,8 +113,7 @@ function TokensAdd(): JSX.Element {
           <Formik
             initialValues={{ contract: "" }}
             onSubmit={submitInputContract}
-            //TODO: fix validation schema for address + codeID number and enable it
-            /* validationSchema={contractValidationSchema} */
+            validationSchema={contractValidationSchema}
           >
             {(formikProps) => (
               <Form>
@@ -154,8 +154,7 @@ function TokensAdd(): JSX.Element {
                   <Button
                     type="primary"
                     onClick={formikProps.submitForm}
-                    //TODO: fix disabled behavior
-                    /* disabled={!(formikProps.isValid && formikProps.dirty)} */
+                    disabled={!selectedContractAddresses.length}
                   >
                     Continue
                   </Button>
