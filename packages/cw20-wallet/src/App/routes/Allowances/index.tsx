@@ -7,7 +7,14 @@ import { useHistory, useParams } from "react-router-dom";
 import backArrowIcon from "../../assets/backArrow.svg";
 import { pathAllowanceAdd, pathAllowanceEdit, pathAllowances, pathTokens } from "../../paths";
 import { AllowanceInfo, CW20 } from "../../service/cw20";
-import { AllowanceItem, Amount, MainStack, TitleAmountStack } from "./style";
+import {
+  AllowanceItem,
+  Amount,
+  MainStack,
+  TitleAmountStack,
+  AllowancesStack,
+  AllowanceAmountCopy,
+} from "./style";
 
 const { Title, Text } = Typography;
 
@@ -64,23 +71,31 @@ function Allowances(): JSX.Element {
             <Text>{" tokens"}</Text>
           </Amount>
         </TitleAmountStack>
-        {allowances.map((allowanceInfo, index) => {
-          const allowanceToDisplay = Decimal.fromAtomics(
-            allowanceInfo.allowance,
-            fractionalDigits,
-          ).toString();
+        <AllowancesStack>
+          {allowances.map((allowanceInfo, index) => {
+            const allowanceToDisplay = Decimal.fromAtomics(
+              allowanceInfo.allowance,
+              fractionalDigits,
+            ).toString();
 
-          return (
-            <>
-              {index > 0 && <Divider />}
-              <AllowanceItem>
-                <Text>{allowanceInfo.spender}</Text>
-                <Text>{allowanceToDisplay}</Text>
-                <div onClick={() => goToAllowancesEdit(allowanceInfo.spender)}>edit</div>
-              </AllowanceItem>
-            </>
-          );
-        })}
+            return (
+              <>
+                {index > 0 && <Divider />}
+                <AllowanceItem>
+                  <Text>{allowanceInfo.spender}</Text>
+                  <AllowanceAmountCopy>
+                    <Text>{allowanceToDisplay}</Text>
+                    <img
+                      alt="Edit allowance"
+                      src={backArrowIcon}
+                      onClick={() => goToAllowancesEdit(allowanceInfo.spender)}
+                    />
+                  </AllowanceAmountCopy>
+                </AllowanceItem>
+              </>
+            );
+          })}
+        </AllowancesStack>
         <Button type="primary" onClick={goToAllowancesAdd}>
           Add New
         </Button>
