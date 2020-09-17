@@ -38,30 +38,33 @@ function TokensAdd(): JSX.Element {
         })
         .catch(setError);
     } else {
-      try {
-        const contractAddress = String(contract);
-        const newCw20contract = CW20(getClient()).use(contractAddress);
-        addContract(newCw20contract);
+      const contractAddress = String(contract);
+      const newCw20Contract = CW20(getClient()).use(contractAddress);
 
-        history.push({
-          pathname: pathOperationResult,
-          state: {
-            success: true,
-            message: `"${contractAddress}" was successfully added :)`,
-            customButtonText: "Tokens",
-          } as OperationResultState,
-        });
-      } catch (stackTrace) {
-        history.push({
-          pathname: pathOperationResult,
-          state: {
-            success: false,
-            message: "Oh no... Something went wrong, please try again",
-            error: getErrorFromStackTrace(stackTrace),
-            customButtonActionPath: pathTokensAdd,
-          } as OperationResultState,
-        });
-      }
+      newCw20Contract
+        .tokenInfo()
+        .then(() => addContract(newCw20Contract))
+        .then(() =>
+          history.push({
+            pathname: pathOperationResult,
+            state: {
+              success: true,
+              message: `"${contractAddress}" was successfully added :)`,
+              customButtonText: "Tokens",
+            } as OperationResultState,
+          }),
+        )
+        .catch((stackTrace) =>
+          history.push({
+            pathname: pathOperationResult,
+            state: {
+              success: false,
+              message: "Oh no... Something went wrong, please try again",
+              error: getErrorFromStackTrace(stackTrace),
+              customButtonActionPath: pathTokensAdd,
+            } as OperationResultState,
+          }),
+        );
     }
   }
 
@@ -70,31 +73,33 @@ function TokensAdd(): JSX.Element {
   }
 
   function submitSelectContracts() {
-    try {
-      selectedContractAddresses.forEach((address) => {
-        const newCw20Contract = CW20(getClient()).use(address);
-        addContract(newCw20Contract);
-      });
+    selectedContractAddresses.forEach((address) => {
+      const newCw20Contract = CW20(getClient()).use(address);
 
-      history.push({
-        pathname: pathOperationResult,
-        state: {
-          success: true,
-          message: `"Your CodeID: ${codeId}" were successfully added :)`,
-          customButtonText: "Tokens",
-        } as OperationResultState,
-      });
-    } catch (stackTrace) {
-      history.push({
-        pathname: pathOperationResult,
-        state: {
-          success: false,
-          message: "Oh no... Something went wrong, please try again",
-          error: getErrorFromStackTrace(stackTrace),
-          customButtonActionPath: pathTokensAdd,
-        } as OperationResultState,
-      });
-    }
+      newCw20Contract
+        .tokenInfo()
+        .then(() => addContract(newCw20Contract))
+        .catch((stackTrace) =>
+          history.push({
+            pathname: pathOperationResult,
+            state: {
+              success: false,
+              message: "Oh no... Something went wrong, please try again",
+              error: getErrorFromStackTrace(stackTrace),
+              customButtonActionPath: pathTokensAdd,
+            } as OperationResultState,
+          }),
+        );
+    });
+
+    history.push({
+      pathname: pathOperationResult,
+      state: {
+        success: true,
+        message: `"Your CodeID: ${codeId}" were successfully added :)`,
+        customButtonText: "Tokens",
+      } as OperationResultState,
+    });
   }
 
   function filterCaseInsensitive(input, option) {
