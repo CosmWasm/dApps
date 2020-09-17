@@ -27,7 +27,7 @@ function TokensAdd(): JSX.Element {
   const [selectedContractAddresses, setSelectedContractAddresses] = useState<string[]>([]);
 
   function submitInputContract({ contract }) {
-    const codeId = Number.isSafeInteger(parseInt(contract, 10)) && Number(contract);
+    const codeId = !Number.isNaN(Number(contract)) && Number(contract);
 
     if (codeId) {
       getClient()
