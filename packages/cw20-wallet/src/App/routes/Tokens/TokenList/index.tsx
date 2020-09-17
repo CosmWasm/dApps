@@ -26,6 +26,16 @@ async function getTokenData(contract: CW20Instance): Promise<TokenData> {
   return { coin: { denom, amount }, fractionalDigits, address };
 }
 
+function tokenCompare(a: TokenData, b: TokenData) {
+  if (a.coin.denom < b.coin.denom) {
+    return -1;
+  }
+  if (a.coin.denom > b.coin.denom) {
+    return 1;
+  }
+  return 0;
+}
+
 function TokenList(): JSX.Element {
   const history = useHistory();
   const { getClient } = useSdk();
@@ -48,7 +58,9 @@ function TokenList(): JSX.Element {
       })
       .then(() => {
         cw20Contracts.forEach((contract) =>
-          getTokenData(contract).then((token) => setTokens((tokens) => [...tokens, token])),
+          getTokenData(contract).then((token) =>
+            setTokens((tokens) => [...tokens, token].sort(tokenCompare)),
+          ),
         );
       });
   }, [getClient, addContract, cw20Contracts]);
