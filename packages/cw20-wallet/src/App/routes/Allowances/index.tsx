@@ -35,7 +35,7 @@ function Allowances(): JSX.Element {
       setFractionalDigits(decimals);
     });
     cw20Contract.balance(account.address).then((balance) => setTokenAmount(balance));
-    cw20Contract.allAllowances(account.address, "0", 20).then(({ allowances }) => setAllowances(allowances));
+    cw20Contract.allAllowances(account.address).then(({ allowances }) => setAllowances(allowances));
   }, [getClient, contractAddress, account.address]);
 
   function goToAllowancesEdit(spender: string) {
