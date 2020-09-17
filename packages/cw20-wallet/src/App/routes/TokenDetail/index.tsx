@@ -1,14 +1,14 @@
 import { BackButton, PageLayout, YourAccount } from "@cosmicdapp/design";
 import { useAccount, useSdk } from "@cosmicdapp/logic";
 import { Decimal } from "@cosmjs/math";
-import { Button, Typography } from "antd";
+import { Button, Typography, Divider } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import backArrowIcon from "../../assets/backArrow.svg";
 import { pathAllowances, pathTokens, pathTokenSend } from "../../paths";
 import { CW20 } from "../../service/cw20";
 import FormSearchAllowing from "./FormSearchAllowing";
-import { AccountStack, Amount, MainStack } from "./style";
+import { AccountStack, Amount, MainStack, Allowance, AllowanceStack } from "./style";
 
 const { Title, Text } = Typography;
 
@@ -69,6 +69,8 @@ function TokenDetail(): JSX.Element {
   const amountToDisplay = Decimal.fromAtomics(tokenAmount, fractionalDigits).toString();
   const [amountInteger, amountDecimal] = amountToDisplay.split(".");
 
+  const allowanceToDisplay = Decimal.fromAtomics(allowance, fractionalDigits).toString();
+
   const showCurrentAllowance = !!allowance && allowance !== "0";
   const showSendButton = !allowance || allowance !== "0";
   const isSendButtonDisabled = tokenAmount === "0";
@@ -88,7 +90,15 @@ function TokenDetail(): JSX.Element {
           <Text>{" tokens"}</Text>
         </Amount>
         <FormSearchAllowing initialAddress={allowingAddress} setSearchedAddress={updateAllowance} />
-        {showCurrentAllowance && <Text>{`Your allowance: ${allowance}`}</Text>}
+        {showCurrentAllowance && (
+          <AllowanceStack>
+            <Divider />
+            <Allowance>
+              <Text>Your allowance</Text>
+              <Text>{allowanceToDisplay}</Text>
+            </Allowance>
+          </AllowanceStack>
+        )}
         {showSendButton && (
           <Button type="primary" onClick={goToSend} disabled={isSendButtonDisabled}>
             Send
