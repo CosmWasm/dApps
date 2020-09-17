@@ -23,6 +23,10 @@ export const FormField = styled.div`
     margin-left: var(--s0);
   }
 
+  .ant-form-item {
+    flex-grow: 1;
+  }
+
   span {
     font-family: var(--ff-iceland);
     font-size: var(--s2);
