@@ -7,7 +7,7 @@ import { useHistory, useParams } from "react-router-dom";
 import backArrowIcon from "../../assets/backArrow.svg";
 import { pathAllowances, pathOperationResult, pathTokens } from "../../paths";
 import { CW20 } from "../../service/cw20";
-import { FormChangeAmount } from "./FormChangeAmount";
+import { FormChangeAmount, FormChangeAmountFields } from "./FormChangeAmount";
 import { Amount, MainStack } from "./style";
 
 const { Title, Text } = Typography;
@@ -42,11 +42,10 @@ function AllowanceEdit(): JSX.Element {
       .then(({ allowance }) => setAllowanceAmount(allowance));
   }, [getClient, contractAddress, account.address, spenderAddress]);
 
-  const submitChangeAmount = (values) => {
+  const submitChangeAmount = (values: FormChangeAmountFields) => {
     setLoading(true);
 
-    const { amount } = values;
-    const newAmount: string = amount;
+    const { newAmount } = values;
 
     const decNewAmount = Decimal.fromUserInput(newAmount, tokenDecimals);
     const decCurrentAmount = Decimal.fromAtomics(allowanceAmount, tokenDecimals);

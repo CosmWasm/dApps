@@ -44,10 +44,10 @@ function AllowanceAdd(): JSX.Element {
     });
   }, [getClient, contractAddress]);
 
-  const submitAddAllowance = (values) => {
+  const submitAddAllowance = (values: FormAddAllowanceFields) => {
     setLoading(true);
 
-    const { address: spenderAddress, amount: newAmount }: FormAddAllowanceFields = values;
+    const { address: spenderAddress, amount: newAmount } = values;
 
     const cw20Contract = CW20(getClient()).use(contractAddress);
 

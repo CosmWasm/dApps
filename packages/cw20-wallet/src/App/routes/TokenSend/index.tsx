@@ -48,9 +48,10 @@ function TokenSend(): JSX.Element {
     }
   }, [getClient, contractAddress, allowingAddress, account.address]);
 
-  const sendTokensAction = (values) => {
+  const sendTokensAction = (values: FormSendTokensFields) => {
     setLoading(true);
-    const { address: recipientAddress, amount }: FormSendTokensFields = values;
+
+    const { address: recipientAddress, amount } = values;
     const transferAmount = Decimal.fromUserInput(amount, tokenDecimals).atomics;
 
     const cw20Contract = CW20(getClient()).use(contractAddress);

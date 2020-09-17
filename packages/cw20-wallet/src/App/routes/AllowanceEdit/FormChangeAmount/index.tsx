@@ -5,6 +5,10 @@ import React from "react";
 import { setAllowanceValidationSchema } from "../../../forms/validationSchemas";
 import { FormStack } from "./style";
 
+export interface FormChangeAmountFields {
+  readonly newAmount: string;
+}
+
 interface FormChangeAmountProps {
   readonly submitChangeAmount: (values: unknown) => void;
 }
@@ -12,7 +16,7 @@ interface FormChangeAmountProps {
 export function FormChangeAmount({ submitChangeAmount }: FormChangeAmountProps): JSX.Element {
   return (
     <Formik
-      initialValues={{ newAmount: "" }}
+      initialValues={{ newAmount: "" } as FormChangeAmountFields}
       onSubmit={submitChangeAmount}
       validationSchema={setAllowanceValidationSchema}
     >
