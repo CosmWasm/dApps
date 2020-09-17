@@ -21,6 +21,11 @@ const MainStack = styled(Stack)`
       display: none;
     }
 
+    .ant-transfer-list {
+      height: auto;
+      max-height: 300px;
+    }
+
     .ant-transfer-list-content-item-text {
       text-align: left;
     }
