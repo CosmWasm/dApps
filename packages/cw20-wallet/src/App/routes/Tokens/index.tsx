@@ -17,7 +17,7 @@ function Tokens(): JSX.Element {
         <Link to={pathTokensAdd}>
           <Button type="primary">Add another</Button>
         </Link>
-        <YourAccount hideTitle hideBalance />
+        <YourAccount hideBalance />
       </MainStack>
     </PageLayout>
   );
