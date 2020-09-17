@@ -96,6 +96,10 @@ function TokensAdd(): JSX.Element {
     }
   }
 
+  function filterCaseInsensitive(input, option) {
+    return option.title.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+  }
+
   const showInputContract = !codeId;
   const showCodeiIdForm = !showInputContract;
 
@@ -138,7 +142,7 @@ function TokensAdd(): JSX.Element {
                     <Transfer
                       name="contracts"
                       showSearch
-                      pagination={{ pageSize: 5 }}
+                      filterOption={filterCaseInsensitive}
                       dataSource={contracts.map((contract) => {
                         return { key: contract.address, title: contract.label };
                       })}
