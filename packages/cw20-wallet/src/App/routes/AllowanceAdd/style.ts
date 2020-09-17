@@ -27,7 +27,13 @@ export const FormFieldsStack = styled(Stack)`
   }
 `;
 
-export const Amount = styled(Stack)`
+export const Amount = styled.div`
   display: flex;
-  justify-content: space-between;
+  align-items: baseline;
+
+  span {
+    margin-left: var(--s1);
+    font-family: var(--ff-iceland);
+    font-size: var(--s1);
+  }
 `;
