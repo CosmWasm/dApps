@@ -9,9 +9,27 @@ export const MainStack = styled(Stack)`
   h1 {
     margin: 0;
   }
+
+  & > span {
+    font-size: var(--s-1);
+  }
 `;
 
 export const Amount = styled.div`
   display: flex;
-  justify-content: space-between;
+  align-items: baseline;
+  justify-content: center;
+
+  & > * + * {
+    margin-left: var(--s-1);
+  }
+
+  span {
+    font-size: var(--s-1);
+  }
+
+  span + span {
+    font-size: var(--s1);
+    font-weight: bolder;
+  }
 `;
