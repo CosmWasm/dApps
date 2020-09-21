@@ -21,11 +21,14 @@ function ContractsProvider({ children }: React.HTMLAttributes<HTMLOrSVGElement>)
   const [contracts, setContracts] = useState<CW20Instance[]>(defaultContext.contracts);
 
   function addContract(newContract: CW20Instance) {
-    const notPresent = !contracts.find(
-      (contract) => contract.contractAddress === newContract.contractAddress,
-    );
+    setContracts((contracts) => {
+      const notPresent = !contracts.find(
+        (contract) => contract.contractAddress === newContract.contractAddress,
+      );
 
-    if (notPresent) setContracts((contracts) => [...contracts, newContract]);
+      if (notPresent) return [...contracts, newContract];
+      return contracts;
+    });
   }
 
   const value: ContractsContextType = { contracts, addContract };

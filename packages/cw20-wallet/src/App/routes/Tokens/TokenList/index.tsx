@@ -44,26 +44,20 @@ function TokenList(): JSX.Element {
   const [tokens, setTokens] = useState<readonly TokenData[]>([]);
 
   useEffect(() => {
-    setTokens([]);
-
     const client = getClient();
 
-    client
-      .getContracts(config.codeId)
-      .then((contracts) => {
-        contracts.forEach((contract) => {
-          const newCw20contract = CW20(client).use(contract.address);
-          addContract(newCw20contract);
-        });
-      })
-      .then(() => {
-        cw20Contracts.forEach((contract) =>
-          getTokenData(contract).then((token) =>
-            setTokens((tokens) => [...tokens, token].sort(tokenCompare)),
-          ),
-        );
+    client.getContracts(config.codeId).then((contracts) => {
+      contracts.forEach((contract) => {
+        const newCw20contract = CW20(client).use(contract.address);
+        addContract(newCw20contract);
       });
-  }, [getClient, addContract, cw20Contracts]);
+    });
+  }, [getClient, addContract]);
+
+  useEffect(() => {
+    const tokenPromises = cw20Contracts.map(getTokenData);
+    Promise.all(tokenPromises).then((tokens) => setTokens(tokens.sort(tokenCompare)));
+  }, [cw20Contracts]);
 
   function goTokenDetail(tokenAddress: string) {
     history.push(`${pathTokenDetail}/${tokenAddress}`);
