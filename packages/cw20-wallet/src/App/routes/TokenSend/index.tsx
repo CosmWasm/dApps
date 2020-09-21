@@ -5,7 +5,7 @@ import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import backArrowIcon from "../../assets/backArrow.svg";
-import { pathOperationResult, pathTokens } from "../../paths";
+import { pathOperationResult, pathTokenDetail, pathTokens } from "../../paths";
 import { CW20 } from "../../service/cw20";
 import { FormSendTokens, FormSendTokensFields } from "./FormSendTokens";
 import { AccountStack, Amount, MainStack } from "./style";
@@ -25,6 +25,7 @@ function TokenSend(): JSX.Element {
   const { account, refreshAccount } = useAccount();
 
   const { contractAddress, allowingAddress }: TokenSendParams = useParams();
+  const fullPathTokenDetail = `${pathTokenDetail}/${contractAddress}/${allowingAddress ?? ""}`;
 
   const [tokenName, setTokenName] = useState("");
   const [tokenAmount, setTokenAmount] = useState("0");
@@ -70,7 +71,8 @@ function TokenSend(): JSX.Element {
             state: {
               success: true,
               message: `${amount} ${tokenName} succesfully sent to ${recipientAddress} with allowance from ${allowingAddress}`,
-              customButtonText: "Tokens",
+              customButtonText: "Token detail",
+              customButtonActionPath: fullPathTokenDetail,
             } as OperationResultState,
           });
         });
@@ -87,7 +89,8 @@ function TokenSend(): JSX.Element {
             state: {
               success: true,
               message: `${amount} ${tokenName} succesfully sent to ${recipientAddress}`,
-              customButtonText: "Tokens",
+              customButtonText: "Token detail",
+              customButtonActionPath: fullPathTokenDetail,
             } as OperationResultState,
           });
         });
@@ -95,16 +98,13 @@ function TokenSend(): JSX.Element {
     } catch (stackTrace) {
       console.error(stackTrace);
 
-      const allowingAddressPath = allowingAddress ?? "";
-      const tokenDetailPath = `${pathTokens}/${contractAddress}/${allowingAddressPath}`;
-
       history.push({
         pathname: pathOperationResult,
         state: {
           success: false,
           message: "Send transaction failed:",
           error: getErrorFromStackTrace(stackTrace),
-          customButtonActionPath: tokenDetailPath,
+          customButtonActionPath: fullPathTokenDetail,
         } as OperationResultState,
       });
     }
