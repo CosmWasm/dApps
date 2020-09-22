@@ -104,7 +104,7 @@ function AllowanceAdd(): JSX.Element {
           <BackButton icon={backArrowIcon} path={pathTokens} />
           <Title>Add Allowance</Title>
           <Formik
-            initialValues={{ address: "", amount: "" } as FormAddAllowanceFields}
+            initialValues={{ address: "", amount: "" }}
             onSubmit={submitAddAllowance}
             validationSchema={addAllowanceValidationSchema}
           >
