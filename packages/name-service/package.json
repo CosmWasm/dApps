@@ -4,9 +4,9 @@
   "private": true,
   "homepage": "https://dapps.cosmwasm.com/names",
   "browserslist": [
-    "last 2 chrome version",
-    "last 2 firefox version",
-    "last 2 safari version"
+    "last 2 chrome versions",
+    "last 2 firefox versions",
+    "last 2 safari versions"
   ],
   "scripts": {
     "start": "craco start",
