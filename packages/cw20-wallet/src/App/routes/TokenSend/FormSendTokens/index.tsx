@@ -32,7 +32,7 @@ export function FormSendTokens({ tokenName, maxAmount, sendTokensAction }: FormS
 
   return (
     <Formik
-      initialValues={{ amount: "", address: "" } as FormSendTokensFields}
+      initialValues={{ amount: "", address: "" }}
       onSubmit={sendTokensAction}
       validationSchema={sendValidationSchema}
     >

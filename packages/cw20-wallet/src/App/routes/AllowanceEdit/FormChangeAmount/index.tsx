@@ -16,7 +16,7 @@ interface FormChangeAmountProps {
 export function FormChangeAmount({ submitChangeAmount }: FormChangeAmountProps): JSX.Element {
   return (
     <Formik
-      initialValues={{ newAmount: "" } as FormChangeAmountFields}
+      initialValues={{ newAmount: "" }}
       onSubmit={submitChangeAmount}
       validationSchema={setAllowanceValidationSchema}
     >
