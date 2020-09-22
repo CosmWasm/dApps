@@ -107,7 +107,7 @@ function TokensAdd(): JSX.Element {
   }
 
   const showInputContract = !codeId;
-  const showCodeiIdForm = !showInputContract;
+  const showCodeIdForm = !showInputContract;
 
   return (
     <PageLayout>
@@ -138,7 +138,7 @@ function TokensAdd(): JSX.Element {
             )}
           </Formik>
         )}
-        {showCodeiIdForm && (
+        {showCodeIdForm && (
           <Formik initialValues={{}} onSubmit={submitSelectContracts}>
             {(formikProps) => (
               <Form>
