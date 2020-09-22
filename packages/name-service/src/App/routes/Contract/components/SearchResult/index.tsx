@@ -117,7 +117,7 @@ export function SearchResult({
           pathname: pathOperationResult,
           state: {
             success: true,
-            message: `Succesfully registered ${name}`,
+            message: `Successfully registered ${name}`,
             customButtonText: "Name details",
             customButtonActionPath: fullContractPath,
           } as OperationResultState,

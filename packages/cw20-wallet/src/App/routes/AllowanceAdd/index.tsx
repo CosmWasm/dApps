@@ -75,7 +75,7 @@ function AllowanceAdd(): JSX.Element {
             pathname: pathOperationResult,
             state: {
               success: true,
-              message: `${newAmount} ${tokenName} allowance for ${spenderAddress} succesfully added `,
+              message: `${newAmount} ${tokenName} allowance for ${spenderAddress} successfully added `,
               customButtonText: "Tokens",
             } as OperationResultState,
           });

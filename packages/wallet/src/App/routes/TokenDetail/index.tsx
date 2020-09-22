@@ -61,7 +61,7 @@ export function TokenDetail(): JSX.Element {
           pathname: pathOperationResult,
           state: {
             success: true,
-            message: `${amount} ${tokenName} succesfully sent to ${recipientAddress}`,
+            message: `${amount} ${tokenName} successfully sent to ${recipientAddress}`,
             customButtonText: "Tokens",
           } as OperationResultState,
         });
