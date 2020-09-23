@@ -7,13 +7,14 @@ import { useHistory, useParams } from "react-router-dom";
 import backArrowIcon from "../../assets/backArrow.svg";
 import { pathAllowanceAdd, pathAllowanceEdit, pathAllowances, pathTokens } from "../../paths";
 import { AllowanceInfo, CW20 } from "../../service/cw20";
+import editIcon from "./assets/edit.svg";
 import {
+  AllowanceAmountCopy,
   AllowanceItem,
+  AllowancesStack,
   Amount,
   MainStack,
   TitleAmountStack,
-  AllowancesStack,
-  AllowanceAmountCopy,
 } from "./style";
 
 const { Title, Text } = Typography;
@@ -87,7 +88,7 @@ function Allowances(): JSX.Element {
                     <Text>{allowanceToDisplay}</Text>
                     <img
                       alt="Edit allowance"
-                      src={backArrowIcon}
+                      src={editIcon}
                       onClick={() => goToAllowancesEdit(allowanceInfo.spender)}
                     />
                   </AllowanceAmountCopy>
