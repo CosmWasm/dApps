@@ -57,7 +57,7 @@ export function Transfer(): JSX.Element {
           pathname: pathOperationResult,
           state: {
             success: true,
-            message: `Succesfully transferred ${name} to ${newOwnerAddress}`,
+            message: `Successfully transferred ${name} to ${newOwnerAddress}`,
             customButtonText: "Name details",
             customButtonActionPath: fullContractPath,
           } as OperationResultState,

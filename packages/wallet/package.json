@@ -4,9 +4,9 @@
   "private": true,
   "homepage": "https://dapps.cosmwasm.com/wallet",
   "browserslist": [
-    "last 2 chrome version",
-    "last 2 firefox version",
-    "last 2 safari version"
+    "last 2 chrome versions",
+    "last 2 firefox versions",
+    "last 2 safari versions"
   ],
   "scripts": {
     "start": "craco start",
@@ -16,7 +16,7 @@
   "dependencies": {
     "@cosmicdapp/design": "^0.1.0",
     "@cosmicdapp/logic": "^0.1.0",
-    "@cosmjs/launchpad": "^0.22.2",
+    "@cosmjs/launchpad": "^0.22.3",
     "antd": "^4.5.4",
     "formik": "^2.1.5",
     "formik-antd": "^2.0.1",

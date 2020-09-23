@@ -1,4 +1,4 @@
-# name-service
+# cw20-wallet
 
 ## Prerequisites
 
@@ -11,7 +11,7 @@ yarn build-deps
 
 ## Run the app
 
-In the packages/name-service directory, run:
+In the packages/cw20-wallet directory, run:
 
 ```shell
 yarn start

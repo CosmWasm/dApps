@@ -1,0 +1,9 @@
+export const pathLogin = "/login";
+export const pathTokens = "/tokens";
+export const pathTokensAdd = "/tokens/add";
+export const pathTokenDetail = "/token/detail";
+export const pathTokenSend = "/token/send";
+export const pathAllowances = "/allowances";
+export const pathAllowanceAdd = "/add";
+export const pathAllowanceEdit = "/edit";
+export const pathOperationResult = "/result";
