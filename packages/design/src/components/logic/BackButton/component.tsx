@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
-interface BackButtonProps extends React.HTMLAttributes<HTMLOrSVGElement> {
+export interface BackButtonProps extends React.HTMLAttributes<HTMLOrSVGElement> {
   readonly icon: string;
   readonly path?: string;
   readonly state?: any;
