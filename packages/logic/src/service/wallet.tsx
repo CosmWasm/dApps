@@ -9,6 +9,7 @@ interface CosmWasmContextType {
   readonly initialized: boolean;
   readonly address: string;
   readonly init: () => void;
+  readonly clear: () => void;
   readonly getClient: () => SigningCosmWasmClient;
 }
 
@@ -16,6 +17,9 @@ const defaultContext: CosmWasmContextType = {
   initialized: false,
   address: "",
   init: () => {
+    return;
+  },
+  clear: () => {
     return;
   },
   getClient: (): SigningCosmWasmClient => {
@@ -34,8 +38,12 @@ interface ConfigWalletProps extends ConfigProp {
 type SdkProviderProps = ConfigWalletProps & React.HTMLAttributes<HTMLOrSVGElement>;
 
 export function SdkProvider({ config, loadWallet, children }: SdkProviderProps): JSX.Element {
-  const contextWithInit = { ...defaultContext, init: init };
-  const [value, setValue] = useState(contextWithInit);
+  const contextWithInit = { ...defaultContext, init };
+  const [value, setValue] = useState<CosmWasmContextType>(contextWithInit);
+
+  function clear() {
+    setValue({ ...contextWithInit });
+  }
 
   function init() {
     loadWallet(config.addressPrefix)
@@ -56,10 +64,11 @@ export function SdkProvider({ config, loadWallet, children }: SdkProviderProps):
 
         setValue({
           initialized: true,
-          address: address,
+          address,
           init: () => {
             return;
           },
+          clear,
           getClient: () => client,
         });
       });
