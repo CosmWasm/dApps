@@ -21,6 +21,7 @@
     "@cosmjs/cosmwasm": "^0.23.0-alpha.0",
     "@cosmjs/crypto": "^0.23.0-alpha.0",
     "@cosmjs/launchpad": "^0.23.0-alpha.0",
+    "@cosmjs/launchpad-ledger": "^0.23.0-alpha.0",
     "@cosmjs/math": "^0.23.0-alpha.0"
   },
   "peerDependencies": {
