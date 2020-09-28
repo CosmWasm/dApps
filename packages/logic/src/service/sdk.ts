@@ -1,6 +1,7 @@
 import { CosmWasmFeeTable, SigningCosmWasmClient } from "@cosmjs/cosmwasm";
 import { Bip39, Random } from "@cosmjs/crypto";
 import { GasLimits, GasPrice, makeCosmoshubPath, OfflineSigner, Secp256k1Wallet } from "@cosmjs/launchpad";
+import { LedgerSigner } from "@cosmjs/launchpad-ledger";
 import { AppConfig } from "../config";
 
 // generateMnemonic will give you a fresh mnemonic
@@ -21,12 +22,22 @@ export function loadOrCreateMnemonic(): string {
   return generated;
 }
 
-export async function loadOrCreateWallet(addressPrefix: string): Promise<OfflineSigner> {
+export type WalletLoader = (addressPrefix?: string) => Promise<OfflineSigner>;
+
+export const loadOrCreateWallet: WalletLoader = async function (addressPrefix) {
   const mnemonic = loadOrCreateMnemonic();
   const hdPath = makeCosmoshubPath(0);
   const wallet = await Secp256k1Wallet.fromMnemonic(mnemonic, hdPath, addressPrefix);
   return wallet;
-}
+};
+
+export const loadLedgerWallet: WalletLoader = async function () {
+  const ledgerSigner = new LedgerSigner({
+    testModeAllowed: true,
+    hdPaths: [makeCosmoshubPath(0)],
+  });
+  return ledgerSigner;
+};
 
 // this creates a new connection to a server at URL,
 // using a signing keyring generated from the given mnemonic

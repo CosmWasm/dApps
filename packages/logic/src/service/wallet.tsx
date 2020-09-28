@@ -1,14 +1,13 @@
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm";
-import { OfflineSigner } from "@cosmjs/launchpad";
 import * as React from "react";
 import { useState } from "react";
 import { AppConfig } from "../config";
-import { createClient, loadOrCreateWallet } from "./sdk";
+import { createClient, WalletLoader } from "./sdk";
 
 interface CosmWasmContextType {
   readonly initialized: boolean;
   readonly address: string;
-  readonly init: () => void;
+  readonly init: (loadWallet: WalletLoader) => void;
   readonly clear: () => void;
   readonly getClient: () => SigningCosmWasmClient;
 }
@@ -31,13 +30,11 @@ const CosmWasmContext = React.createContext<CosmWasmContextType>(defaultContext)
 
 export const useSdk = (): CosmWasmContextType => React.useContext(CosmWasmContext);
 
-interface ConfigWalletProps extends ConfigProp {
-  readonly loadWallet: (addressPrefix: string) => Promise<OfflineSigner>;
+interface SdkProviderProps extends React.HTMLAttributes<HTMLOrSVGElement> {
+  readonly config: AppConfig;
 }
 
-type SdkProviderProps = ConfigWalletProps & React.HTMLAttributes<HTMLOrSVGElement>;
-
-export function SdkProvider({ config, loadWallet, children }: SdkProviderProps): JSX.Element {
+export function SdkProvider({ config, children }: SdkProviderProps): JSX.Element {
   const contextWithInit = { ...defaultContext, init };
   const [value, setValue] = useState<CosmWasmContextType>(contextWithInit);
 
@@ -45,7 +42,7 @@ export function SdkProvider({ config, loadWallet, children }: SdkProviderProps):
     setValue({ ...contextWithInit });
   }
 
-  function init() {
+  function init(loadWallet: WalletLoader) {
     loadWallet(config.addressPrefix)
       .then((signer) => createClient(config, signer))
       .then(async (client) => {
@@ -75,18 +72,4 @@ export function SdkProvider({ config, loadWallet, children }: SdkProviderProps):
   }
 
   return <CosmWasmContext.Provider value={value}>{children}</CosmWasmContext.Provider>;
-}
-
-interface ConfigProp {
-  readonly config: AppConfig;
-}
-
-type BurnerWalletProviderProps = ConfigProp & React.HTMLAttributes<HTMLOrSVGElement>;
-
-export function BurnerWalletProvider({ config, children }: BurnerWalletProviderProps): JSX.Element {
-  return (
-    <SdkProvider config={config} loadWallet={loadOrCreateWallet}>
-      {children}
-    </SdkProvider>
-  );
 }
