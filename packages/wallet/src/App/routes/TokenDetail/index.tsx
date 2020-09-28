@@ -6,7 +6,7 @@ import {
   useAccount,
   useSdk,
 } from "@cosmicdapp/logic";
-import { Coin, isPostTxFailure } from "@cosmjs/launchpad";
+import { Coin, isBroadcastTxFailure } from "@cosmjs/launchpad";
 import { Typography } from "antd";
 import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
@@ -51,7 +51,7 @@ export function TokenDetail(): JSX.Element {
     getClient()
       .sendTokens(recipientAddress, transferAmount)
       .then((result) => {
-        if (isPostTxFailure(result)) {
+        if (isBroadcastTxFailure(result)) {
           return Promise.reject(result.rawLog);
         }
 
