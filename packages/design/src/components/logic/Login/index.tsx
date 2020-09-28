@@ -1,4 +1,10 @@
-import { RedirectLocation, useAccount, useSdk } from "@cosmicdapp/logic";
+import {
+  loadOrCreateWallet,
+  loadLedgerWallet,
+  RedirectLocation,
+  useAccount,
+  useSdk,
+} from "@cosmicdapp/logic";
 import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -7,6 +13,11 @@ import { Loading } from "../../logic/Loading";
 import { LightText, MainStack, WelcomeStack } from "./style";
 
 const { Title } = Typography;
+
+function disableLedgerLogin() {
+  const anyNavigator: any = navigator;
+  return !anyNavigator?.usb;
+}
 
 interface LoginProps {
   readonly pathAfterLogin: string;
@@ -22,9 +33,14 @@ export function Login({ pathAfterLogin, appName, appLogo }: LoginProps): JSX.Ele
 
   const [initializing, setInitializing] = useState(false);
 
-  function init() {
+  function initBrowser() {
     setInitializing(true);
-    sdk.init();
+    sdk.init(loadOrCreateWallet);
+  }
+
+  function initLedger() {
+    setInitializing(true);
+    sdk.init(loadLedgerWallet);
   }
 
   useEffect(() => {
@@ -55,10 +71,13 @@ export function Login({ pathAfterLogin, appName, appLogo }: LoginProps): JSX.Ele
             <LightText>Welcome to your {appName}</LightText>
             <LightText>Select one of the following options to start:</LightText>
           </Typography>
-          <Button type="primary" onClick={init}>
+          <Button type="primary" onClick={initBrowser}>
             Browser (Demo)
           </Button>
-          <Button disabled type="primary">
+          <Button type="primary" disabled={disableLedgerLogin()} onClick={initLedger}>
+            Ledger (Secure)
+          </Button>
+          <Button type="primary" disabled>
             Keplr (Secure)
           </Button>
         </WelcomeStack>
