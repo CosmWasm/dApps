@@ -1,5 +1,5 @@
 import { GlobalStyle } from "@cosmicdapp/design";
-import { AccountProvider, BurnerWalletProvider, ErrorProvider, ProtectedSwitch } from "@cosmicdapp/logic";
+import { AccountProvider, ErrorProvider, ProtectedSwitch, SdkProvider } from "@cosmicdapp/logic";
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { config } from "../config";
@@ -28,7 +28,7 @@ import { ContractsProvider } from "./service/contracts";
 function App(): JSX.Element {
   return (
     <ErrorProvider>
-      <BurnerWalletProvider config={config}>
+      <SdkProvider config={config}>
         <AccountProvider>
           <ContractsProvider>
             <GlobalStyle />
@@ -66,7 +66,7 @@ function App(): JSX.Element {
             </Router>
           </ContractsProvider>
         </AccountProvider>
-      </BurnerWalletProvider>
+      </SdkProvider>
     </ErrorProvider>
   );
 }
