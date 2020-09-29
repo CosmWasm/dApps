@@ -31,10 +31,11 @@ export const loadOrCreateWallet: WalletLoader = async function (addressPrefix) {
   return wallet;
 };
 
-export const loadLedgerWallet: WalletLoader = async function () {
+export const loadLedgerWallet: WalletLoader = async function (addressPrefix) {
   const ledgerSigner = new LedgerSigner({
     testModeAllowed: true,
     hdPaths: [makeCosmoshubPath(0)],
+    prefix: addressPrefix,
   });
   return ledgerSigner;
 };

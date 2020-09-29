@@ -1,6 +1,6 @@
 import {
-  loadOrCreateWallet,
   loadLedgerWallet,
+  loadOrCreateWallet,
   RedirectLocation,
   useAccount,
   useSdk,
@@ -23,9 +23,10 @@ interface LoginProps {
   readonly pathAfterLogin: string;
   readonly appName: string;
   readonly appLogo: string;
+  readonly addressPrefix?: string;
 }
 
-export function Login({ pathAfterLogin, appName, appLogo }: LoginProps): JSX.Element {
+export function Login({ addressPrefix, pathAfterLogin, appName, appLogo }: LoginProps): JSX.Element {
   const history = useHistory();
   const state = history.location.state as RedirectLocation;
   const sdk = useSdk();
@@ -35,12 +36,12 @@ export function Login({ pathAfterLogin, appName, appLogo }: LoginProps): JSX.Ele
 
   function initBrowser() {
     setInitializing(true);
-    sdk.init(loadOrCreateWallet);
+    sdk.init(() => loadOrCreateWallet(addressPrefix));
   }
 
   function initLedger() {
     setInitializing(true);
-    sdk.init(loadLedgerWallet);
+    sdk.init(() => loadLedgerWallet(addressPrefix));
   }
 
   useEffect(() => {
