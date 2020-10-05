@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { pathHome } from "../../paths";
+import { pathValidator } from "../../paths";
 import avatarIcon from "./assets/avatar.svg";
 import copyIcon from "./assets/copy.svg";
 import closeMenuButton from "./assets/cross.svg";
@@ -28,11 +28,11 @@ export function AccountMenu({ name, ...props }: AccountMenuProps): JSX.Element {
   const history = useHistory();
   function goToHelp() {
     //TODO: set path to help
-    history.push(pathHome);
+    history.push(pathValidator);
   }
   function goToLogout() {
     //TODO: set path to logout
-    history.push(pathHome);
+    history.push(pathValidator);
   }
 
   const [open, setOpen] = useState(false);
