@@ -23,8 +23,8 @@ export function FormBuyShares({ validator }: FormBuySharesProps): JSX.Element {
   const { getClient } = useSdk();
 
   function submitBuyShares({ amount }: FormBuySharesFields) {
-    // TODO: get from config? Currently gives incorrect denom error
-    const delegateToken = "ustake";
+    // TODO: get from config? Can't test due to insufficient funds
+    const delegateToken = "ureef";
     const nativeAmountString = displayAmountToNative(amount, config.coinMap, delegateToken);
     const nativeAmountCoin: Coin = { amount: nativeAmountString, denom: delegateToken };
 
