@@ -1,38 +1,68 @@
+import { displayAmountToNative, useAccount, useSdk } from "@cosmicdapp/logic";
+import { Coin, coins, MsgDelegate } from "@cosmjs/launchpad";
 import { Button, Typography } from "antd";
 import { Formik } from "formik";
 import { Form, FormItem, Input } from "formik-antd";
 import React from "react";
+import { config } from "../../../../config";
+import { StakingValidator } from "../../../utils/staking";
 import { FormField, FormStack } from "./style";
 
 const { Text } = Typography;
 
 export interface FormBuySharesFields {
   readonly amount: string;
-  readonly shares: string;
 }
 
 interface FormBuySharesProps {
-  readonly submitBuyShares: (values: unknown) => void;
+  readonly validator: StakingValidator;
 }
 
-export function FormBuyShares({ submitBuyShares }: FormBuySharesProps): JSX.Element {
+export function FormBuyShares({ validator }: FormBuySharesProps): JSX.Element {
+  const { account } = useAccount();
+  const { getClient } = useSdk();
+
+  function submitBuyShares({ amount }: FormBuySharesFields) {
+    // TODO: get from config? Currently gives incorrect denom error
+    const delegateToken = "ustake";
+    const nativeAmountString = displayAmountToNative(amount, config.coinMap, delegateToken);
+    const nativeAmountCoin: Coin = { amount: nativeAmountString, denom: delegateToken };
+
+    const delegateMsg: MsgDelegate = {
+      type: "cosmos-sdk/MsgDelegate",
+      value: {
+        delegator_address: account.address,
+        validator_address: validator.operator_address,
+        amount: nativeAmountCoin,
+      },
+    };
+
+    const defaultFee = {
+      amount: coins(37500, config.feeToken),
+      gas: "1500000", // 1.5 million
+    };
+
+    getClient()
+      .signAndBroadcast([delegateMsg], defaultFee)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch(console.error);
+  }
+
   return (
-    <Formik initialValues={{ amount: "", shares: "" }} onSubmit={submitBuyShares}>
+    <Formik initialValues={{ amount: "" }} onSubmit={submitBuyShares}>
       {(formikProps) => (
         <Form>
           <FormStack>
             <FormField>
-              <Text>Atom</Text>
+              <Text>Tokens</Text>
               <FormItem name="amount">
                 <Input name="amount" placeholder="Enter amount" />
               </FormItem>
             </FormField>
-            <FormField>
-              <Text>Iris Net Shares</Text>
-              <FormItem name="shares">
-                <Input name="shares" placeholder="XXXXXX" />
-              </FormItem>
-            </FormField>
+            {/* //TODO display shares / let choose shares instead of tokens */}
+            <Text>{validator?.description.moniker ?? ""} Shares XXXXXX</Text>
             <Button
               type="primary"
               onClick={formikProps.submitForm}

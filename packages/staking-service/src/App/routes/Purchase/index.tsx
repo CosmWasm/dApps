@@ -1,20 +1,21 @@
 import { PageLayout } from "@cosmicdapp/design";
 import { Typography } from "antd";
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { HeaderBackMenu } from "../../components/HeaderBackMenu";
-import { pathOperationResult } from "../../paths";
+import { useStakingValidator } from "../../utils/staking";
 import { FormBuyShares } from "./FormBuyShares";
 import { HeaderTitleStack, MainStack } from "./style";
 
 const { Title } = Typography;
 
-export function Purchase(): JSX.Element {
-  const history = useHistory();
+interface PurchaseParams {
+  readonly validatorAddress: string;
+}
 
-  function submitBuyShares() {
-    history.push(pathOperationResult);
-  }
+export function Purchase(): JSX.Element {
+  const { validatorAddress } = useParams<PurchaseParams>();
+  const validator = useStakingValidator(validatorAddress);
 
   return (
     <PageLayout>
@@ -22,9 +23,9 @@ export function Purchase(): JSX.Element {
         <HeaderTitleStack>
           <HeaderBackMenu />
           <Title>Purchase</Title>
-          <Title level={2}>Iris Net</Title>
+          <Title level={2}>{validator?.description.moniker ?? ""}</Title>
         </HeaderTitleStack>
-        <FormBuyShares submitBuyShares={submitBuyShares} />
+        <FormBuyShares validator={validator} />
       </MainStack>
     </PageLayout>
   );
