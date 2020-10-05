@@ -1,6 +1,15 @@
 import { CosmWasmFeeTable, SigningCosmWasmClient } from "@cosmjs/cosmwasm";
 import { Bip39, Random } from "@cosmjs/crypto";
-import { GasLimits, GasPrice, makeCosmoshubPath, OfflineSigner, Secp256k1Wallet } from "@cosmjs/launchpad";
+import {
+  GasLimits,
+  GasPrice,
+  LcdClient,
+  makeCosmoshubPath,
+  OfflineSigner,
+  Secp256k1HdWallet,
+  setupStakingExtension,
+  StakingExtension,
+} from "@cosmjs/launchpad";
 import { LedgerSigner } from "@cosmjs/launchpad-ledger";
 import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { AppConfig } from "../config";
@@ -28,7 +37,7 @@ export type WalletLoader = (addressPrefix?: string) => Promise<OfflineSigner>;
 export async function loadOrCreateWallet(addressPrefix?: string): Promise<OfflineSigner> {
   const mnemonic = loadOrCreateMnemonic();
   const hdPath = makeCosmoshubPath(0);
-  const wallet = await Secp256k1Wallet.fromMnemonic(mnemonic, hdPath, addressPrefix);
+  const wallet = await Secp256k1HdWallet.fromMnemonic(mnemonic, hdPath, addressPrefix);
   return wallet;
 }
 
@@ -54,4 +63,8 @@ export async function createClient(config: AppConfig, signer: OfflineSigner): Pr
   };
 
   return new SigningCosmWasmClient(config.httpUrl, firstAddress, signer, gasPrice, gasLimits);
+}
+
+export function createStakingClient(apiUrl: string): LcdClient & StakingExtension {
+  return LcdClient.withExtensions({ apiUrl }, setupStakingExtension);
 }
