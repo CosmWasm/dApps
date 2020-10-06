@@ -10,14 +10,15 @@ import { MainStack } from "./style";
 
 const { Title } = Typography;
 
-function getValidatorDataMap(validator: StakingValidator) {
-  const totalStake = formatShares(validator?.delegator_shares ?? "0");
-  const comissionPercent =
-    (parseFloat(validator?.commission.commission_rates.rate ?? "0") * 100).toString() + " %";
-  // TODO: update time !== uptime
-  const updateTime = formatUpdateTime(validator?.commission.update_time ?? "");
+function getValidatorDataMap(validator?: StakingValidator) {
+  if (!validator) return {};
 
-  return { "Total Stake": totalStake, Comission: comissionPercent, "Update Time": updateTime };
+  const totalStake = formatShares(validator.delegator_shares);
+  const commissionPercent = `${parseFloat(validator.commission.commission_rates.rate)} %`;
+  // TODO: update time !== uptime
+  const updateTime = formatUpdateTime(validator.commission.update_time);
+
+  return { "Total Stake": totalStake, Commission: commissionPercent, "Update Time": updateTime };
 }
 
 interface ValidatorDetailParams {

@@ -21,9 +21,11 @@ import { ButtonStack, MainStack, NavCenter, TitleNavStack } from "./style";
 
 const { Title } = Typography;
 
-function getValidatorDataMap(validator: StakingValidator) {
-  const totalStake = formatShares(validator?.delegator_shares ?? "0");
-  const coin: Coin = { denom: config.feeToken, amount: validator?.tokens ?? "0" };
+function getValidatorDataMap(validator?: StakingValidator) {
+  if (!validator) return {};
+
+  const totalStake = formatShares(validator.delegator_shares);
+  const coin: Coin = { denom: config.feeToken, amount: validator.tokens };
   const tokens = nativeCoinToDisplay(coin, config.coinMap).amount;
 
   return { "Total Stake": totalStake, Tokens: tokens };
