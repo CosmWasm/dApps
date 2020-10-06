@@ -34,14 +34,10 @@ export function Validators(): JSX.Element {
     getStakingClient()
       .staking.validators()
       .then(({ result: validators }) => {
-        const validatorsData: ValidatorData[] = validators.map((validator) => {
-          const {
-            description: { moniker: name },
-            operator_address: address,
-          } = validator;
-
-          return { name, address };
-        });
+        const validatorsData: ValidatorData[] = validators.map((validator) => ({
+          name: validator.description.moniker,
+          address: validator.operator_address,
+        }));
 
         setValidatorsData(validatorsData.sort(validatorCompare));
       });
