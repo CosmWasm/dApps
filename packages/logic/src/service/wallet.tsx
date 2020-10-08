@@ -8,7 +8,7 @@ import { createClient } from "./sdk";
 interface CosmWasmContextType {
   readonly initialized: boolean;
   readonly address: string;
-  readonly init: (signer: OfflineSigner) => void;
+  readonly init: (signer: OfflineSigner) => Promise<void>;
   readonly clear: () => void;
   readonly getClient: () => SigningCosmWasmClient;
 }
@@ -16,12 +16,8 @@ interface CosmWasmContextType {
 const defaultContext: CosmWasmContextType = {
   initialized: false,
   address: "",
-  init: () => {
-    return;
-  },
-  clear: () => {
-    return;
-  },
+  init: async () => {},
+  clear: () => {},
   getClient: (): SigningCosmWasmClient => {
     throw new Error("not yet initialized");
   },
@@ -43,30 +39,28 @@ export function SdkProvider({ config, children }: SdkProviderProps): JSX.Element
     setValue({ ...contextWithInit });
   }
 
-  function init(signer: OfflineSigner) {
-    createClient(config, signer).then(async (client) => {
-      const address = client.senderAddress;
-      // load from faucet if needed
-      if (config.faucetUrl) {
-        const acct = await client.getAccount();
-        if (!acct?.balance?.length) {
-          await fetch(config.faucetUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ticker: config.faucetToken, address }),
-          });
-        }
-      }
+  async function init(signer: OfflineSigner) {
+    const client = await createClient(config, signer);
+    const address = client.senderAddress;
 
-      setValue({
-        initialized: true,
-        address,
-        init: () => {
-          return;
-        },
-        clear,
-        getClient: () => client,
-      });
+    // load from faucet if needed
+    if (config.faucetUrl) {
+      const acct = await client.getAccount();
+      if (!acct?.balance?.length) {
+        await fetch(config.faucetUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ticker: config.faucetToken, address }),
+        });
+      }
+    }
+
+    setValue({
+      initialized: true,
+      address,
+      init: async () => {},
+      clear,
+      getClient: () => client,
     });
   }
 
