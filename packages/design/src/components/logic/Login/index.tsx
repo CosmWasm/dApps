@@ -36,12 +36,12 @@ export function Login({ addressPrefix, pathAfterLogin, appName, appLogo }: Login
 
   function initBrowser() {
     setInitializing(true);
-    sdk.init(() => loadOrCreateWallet(addressPrefix));
+    loadOrCreateWallet(addressPrefix).then(sdk.init).catch(console.error);
   }
 
   function initLedger() {
     setInitializing(true);
-    sdk.init(() => loadLedgerWallet(addressPrefix));
+    loadLedgerWallet(addressPrefix).then(sdk.init).catch(console.error);
   }
 
   useEffect(() => {
