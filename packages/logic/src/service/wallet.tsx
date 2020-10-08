@@ -1,13 +1,14 @@
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm";
+import { OfflineSigner } from "@cosmjs/launchpad";
 import * as React from "react";
 import { useState } from "react";
 import { AppConfig } from "../config";
-import { createClient, WalletLoader } from "./sdk";
+import { createClient } from "./sdk";
 
 interface CosmWasmContextType {
   readonly initialized: boolean;
   readonly address: string;
-  readonly init: (loadWallet: WalletLoader) => void;
+  readonly init: (signer: OfflineSigner) => void;
   readonly clear: () => void;
   readonly getClient: () => SigningCosmWasmClient;
 }
@@ -42,33 +43,31 @@ export function SdkProvider({ config, children }: SdkProviderProps): JSX.Element
     setValue({ ...contextWithInit });
   }
 
-  function init(loadWallet: WalletLoader) {
-    loadWallet(config.addressPrefix)
-      .then((signer) => createClient(config, signer))
-      .then(async (client) => {
-        const address = client.senderAddress;
-        // load from faucet if needed
-        if (config.faucetUrl) {
-          const acct = await client.getAccount();
-          if (!acct?.balance?.length) {
-            await fetch(config.faucetUrl, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ ticker: config.faucetToken, address }),
-            });
-          }
+  function init(signer: OfflineSigner) {
+    createClient(config, signer).then(async (client) => {
+      const address = client.senderAddress;
+      // load from faucet if needed
+      if (config.faucetUrl) {
+        const acct = await client.getAccount();
+        if (!acct?.balance?.length) {
+          await fetch(config.faucetUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ticker: config.faucetToken, address }),
+          });
         }
+      }
 
-        setValue({
-          initialized: true,
-          address,
-          init: () => {
-            return;
-          },
-          clear,
-          getClient: () => client,
-        });
+      setValue({
+        initialized: true,
+        address,
+        init: () => {
+          return;
+        },
+        clear,
+        getClient: () => client,
       });
+    });
   }
 
   return <CosmWasmContext.Provider value={value}>{children}</CosmWasmContext.Provider>;
