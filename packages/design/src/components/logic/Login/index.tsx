@@ -3,14 +3,16 @@ import {
   loadOrCreateWallet,
   RedirectLocation,
   useAccount,
+  useError,
   useSdk,
+  WalletLoader,
 } from "@cosmicdapp/logic";
 import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { PageLayout } from "../../layout/PageLayout";
 import { Loading } from "../../logic/Loading";
-import { LightText, MainStack, WelcomeStack } from "./style";
+import { ErrorText, LightText, MainStack, WelcomeStack } from "./style";
 
 const { Title } = Typography;
 
@@ -29,19 +31,32 @@ interface LoginProps {
 export function Login({ addressPrefix, pathAfterLogin, appName, appLogo }: LoginProps): JSX.Element {
   const history = useHistory();
   const state = history.location.state as RedirectLocation;
+  const { error, setError, clearError } = useError();
   const sdk = useSdk();
   const { refreshAccount, account } = useAccount();
 
   const [initializing, setInitializing] = useState(false);
 
-  function initBrowser() {
+  async function init(loadWallet: WalletLoader) {
     setInitializing(true);
-    loadOrCreateWallet(addressPrefix).then(sdk.init).catch(console.error);
+    clearError();
+
+    try {
+      const signer = await loadWallet(addressPrefix);
+      await sdk.init(signer);
+    } catch (error) {
+      console.error(error);
+      setError(Error(error).message);
+      setInitializing(false);
+    }
   }
 
-  function initLedger() {
-    setInitializing(true);
-    loadLedgerWallet(addressPrefix).then(sdk.init).catch(console.error);
+  async function initBrowser() {
+    await init(loadOrCreateWallet);
+  }
+
+  async function initLedger() {
+    await init(loadLedgerWallet);
   }
 
   useEffect(() => {
@@ -72,6 +87,7 @@ export function Login({ addressPrefix, pathAfterLogin, appName, appLogo }: Login
             <LightText>Welcome to your {appName}</LightText>
             <LightText>Select one of the following options to start:</LightText>
           </Typography>
+          {error && <ErrorText>{error}</ErrorText>}
           <Button type="primary" onClick={initBrowser}>
             Browser (Demo)
           </Button>
