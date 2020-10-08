@@ -18,17 +18,19 @@
     "prepare": "tsdx build"
   },
   "dependencies": {
-    "@cosmjs/cosmwasm": "^0.23.0-alpha.0",
-    "@cosmjs/crypto": "^0.23.0-alpha.0",
-    "@cosmjs/launchpad": "^0.23.0-alpha.0",
-    "@cosmjs/launchpad-ledger": "^0.23.0-alpha.0",
-    "@cosmjs/math": "^0.23.0-alpha.0"
+    "@cosmjs/cosmwasm": "^0.23.0-alpha.1",
+    "@cosmjs/crypto": "^0.23.0-alpha.1",
+    "@cosmjs/launchpad": "^0.23.0-alpha.1",
+    "@cosmjs/launchpad-ledger": "^0.23.0-alpha.1",
+    "@cosmjs/math": "^0.23.0-alpha.1",
+    "@ledgerhq/hw-transport-webusb": "^5.25.0"
   },
   "peerDependencies": {
     "react": ">=16",
     "react-router-dom": ">=5"
   },
   "devDependencies": {
+    "@types/ledgerhq__hw-transport-webusb": "^4.70.1",
     "@types/react": "^16.9.46",
     "@types/react-dom": "^16.9.8",
     "husky": "^4.2.5",
