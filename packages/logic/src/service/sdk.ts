@@ -36,11 +36,7 @@ export const loadLedgerWallet: WalletLoader = async function (addressPrefix) {
   const interactiveTimeout = 120_000;
   const ledgerTransport = await TransportWebUSB.create(interactiveTimeout, interactiveTimeout);
 
-  return new LedgerSigner(ledgerTransport, {
-    testModeAllowed: true,
-    hdPaths: [makeCosmoshubPath(0)],
-    prefix: addressPrefix,
-  });
+  return new LedgerSigner(ledgerTransport, { hdPaths: [makeCosmoshubPath(0)], prefix: addressPrefix });
 };
 
 // this creates a new connection to a server at URL,
