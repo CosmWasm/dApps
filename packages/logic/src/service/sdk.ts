@@ -2,6 +2,7 @@ import { CosmWasmFeeTable, SigningCosmWasmClient } from "@cosmjs/cosmwasm";
 import { Bip39, Random } from "@cosmjs/crypto";
 import { GasLimits, GasPrice, makeCosmoshubPath, OfflineSigner, Secp256k1Wallet } from "@cosmjs/launchpad";
 import { LedgerSigner } from "@cosmjs/launchpad-ledger";
+import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { AppConfig } from "../config";
 
 // generateMnemonic will give you a fresh mnemonic
@@ -32,12 +33,14 @@ export const loadOrCreateWallet: WalletLoader = async function (addressPrefix) {
 };
 
 export const loadLedgerWallet: WalletLoader = async function (addressPrefix) {
-  const ledgerSigner = new LedgerSigner({
+  const interactiveTimeout = 120_000;
+  const ledgerTransport = await TransportWebUSB.create(interactiveTimeout, interactiveTimeout);
+
+  return new LedgerSigner(ledgerTransport, {
     testModeAllowed: true,
     hdPaths: [makeCosmoshubPath(0)],
     prefix: addressPrefix,
   });
-  return ledgerSigner;
 };
 
 // this creates a new connection to a server at URL,
