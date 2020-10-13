@@ -1,78 +1,91 @@
-import { displayAmountToNative, useAccount, useSdk } from "@cosmicdapp/logic";
-import { Coin, coins, MsgDelegate } from "@cosmjs/launchpad";
+import { OperationResultState } from "@cosmicdapp/design";
+import { displayAmountToNative, getErrorFromStackTrace, useAccount } from "@cosmicdapp/logic";
+import { Coin } from "@cosmjs/launchpad";
 import { Button, Typography } from "antd";
 import { Formik } from "formik";
 import { Form, FormItem, Input } from "formik-antd";
 import React from "react";
+import { useHistory } from "react-router-dom";
+import { ValidatorData } from "..";
 import { config } from "../../../../config";
-import { StakingValidator } from "../../../utils/staking";
-import { FormField, FormStack } from "./style";
+import { pathOperationResult, pathPurchase, pathWallet } from "../../../paths";
+import { FormField, FormStack, StakePerToken } from "./style";
 
 const { Text } = Typography;
 
-export interface FormBuySharesFields {
+interface FormBuySharesFields {
   readonly amount: string;
 }
 
 interface FormBuySharesProps {
-  readonly validator: StakingValidator;
+  readonly validatorData: ValidatorData;
 }
 
-export function FormBuyShares({ validator }: FormBuySharesProps): JSX.Element {
-  const { account } = useAccount();
-  const { getClient } = useSdk();
+export function FormBuyShares({ validatorData }: FormBuySharesProps): JSX.Element {
+  const history = useHistory();
+  const { refreshAccount } = useAccount();
 
-  function submitBuyShares({ amount }: FormBuySharesFields) {
-    // TODO: get from config? Can't test due to insufficient funds
-    const delegateToken = "ureef";
-    const nativeAmountString = displayAmountToNative(amount, config.coinMap, delegateToken);
-    const nativeAmountCoin: Coin = { amount: nativeAmountString, denom: delegateToken };
+  async function submitBuyShares({ amount }: FormBuySharesFields) {
+    const nativeAmountString = displayAmountToNative(amount, config.coinMap, config.stakingToken);
+    const nativeAmountCoin: Coin = { amount: nativeAmountString, denom: config.stakingToken };
 
-    const delegateMsg: MsgDelegate = {
-      type: "cosmos-sdk/MsgDelegate",
-      value: {
-        delegator_address: account.address,
-        validator_address: validator.operator_address,
-        amount: nativeAmountCoin,
-      },
-    };
+    try {
+      const txHash = await validatorData.cw20contract.bond(nativeAmountCoin);
+      if (!txHash) {
+        throw Error("Transfer from failed");
+      }
 
-    const defaultFee = {
-      amount: coins(37500, config.feeToken),
-      gas: "1500000", // 1.5 million
-    };
+      refreshAccount();
 
-    getClient()
-      .signAndBroadcast([delegateMsg], defaultFee)
-      .then((result) => {
-        console.log(result);
-      })
-      .catch(console.error);
+      history.push({
+        pathname: pathOperationResult,
+        state: {
+          success: true,
+          message: `${amount} ${config.stakingToken} successfully bonded`,
+          customButtonText: "Wallet",
+          customButtonActionPath: `${pathWallet}/${validatorData.address}`,
+        } as OperationResultState,
+      });
+    } catch (stackTrace) {
+      console.error(stackTrace);
+
+      history.push({
+        pathname: pathOperationResult,
+        state: {
+          success: false,
+          message: "Bond transaction failed:",
+          error: getErrorFromStackTrace(stackTrace),
+          customButtonActionPath: `${pathPurchase}/${validatorData.address}`,
+        } as OperationResultState,
+      });
+    }
   }
 
   return (
     <Formik initialValues={{ amount: "" }} onSubmit={submitBuyShares}>
-      {(formikProps) => (
-        <Form>
-          <FormStack>
-            <FormField>
-              <Text>Tokens</Text>
-              <FormItem name="amount">
-                <Input name="amount" placeholder="Enter amount" />
-              </FormItem>
-            </FormField>
-            {/* //TODO display shares / let choose shares instead of tokens */}
-            <Text>{validator?.description.moniker ?? ""} Shares XXXXXX</Text>
-            <Button
-              type="primary"
-              onClick={formikProps.submitForm}
-              disabled={!(formikProps.isValid && formikProps.dirty)}
-            >
-              Buy
-            </Button>
-          </FormStack>
-        </Form>
-      )}
+      {(formikProps) => {
+        const formDisabled = !(formikProps.isValid && formikProps.dirty);
+
+        return (
+          <Form>
+            <FormStack>
+              <StakePerToken>
+                <Text>Stake/Token:</Text>
+                <Text>{validatorData?.investment.nominal_value}</Text>
+              </StakePerToken>
+              <FormField>
+                <Text>{config.coinMap[config.stakingToken].denom}</Text>
+                <FormItem name="amount">
+                  <Input name="amount" placeholder="Enter amount" />
+                </FormItem>
+              </FormField>
+              <Button type="primary" onClick={formikProps.submitForm} disabled={formDisabled}>
+                Buy
+              </Button>
+            </FormStack>
+          </Form>
+        );
+      }}
     </Formik>
   );
 }
