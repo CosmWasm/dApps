@@ -1,24 +1,31 @@
 import { PageLayout } from "@cosmicdapp/design";
+import { CW20, Investment, TokenInfo, useSdk } from "@cosmicdapp/logic";
 import { Typography } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { DataList } from "../../components/DataList";
 import { HeaderBackMenu } from "../../components/HeaderBackMenu";
 import { pathValidator } from "../../paths";
-import { formatShares, formatUpdateTime, StakingValidator, useStakingValidator } from "../../utils/staking";
 import { MainStack } from "./style";
+import { Decimal } from "@cosmjs/math";
 
 const { Title } = Typography;
 
-function getValidatorDataMap(validator?: StakingValidator) {
-  if (!validator) return {};
+interface ValidatorData {
+  readonly tokenInfo: TokenInfo;
+  readonly investment: Investment;
+}
 
-  const totalStake = formatShares(validator.delegator_shares);
-  const commissionPercent = `${parseFloat(validator.commission.commission_rates.rate)} %`;
-  // TODO: update time !== uptime
-  const updateTime = formatUpdateTime(validator.commission.update_time);
+function getValidatorDataMap(validatorData?: ValidatorData) {
+  if (!validatorData) return {};
 
-  return { "Total Stake": totalStake, Commission: commissionPercent, "Update Time": updateTime };
+  const totalSupply = Decimal.fromAtomics(
+    validatorData.tokenInfo.total_supply,
+    validatorData.tokenInfo.decimals,
+  ).toString();
+  const commissionPercent = `${parseFloat(validatorData.investment.exit_tax)} %`;
+
+  return { "Total Supply": totalSupply, Commission: commissionPercent };
 }
 
 interface ValidatorDetailParams {
@@ -27,14 +34,28 @@ interface ValidatorDetailParams {
 
 export function ValidatorDetail(): JSX.Element {
   const { validatorAddress } = useParams<ValidatorDetailParams>();
-  const validator = useStakingValidator(validatorAddress);
+  const { getClient } = useSdk();
+
+  const [validatorData, setValidatorData] = useState<ValidatorData>();
+
+  useEffect(() => {
+    const client = getClient();
+
+    client.getContract(validatorAddress).then(async (contract) => {
+      const cw20contract = CW20(client).use(contract.address);
+      const tokenInfo = await cw20contract.tokenInfo();
+      const investment = await cw20contract.investment();
+
+      setValidatorData({ tokenInfo, investment });
+    });
+  }, [getClient, validatorAddress]);
 
   return (
     <PageLayout>
       <MainStack>
         <HeaderBackMenu path={`${pathValidator}/${validatorAddress}`} />
-        <Title>{validator?.description.moniker ?? ""}</Title>
-        <DataList {...getValidatorDataMap(validator)} />
+        <Title>{validatorData?.tokenInfo.name ?? ""}</Title>
+        <DataList {...getValidatorDataMap(validatorData)} />
       </MainStack>
     </PageLayout>
   );
