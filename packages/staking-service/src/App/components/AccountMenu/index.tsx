@@ -1,6 +1,5 @@
+import { useAccount } from "@cosmicdapp/logic";
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { pathValidator } from "../../paths";
 import avatarIcon from "./assets/avatar.svg";
 import copyIcon from "./assets/copy.svg";
 import closeMenuButton from "./assets/cross.svg";
@@ -12,8 +11,6 @@ import {
   AvatarName,
   CloseAccountStack,
   CloseMenuButton,
-  LinksStack,
-  LinkText,
   MenuCenter,
   MenuStack,
   NameText,
@@ -25,15 +22,18 @@ export interface AccountMenuProps extends React.HTMLAttributes<HTMLOrSVGElement>
 }
 
 export function AccountMenu({ name, ...props }: AccountMenuProps): JSX.Element {
-  const history = useHistory();
-  function goToHelp() {
+  const { account } = useAccount();
+
+  // NOTE Link functionality not clear, removing for now
+  /* const history = useHistory();
+   function goToHelp() {
     //TODO: set path to help
     history.push(pathValidator);
   }
   function goToLogout() {
     //TODO: set path to logout
     history.push(pathValidator);
-  }
+  } */
 
   const [open, setOpen] = useState(false);
   const openMenu = () => setOpen(true);
@@ -54,18 +54,21 @@ export function AccountMenu({ name, ...props }: AccountMenuProps): JSX.Element {
                 <NameText>{accountName} account</NameText>
               </AvatarName>
               <AddressCopyBox>
-                <AddressText>coraladdress234jl2k34ljk234</AddressText>
+                <AddressText>{account.address}</AddressText>
                 <AddressCopy src={copyIcon} alt="Copy address icon" />
               </AddressCopyBox>
             </CloseAccountStack>
-            <LinksStack>
+            {
+              // NOTE Link functionality not clear, removing for now
+              /* <LinksStack>
               <div onClick={goToHelp}>
                 <LinkText>Help</LinkText>
               </div>
               <div onClick={goToLogout}>
                 <LinkText>Logout</LinkText>
               </div>
-            </LinksStack>
+            </LinksStack> */
+            }
           </MenuStack>
         </MenuCenter>
       )}
