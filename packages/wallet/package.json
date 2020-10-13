@@ -16,7 +16,7 @@
   "dependencies": {
     "@cosmicdapp/design": "^0.2.0",
     "@cosmicdapp/logic": "^0.2.0",
-    "@cosmjs/launchpad": "^0.23.0-alpha.1",
+    "@cosmjs/launchpad": "^0.23.0",
     "antd": "^4.5.4",
     "formik": "^2.1.5",
     "formik-antd": "^2.0.1",
