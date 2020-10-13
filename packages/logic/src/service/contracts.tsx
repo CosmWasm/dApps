@@ -15,9 +15,9 @@ const defaultContext: ContractsContextType = {
 
 const ContractsContext = React.createContext<ContractsContextType>(defaultContext);
 
-const useContracts = (): ContractsContextType => React.useContext(ContractsContext);
+export const useContracts = (): ContractsContextType => React.useContext(ContractsContext);
 
-function ContractsProvider({ children }: React.HTMLAttributes<HTMLOrSVGElement>): JSX.Element {
+export function ContractsProvider({ children }: React.HTMLAttributes<HTMLOrSVGElement>): JSX.Element {
   const [contracts, setContracts] = useState<CW20Instance[]>(defaultContext.contracts);
 
   function addContract(newContract: CW20Instance) {
@@ -35,5 +35,3 @@ function ContractsProvider({ children }: React.HTMLAttributes<HTMLOrSVGElement>)
 
   return <ContractsContext.Provider value={value}>{children}</ContractsContext.Provider>;
 }
-
-export { ContractsProvider, useContracts };

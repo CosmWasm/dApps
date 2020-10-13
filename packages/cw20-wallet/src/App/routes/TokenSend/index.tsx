@@ -1,12 +1,11 @@
 import { BackButton, Loading, OperationResultState, PageLayout, YourAccount } from "@cosmicdapp/design";
-import { getErrorFromStackTrace, useAccount, useSdk } from "@cosmicdapp/logic";
+import { CW20, getErrorFromStackTrace, useAccount, useSdk } from "@cosmicdapp/logic";
 import { Decimal } from "@cosmjs/math";
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import backArrowIcon from "../../assets/backArrow.svg";
 import { pathOperationResult, pathTokenDetail, pathTokens } from "../../paths";
-import { CW20 } from "../../service/cw20";
 import { FormSendTokens, FormSendTokensFields } from "./FormSendTokens";
 import { AccountStack, Amount, MainStack } from "./style";
 

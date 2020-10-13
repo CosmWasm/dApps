@@ -1,5 +1,5 @@
 import { BackButton, OperationResultState, PageLayout } from "@cosmicdapp/design";
-import { getErrorFromStackTrace, useError, useSdk } from "@cosmicdapp/logic";
+import { CW20, getErrorFromStackTrace, useContracts, useError, useSdk } from "@cosmicdapp/logic";
 import { Contract } from "@cosmjs/cosmwasm";
 import { Button, Typography } from "antd";
 import { Formik } from "formik";
@@ -9,8 +9,6 @@ import { useHistory } from "react-router-dom";
 import backArrowIcon from "../../assets/backArrow.svg";
 import { contractValidationSchema } from "../../forms/validationSchemas";
 import { pathOperationResult, pathTokens, pathTokensAdd } from "../../paths";
-import { useContracts } from "../../service/contracts";
-import { CW20 } from "../../service/cw20";
 import { FormStack, MainStack } from "./style";
 
 const { Title } = Typography;

@@ -1,12 +1,11 @@
 import { BackButton, PageLayout } from "@cosmicdapp/design";
-import { useAccount, useSdk } from "@cosmicdapp/logic";
+import { AllowanceInfo, CW20, useAccount, useSdk } from "@cosmicdapp/logic";
 import { Decimal } from "@cosmjs/math";
 import { Button, Divider, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import backArrowIcon from "../../assets/backArrow.svg";
 import { pathAllowanceAdd, pathAllowanceEdit, pathAllowances, pathTokens } from "../../paths";
-import { AllowanceInfo, CW20 } from "../../service/cw20";
 import editIcon from "./assets/edit.svg";
 import {
   AllowanceAmountCopy,
