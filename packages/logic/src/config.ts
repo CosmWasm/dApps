@@ -1,13 +1,13 @@
-import { CoinMap } from "utils";
+import { CoinMap } from "./utils";
 
 export interface AppConfig {
+  readonly addressPrefix: string;
+  readonly gasPrice: number;
   readonly httpUrl: string;
   readonly feeToken: string;
-  readonly gasPrice: number;
+  readonly stakingToken?: string;
   readonly faucetUrl: string;
   readonly faucetToken: string;
-  readonly addressPrefix: string;
-  // codeId is the wasm codeId for the name service contract on the given chain
   readonly codeId?: number;
   readonly coinMap?: CoinMap;
 }
