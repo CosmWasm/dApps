@@ -1,8 +1,9 @@
 import { PageLayout } from "@cosmicdapp/design";
-import { useSdk } from "@cosmicdapp/logic";
+import { CW20, CW20Instance, useContracts, useSdk } from "@cosmicdapp/logic";
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { config } from "../../../config";
 import { HeaderBackMenu } from "../../components/HeaderBackMenu";
 import { pathValidator, pathValidators } from "../../paths";
 import { BorderContainer, MainStack, ValidatorItem, ValidatorStack } from "./style";
@@ -12,6 +13,13 @@ const { Title, Text } = Typography;
 interface ValidatorData {
   readonly name: string;
   readonly address: string;
+}
+
+async function getValidatorData(contract: CW20Instance): Promise<ValidatorData> {
+  const { name } = await contract.tokenInfo();
+  const address = contract.contractAddress;
+
+  return { name, address };
 }
 
 function validatorCompare(a: ValidatorData, b: ValidatorData) {
@@ -26,22 +34,28 @@ function validatorCompare(a: ValidatorData, b: ValidatorData) {
 
 export function Validators(): JSX.Element {
   const history = useHistory();
-  const { getStakingClient } = useSdk();
+  const { getClient } = useSdk();
+  const { contracts: cw20Contracts, addContract } = useContracts();
 
   const [validatorsData, setValidatorsData] = useState<ValidatorData[]>([]);
 
   useEffect(() => {
-    getStakingClient()
-      .staking.validators()
-      .then(({ result: validators }) => {
-        const validatorsData: ValidatorData[] = validators.map((validator) => ({
-          name: validator.description.moniker,
-          address: validator.operator_address,
-        }));
+    const client = getClient();
 
-        setValidatorsData(validatorsData.sort(validatorCompare));
+    client.getContracts(config.codeId).then((contracts) => {
+      contracts.forEach((contract) => {
+        const newCw20contract = CW20(client).use(contract.address);
+        addContract(newCw20contract);
       });
-  }, [getStakingClient]);
+    });
+  }, [getClient, addContract]);
+
+  useEffect(() => {
+    const validatorsDataPromises = cw20Contracts.map(getValidatorData);
+    Promise.all(validatorsDataPromises).then((validatorsData) =>
+      setValidatorsData(validatorsData.sort(validatorCompare)),
+    );
+  }, [cw20Contracts]);
 
   function goToValidator(address: string) {
     history.push(`${pathValidator}/${address}`);
