@@ -1,8 +1,7 @@
 import { PageLayout } from "@cosmicdapp/design";
-import { nativeCoinToDisplay } from "@cosmicdapp/logic";
-import { Coin } from "@cosmjs/launchpad";
+import { CW20, Investment, nativeCoinToDisplay, TokenInfo, useSdk } from "@cosmicdapp/logic";
 import { Button, Typography } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { config } from "../../../config";
 import { DataList } from "../../components/DataList";
@@ -16,29 +15,52 @@ import {
   pathWallet,
   pathWithdraw,
 } from "../../paths";
-import { formatShares, StakingValidator, useStakingValidator } from "../../utils/staking";
 import { ButtonStack, MainStack, NavCenter, TitleNavStack } from "./style";
+import { Decimal } from "@cosmjs/math";
 
 const { Title } = Typography;
 
-function getValidatorDataMap(validator?: StakingValidator) {
-  if (!validator) return {};
-
-  const totalStake = formatShares(validator.delegator_shares);
-  const coin: Coin = { denom: config.feeToken, amount: validator.tokens };
-  const tokens = nativeCoinToDisplay(coin, config.coinMap).amount;
-
-  return { "Total Stake": totalStake, Tokens: tokens };
+interface ValidatorData {
+  readonly tokenInfo: TokenInfo;
+  readonly investment: Investment;
 }
 
-interface ValidatorParams {
+function getValidatorDataMap(validatorData: ValidatorData) {
+  if (!validatorData) return {};
+
+  const totalSupply = Decimal.fromAtomics(
+    validatorData.tokenInfo.total_supply,
+    validatorData.tokenInfo.decimals,
+  ).toString();
+  const stakedCoin = validatorData.investment.staked_tokens;
+  const stakedAmount = nativeCoinToDisplay(stakedCoin, config.coinMap).amount;
+  const stakePerToken = validatorData.investment.nominal_value;
+
+  return { "Total Supply": totalSupply, "Staked Tokens": stakedAmount, "Stake/Token": stakePerToken };
+}
+
+interface ValidatorHomeParams {
   readonly validatorAddress: string;
 }
 
 export function ValidatorHome(): JSX.Element {
   const history = useHistory();
-  const { validatorAddress } = useParams<ValidatorParams>();
-  const validator = useStakingValidator(validatorAddress);
+  const { validatorAddress } = useParams<ValidatorHomeParams>();
+  const { getClient } = useSdk();
+
+  const [validatorData, setValidatorData] = useState<ValidatorData>();
+
+  useEffect(() => {
+    const client = getClient();
+
+    client.getContract(validatorAddress).then(async (contract) => {
+      const cw20contract = CW20(client).use(contract.address);
+      const tokenInfo = await cw20contract.tokenInfo();
+      const investment = await cw20contract.investment();
+
+      setValidatorData({ tokenInfo, investment });
+    });
+  }, [getClient, validatorAddress]);
 
   function goToWallet() {
     history.push(`${pathWallet}/${validatorAddress}`);
@@ -53,11 +75,11 @@ export function ValidatorHome(): JSX.Element {
   }
 
   function goToWithdraw() {
-    history.push(pathWithdraw);
+    history.push(`${pathWithdraw}/${validatorAddress}`);
   }
 
   function goToClaims() {
-    history.push(pathClaims);
+    history.push(`${pathClaims}/${validatorAddress}`);
   }
 
   return (
@@ -65,7 +87,7 @@ export function ValidatorHome(): JSX.Element {
       <MainStack>
         <HeaderBackMenu path={pathValidators} />
         <TitleNavStack>
-          <Title>{validator?.description.moniker ?? ""}</Title>
+          <Title>{validatorData?.tokenInfo.name ?? ""}</Title>
           <NavCenter>
             <ButtonStack>
               <Button type="primary" onClick={goToWallet}>
@@ -77,7 +99,7 @@ export function ValidatorHome(): JSX.Element {
             </ButtonStack>
           </NavCenter>
         </TitleNavStack>
-        <DataList {...getValidatorDataMap(validator)} />
+        <DataList {...getValidatorDataMap(validatorData)} />
         <ButtonStack>
           <Button type="primary" onClick={goToPurchase}>
             Buy
@@ -85,7 +107,8 @@ export function ValidatorHome(): JSX.Element {
           <Button type="primary" onClick={goToWithdraw}>
             Withdraw
           </Button>
-          <Button type="primary" onClick={goToClaims}>
+          {/* Disable while claims are only a number */}
+          <Button disabled type="primary" onClick={goToClaims}>
             Claims
           </Button>
         </ButtonStack>
