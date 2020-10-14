@@ -1,5 +1,11 @@
 import { GlobalStyle } from "@cosmicdapp/design";
-import { AccountProvider, ErrorProvider, ProtectedSwitch, SdkProvider } from "@cosmicdapp/logic";
+import {
+  AccountProvider,
+  ContractsProvider,
+  ErrorProvider,
+  ProtectedSwitch,
+  SdkProvider,
+} from "@cosmicdapp/logic";
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { config } from "../config";
@@ -23,7 +29,6 @@ import TokenDetail from "./routes/TokenDetail";
 import Tokens from "./routes/Tokens";
 import TokensAdd from "./routes/TokensAdd";
 import TokenSend from "./routes/TokenSend";
-import { ContractsProvider } from "./service/contracts";
 
 function App(): JSX.Element {
   return (

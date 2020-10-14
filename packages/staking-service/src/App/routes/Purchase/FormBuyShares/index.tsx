@@ -1,48 +1,90 @@
+import { displayAmountToNative, getErrorFromStackTrace, useAccount } from "@cosmicdapp/logic";
+import { Coin } from "@cosmjs/launchpad";
 import { Button, Typography } from "antd";
 import { Formik } from "formik";
 import { Form, FormItem, Input } from "formik-antd";
 import React from "react";
-import { FormField, FormStack } from "./style";
+import { useHistory } from "react-router-dom";
+import { ValidatorData } from "..";
+import { config } from "../../../../config";
+import { pathOperationResult, pathPurchase, pathWallet } from "../../../paths";
+import { FormField, FormStack, StakePerToken } from "./style";
 
 const { Text } = Typography;
 
-export interface FormBuySharesFields {
+interface FormBuySharesFields {
   readonly amount: string;
-  readonly shares: string;
 }
 
 interface FormBuySharesProps {
-  readonly submitBuyShares: (values: unknown) => void;
+  readonly validatorData: ValidatorData;
 }
 
-export function FormBuyShares({ submitBuyShares }: FormBuySharesProps): JSX.Element {
+export function FormBuyShares({ validatorData }: FormBuySharesProps): JSX.Element {
+  const history = useHistory();
+  const { refreshAccount } = useAccount();
+
+  async function submitBuyShares({ amount }: FormBuySharesFields) {
+    const nativeAmountString = displayAmountToNative(amount, config.coinMap, config.stakingToken);
+    const nativeAmountCoin: Coin = { amount: nativeAmountString, denom: config.stakingToken };
+
+    try {
+      const txHash = await validatorData.cw20Contract.bond(nativeAmountCoin);
+      if (!txHash) {
+        throw Error("Transfer from failed");
+      }
+
+      refreshAccount();
+
+      history.push({
+        pathname: pathOperationResult,
+        state: {
+          success: true,
+          message: `${amount} ${config.stakingToken} successfully bonded`,
+          customButtonText: "Wallet",
+          customButtonActionPath: `${pathWallet}/${validatorData.address}`,
+        },
+      });
+    } catch (stackTrace) {
+      console.error(stackTrace);
+
+      history.push({
+        pathname: pathOperationResult,
+        state: {
+          success: false,
+          message: "Bond transaction failed:",
+          error: getErrorFromStackTrace(stackTrace),
+          customButtonActionPath: `${pathPurchase}/${validatorData.address}`,
+        },
+      });
+    }
+  }
+
   return (
-    <Formik initialValues={{ amount: "", shares: "" }} onSubmit={submitBuyShares}>
-      {(formikProps) => (
-        <Form>
-          <FormStack>
-            <FormField>
-              <Text>Atom</Text>
-              <FormItem name="amount">
-                <Input name="amount" placeholder="Enter amount" />
-              </FormItem>
-            </FormField>
-            <FormField>
-              <Text>Iris Net Shares</Text>
-              <FormItem name="shares">
-                <Input name="shares" placeholder="XXXXXX" />
-              </FormItem>
-            </FormField>
-            <Button
-              type="primary"
-              onClick={formikProps.submitForm}
-              disabled={!(formikProps.isValid && formikProps.dirty)}
-            >
-              Buy
-            </Button>
-          </FormStack>
-        </Form>
-      )}
+    <Formik initialValues={{ amount: "" }} onSubmit={submitBuyShares}>
+      {(formikProps) => {
+        const formDisabled = !(formikProps.isValid && formikProps.dirty);
+
+        return (
+          <Form>
+            <FormStack>
+              <StakePerToken>
+                <Text>Stake/Token:</Text>
+                <Text>{validatorData?.investment.nominal_value}</Text>
+              </StakePerToken>
+              <FormField>
+                <Text>{config.coinMap[config.stakingToken].denom}</Text>
+                <FormItem name="amount">
+                  <Input name="amount" placeholder="Enter amount" />
+                </FormItem>
+              </FormField>
+              <Button type="primary" onClick={formikProps.submitForm} disabled={formDisabled}>
+                Buy
+              </Button>
+            </FormStack>
+          </Form>
+        );
+      }}
     </Formik>
   );
 }

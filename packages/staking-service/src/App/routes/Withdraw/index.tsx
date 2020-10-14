@@ -1,20 +1,47 @@
 import { PageLayout } from "@cosmicdapp/design";
+import { CW20, CW20Instance, TokenInfo, useAccount, useSdk } from "@cosmicdapp/logic";
 import { Typography } from "antd";
-import React from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { HeaderBackMenu } from "../../components/HeaderBackMenu";
-import { pathOperationResult } from "../../paths";
 import { FormWithdrawBalance } from "./FormWithdrawBalance";
 import { HeaderTitleStack, MainStack } from "./style";
 
 const { Title } = Typography;
 
-export function Withdraw(): JSX.Element {
-  const history = useHistory();
+export interface ValidatorData {
+  readonly address: string;
+  readonly cw20Contract: CW20Instance;
+  readonly tokenInfo: TokenInfo;
+  readonly balance: string;
+}
 
-  function submitWithdrawBalance() {
-    history.push(pathOperationResult);
-  }
+interface WithdrawParams {
+  readonly validatorAddress: string;
+}
+
+export function Withdraw(): JSX.Element {
+  const { validatorAddress } = useParams<WithdrawParams>();
+  const { getClient } = useSdk();
+  const { account } = useAccount();
+
+  const [validatorData, setValidatorData] = useState<ValidatorData>();
+
+  useEffect(() => {
+    const client = getClient();
+
+    (async function updateValidatorData() {
+      const contract = await client.getContract(validatorAddress);
+      const cw20Contract = CW20(client).use(contract.address);
+
+      const [tokenInfo, balance] = await Promise.all([
+        cw20Contract.tokenInfo(),
+        cw20Contract.balance(account.address),
+      ]);
+
+      setValidatorData({ address: validatorAddress, cw20Contract, tokenInfo, balance });
+    })();
+  }, [getClient, validatorAddress, account.address]);
 
   return (
     <PageLayout>
@@ -22,9 +49,9 @@ export function Withdraw(): JSX.Element {
         <HeaderTitleStack>
           <HeaderBackMenu />
           <Title>Withdraw</Title>
-          <Title level={2}>Iris Net</Title>
+          <Title level={2}>{validatorData?.tokenInfo.name ?? ""}</Title>
         </HeaderTitleStack>
-        <FormWithdrawBalance submitWithdrawBalance={submitWithdrawBalance} />
+        <FormWithdrawBalance validatorData={validatorData} />
       </MainStack>
     </PageLayout>
   );

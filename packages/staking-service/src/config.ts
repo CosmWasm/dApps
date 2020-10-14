@@ -1,12 +1,12 @@
 import { AppConfig, CoinMap } from "@cosmicdapp/logic";
 
 const local: AppConfig = {
+  addressPrefix: "cosmos",
+  gasPrice: 0.025,
   httpUrl: "http://localhost:1317",
   feeToken: "ucosm",
-  gasPrice: 0.025,
   faucetUrl: "http://localhost:8000/credit",
   faucetToken: "COSM",
-  addressPrefix: "cosmos",
 };
 
 const coinMap: CoinMap = {
@@ -15,12 +15,14 @@ const coinMap: CoinMap = {
 };
 
 const coralnet: AppConfig = {
+  addressPrefix: "coral",
+  gasPrice: 0.025,
   httpUrl: "https://lcd.coralnet.cosmwasm.com",
   feeToken: "ushell",
-  gasPrice: 0.025,
+  stakingToken: "ureef",
   faucetUrl: "https://faucet.coralnet.cosmwasm.com/credit",
   faucetToken: "SHELL",
-  addressPrefix: "coral",
+  codeId: 107,
   coinMap,
 };
 

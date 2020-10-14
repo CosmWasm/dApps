@@ -1,8 +1,12 @@
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm";
+import { Coin } from "@cosmjs/launchpad";
 
-type Expiration = { readonly at_height: number } | { readonly at_time: number } | { readonly never: unknown };
+export type Expiration =
+  | { readonly at_height: number }
+  | { readonly at_time: number }
+  | { readonly never: unknown };
 
-interface AllowanceResponse {
+export interface AllowanceResponse {
   readonly allowance: string; // integer as string
   readonly expires: Expiration;
 }
@@ -13,23 +17,37 @@ export interface AllowanceInfo {
   readonly expires: Expiration;
 }
 
-interface AllAllowancesResponse {
+export interface AllAllowancesResponse {
   readonly allowances: readonly AllowanceInfo[];
 }
 
-interface TokenInfo {
+export interface TokenInfo {
   readonly name: string;
   readonly symbol: string;
   readonly decimals: number;
   readonly total_supply: string;
 }
 
-interface AllAccountsResponse {
+export interface Investment {
+  readonly exit_tax: string;
+  readonly min_withdrawal: string;
+  readonly nominal_value: string;
+  readonly owner: string;
+  readonly staked_tokens: Coin;
+  readonly token_supply: string;
+  readonly validator: string;
+}
+
+export interface Claims {
+  readonly claims: number;
+}
+
+export interface AllAccountsResponse {
   // list of bech32 address that have a balance
   readonly accounts: readonly string[];
 }
 
-interface CW20Instance {
+export interface CW20Instance {
   readonly contractAddress: string;
 
   // queries
@@ -38,6 +56,8 @@ interface CW20Instance {
   allAllowances: (owner: string, startAfter?: string, limit?: number) => Promise<AllAllowancesResponse>;
   allAccounts: (startAfter?: string, limit?: number) => Promise<readonly string[]>;
   tokenInfo: () => Promise<TokenInfo>;
+  investment: () => Promise<Investment>;
+  claims: (address: string) => Promise<Claims>;
   minter: () => Promise<any>;
 
   // actions
@@ -47,13 +67,15 @@ interface CW20Instance {
   increaseAllowance: (recipient: string, amount: string) => Promise<string>;
   decreaseAllowance: (recipient: string, amount: string) => Promise<string>;
   transferFrom: (owner: string, recipient: string, amount: string) => Promise<string>;
+  bond: (coin: Coin) => Promise<string>;
+  unbond: (amount: string) => Promise<string>;
 }
 
-interface CW20Contract {
+export interface CW20Contract {
   use: (contractAddress: string) => CW20Instance;
 }
 
-const CW20 = (client: SigningCosmWasmClient): CW20Contract => {
+export const CW20 = (client: SigningCosmWasmClient): CW20Contract => {
   const use = (contractAddress: string): CW20Instance => {
     const balance = async (account?: string): Promise<string> => {
       const address = account || client.senderAddress;
@@ -82,8 +104,16 @@ const CW20 = (client: SigningCosmWasmClient): CW20Contract => {
       return accounts.accounts;
     };
 
-    const tokenInfo = async (): Promise<any> => {
+    const tokenInfo = async (): Promise<TokenInfo> => {
       return client.queryContractSmart(contractAddress, { token_info: {} });
+    };
+
+    const investment = async (): Promise<Investment> => {
+      return client.queryContractSmart(contractAddress, { investment: {} });
+    };
+
+    const claims = async (address: string): Promise<Claims> => {
+      return client.queryContractSmart(contractAddress, { claims: { address } });
     };
 
     const minter = async (): Promise<any> => {
@@ -123,6 +153,16 @@ const CW20 = (client: SigningCosmWasmClient): CW20Contract => {
       return result.transactionHash;
     };
 
+    const bond = async (coin: Coin): Promise<string> => {
+      const result = await client.execute(contractAddress, { bond: {} }, undefined, [coin]);
+      return result.transactionHash;
+    };
+
+    const unbond = async (amount: string): Promise<string> => {
+      const result = await client.execute(contractAddress, { unbond: { amount } });
+      return result.transactionHash;
+    };
+
     return {
       contractAddress,
       balance,
@@ -130,6 +170,8 @@ const CW20 = (client: SigningCosmWasmClient): CW20Contract => {
       allAllowances,
       allAccounts,
       tokenInfo,
+      investment,
+      claims,
       minter,
       mint,
       transfer,
@@ -137,10 +179,9 @@ const CW20 = (client: SigningCosmWasmClient): CW20Contract => {
       increaseAllowance,
       decreaseAllowance,
       transferFrom,
+      bond,
+      unbond,
     };
   };
   return { use };
 };
-
-export type { CW20Instance };
-export { CW20 };

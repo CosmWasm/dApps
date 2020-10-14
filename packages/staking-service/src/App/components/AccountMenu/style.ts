@@ -71,7 +71,7 @@ export const AddressCopyBox = styled.div`
 `;
 
 export const AddressText = styled(Text)`
-  font-size: var(--s-1);
+  font-size: var(--s-2);
 `;
 
 export const AddressCopy = styled.img`

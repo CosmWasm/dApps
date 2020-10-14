@@ -1,6 +1,7 @@
 export const pathLogin = "/login";
-export const pathHome = "/home";
-export const pathDetails = "/details";
+export const pathValidators = "/validators";
+export const pathValidator = "/validator";
+export const pathDetail = "/detail";
 export const pathWallet = "/wallet";
 export const pathPurchase = "/purchase";
 export const pathWithdraw = "/withdraw";

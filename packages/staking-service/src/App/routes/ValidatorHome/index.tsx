@@ -1,12 +1,21 @@
 import { PageLayout } from "@cosmicdapp/design";
-import { Claims, CW20, Investment, TokenInfo, useAccount, useSdk } from "@cosmicdapp/logic";
+import { CW20, Investment, nativeCoinToDisplay, TokenInfo, useSdk } from "@cosmicdapp/logic";
 import { Decimal } from "@cosmjs/math";
 import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import { config } from "../../../config";
 import { DataList } from "../../components/DataList";
 import { HeaderBackMenu } from "../../components/HeaderBackMenu";
-import { pathClaims, pathDetail, pathPurchase, pathValidator, pathWithdraw } from "../../paths";
+import {
+  pathClaims,
+  pathDetail,
+  pathPurchase,
+  pathValidator,
+  pathValidators,
+  pathWallet,
+  pathWithdraw,
+} from "../../paths";
 import { ButtonStack, MainStack, NavCenter, TitleNavStack } from "./style";
 
 const { Title } = Typography;
@@ -14,29 +23,30 @@ const { Title } = Typography;
 interface ValidatorData {
   readonly tokenInfo: TokenInfo;
   readonly investment: Investment;
-  readonly balance: string;
-  readonly claims: Claims;
 }
 
 function getValidatorDataMap(validatorData: ValidatorData) {
   if (!validatorData) return {};
 
+  const totalSupply = Decimal.fromAtomics(
+    validatorData.tokenInfo.total_supply,
+    validatorData.tokenInfo.decimals,
+  ).toString();
+  const stakedCoin = validatorData.investment.staked_tokens;
+  const stakedAmount = nativeCoinToDisplay(stakedCoin, config.coinMap).amount;
   const stakePerToken = validatorData.investment.nominal_value;
-  const balance = Decimal.fromAtomics(validatorData.balance, validatorData.tokenInfo.decimals).toString();
-  const claims = validatorData.claims.claims.toString();
 
-  return { "Stake/Token": stakePerToken, Balance: balance, Claims: claims };
+  return { "Total Supply": totalSupply, "Staked Tokens": stakedAmount, "Stake/Token": stakePerToken };
 }
 
-interface WalletParams {
+interface ValidatorHomeParams {
   readonly validatorAddress: string;
 }
 
-export function Wallet(): JSX.Element {
+export function ValidatorHome(): JSX.Element {
   const history = useHistory();
-  const { validatorAddress } = useParams<WalletParams>();
+  const { validatorAddress } = useParams<ValidatorHomeParams>();
   const { getClient } = useSdk();
-  const { account } = useAccount();
 
   const [validatorData, setValidatorData] = useState<ValidatorData>();
 
@@ -47,16 +57,18 @@ export function Wallet(): JSX.Element {
       const contract = await client.getContract(validatorAddress);
       const cw20Contract = CW20(client).use(contract.address);
 
-      const [tokenInfo, investment, balance, claims] = await Promise.all([
+      const [tokenInfo, investment] = await Promise.all([
         cw20Contract.tokenInfo(),
         cw20Contract.investment(),
-        cw20Contract.balance(account.address),
-        cw20Contract.claims(account.address),
       ]);
 
-      setValidatorData({ tokenInfo, investment, balance, claims });
+      setValidatorData({ tokenInfo, investment });
     })();
-  }, [getClient, validatorAddress, account.address]);
+  }, [getClient, validatorAddress]);
+
+  function goToWallet() {
+    history.push(`${pathWallet}/${validatorAddress}`);
+  }
 
   function goToValidatorDetail() {
     history.push(`${pathValidator}/${validatorAddress}${pathDetail}`);
@@ -77,13 +89,18 @@ export function Wallet(): JSX.Element {
   return (
     <PageLayout>
       <MainStack>
-        <HeaderBackMenu />
+        <HeaderBackMenu path={pathValidators} />
         <TitleNavStack>
           <Title>{validatorData?.tokenInfo.name ?? ""}</Title>
           <NavCenter>
-            <Button type="primary" onClick={goToValidatorDetail}>
-              View Details
-            </Button>
+            <ButtonStack>
+              <Button type="primary" onClick={goToWallet}>
+                Wallet
+              </Button>
+              <Button type="primary" onClick={goToValidatorDetail}>
+                View Details
+              </Button>
+            </ButtonStack>
           </NavCenter>
         </TitleNavStack>
         <DataList {...getValidatorDataMap(validatorData)} />

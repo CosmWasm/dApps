@@ -1,4 +1,4 @@
-import { useSdk } from "@cosmicdapp/logic";
+import { CW20, CW20Instance, useContracts, useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Decimal } from "@cosmjs/math";
 import { Typography } from "antd";
@@ -6,8 +6,6 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { config } from "../../../../config";
 import { pathTokenDetail } from "../../../paths";
-import { useContracts } from "../../../service/contracts";
-import { CW20, CW20Instance } from "../../../service/cw20";
 import { BorderContainer, TokenItem, TokenStack } from "./style";
 
 const { Text } = Typography;

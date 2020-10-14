@@ -15,6 +15,27 @@ export const FormStack = styled(Stack)`
   }
 `;
 
+export const StakePerToken = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+
+  span {
+    font-family: var(--ff-iceland);
+    font-size: var(--s2);
+    line-height: var(--s2);
+  }
+
+  span + span {
+    margin-left: var(--s2);
+
+    font-family: var(--ff-montserrat);
+    font-weight: bolder;
+    font-size: var(--s2);
+    line-height: var(--s2);
+  }
+`;
+
 export const FormField = styled.div`
   display: flex;
   align-items: center;
