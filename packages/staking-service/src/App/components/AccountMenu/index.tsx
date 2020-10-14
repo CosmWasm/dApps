@@ -1,4 +1,5 @@
 import { useAccount } from "@cosmicdapp/logic";
+import copyToClipboard from "clipboard-copy";
 import React, { useState } from "react";
 import avatarIcon from "./assets/avatar.svg";
 import copyIcon from "./assets/copy.svg";
@@ -55,7 +56,13 @@ export function AccountMenu({ name, ...props }: AccountMenuProps): JSX.Element {
               </AvatarName>
               <AddressCopyBox>
                 <AddressText>{account.address}</AddressText>
-                <AddressCopy src={copyIcon} alt="Copy address icon" />
+                <AddressCopy
+                  src={copyIcon}
+                  alt="Copy address icon"
+                  onClick={() => {
+                    copyToClipboard(account.address);
+                  }}
+                />
               </AddressCopyBox>
             </CloseAccountStack>
             {
