@@ -1,5 +1,6 @@
 import { PageLayout } from "@cosmicdapp/design";
 import { CW20, Investment, TokenInfo, useSdk } from "@cosmicdapp/logic";
+import { Decimal } from "@cosmjs/math";
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -7,7 +8,6 @@ import { DataList } from "../../components/DataList";
 import { HeaderBackMenu } from "../../components/HeaderBackMenu";
 import { pathValidator } from "../../paths";
 import { MainStack } from "./style";
-import { Decimal } from "@cosmjs/math";
 
 const { Title } = Typography;
 
@@ -41,13 +41,17 @@ export function ValidatorDetail(): JSX.Element {
   useEffect(() => {
     const client = getClient();
 
-    client.getContract(validatorAddress).then(async (contract) => {
-      const cw20contract = CW20(client).use(contract.address);
-      const tokenInfo = await cw20contract.tokenInfo();
-      const investment = await cw20contract.investment();
+    (async function updateValidatorData() {
+      const contract = await client.getContract(validatorAddress);
+      const cw20Contract = CW20(client).use(contract.address);
+
+      const [tokenInfo, investment] = await Promise.all([
+        cw20Contract.tokenInfo(),
+        cw20Contract.investment(),
+      ]);
 
       setValidatorData({ tokenInfo, investment });
-    });
+    })();
   }, [getClient, validatorAddress]);
 
   return (

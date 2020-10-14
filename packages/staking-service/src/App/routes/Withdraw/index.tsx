@@ -11,7 +11,7 @@ const { Title } = Typography;
 
 export interface ValidatorData {
   readonly address: string;
-  readonly cw20contract: CW20Instance;
+  readonly cw20Contract: CW20Instance;
   readonly tokenInfo: TokenInfo;
   readonly balance: string;
 }
@@ -30,13 +30,17 @@ export function Withdraw(): JSX.Element {
   useEffect(() => {
     const client = getClient();
 
-    client.getContract(validatorAddress).then(async (contract) => {
-      const cw20contract = CW20(client).use(contract.address);
-      const tokenInfo = await cw20contract.tokenInfo();
-      const balance = await cw20contract.balance(account.address);
+    (async function updateValidatorData() {
+      const contract = await client.getContract(validatorAddress);
+      const cw20Contract = CW20(client).use(contract.address);
 
-      setValidatorData({ address: validatorAddress, cw20contract, tokenInfo, balance });
-    });
+      const [tokenInfo, balance] = await Promise.all([
+        cw20Contract.tokenInfo(),
+        cw20Contract.balance(account.address),
+      ]);
+
+      setValidatorData({ address: validatorAddress, cw20Contract, tokenInfo, balance });
+    })();
   }, [getClient, validatorAddress, account.address]);
 
   return (

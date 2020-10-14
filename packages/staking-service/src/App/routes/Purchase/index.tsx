@@ -11,7 +11,7 @@ const { Title } = Typography;
 
 export interface ValidatorData {
   readonly address: string;
-  readonly cw20contract: CW20Instance;
+  readonly cw20Contract: CW20Instance;
   readonly tokenInfo: TokenInfo;
   readonly investment: Investment;
 }
@@ -29,13 +29,17 @@ export function Purchase(): JSX.Element {
   useEffect(() => {
     const client = getClient();
 
-    client.getContract(validatorAddress).then(async (contract) => {
-      const cw20contract = CW20(client).use(contract.address);
-      const tokenInfo = await cw20contract.tokenInfo();
-      const investment = await cw20contract.investment();
+    (async function updateValidatorData() {
+      const contract = await client.getContract(validatorAddress);
+      const cw20Contract = CW20(client).use(contract.address);
 
-      setValidatorData({ address: validatorAddress, cw20contract, tokenInfo, investment });
-    });
+      const [tokenInfo, investment] = await Promise.all([
+        cw20Contract.tokenInfo(),
+        cw20Contract.investment(),
+      ]);
+
+      setValidatorData({ address: validatorAddress, cw20Contract, tokenInfo, investment });
+    })();
   }, [getClient, validatorAddress]);
 
   return (

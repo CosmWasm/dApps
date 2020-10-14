@@ -43,15 +43,19 @@ export function Wallet(): JSX.Element {
   useEffect(() => {
     const client = getClient();
 
-    client.getContract(validatorAddress).then(async (contract) => {
-      const cw20contract = CW20(client).use(contract.address);
-      const tokenInfo = await cw20contract.tokenInfo();
-      const investment = await cw20contract.investment();
-      const balance = await cw20contract.balance(account.address);
-      const claims = await cw20contract.claims(account.address);
+    (async function updateValidatorData() {
+      const contract = await client.getContract(validatorAddress);
+      const cw20Contract = CW20(client).use(contract.address);
+
+      const [tokenInfo, investment, balance, claims] = await Promise.all([
+        cw20Contract.tokenInfo(),
+        cw20Contract.investment(),
+        cw20Contract.balance(account.address),
+        cw20Contract.claims(account.address),
+      ]);
 
       setValidatorData({ tokenInfo, investment, balance, claims });
-    });
+    })();
   }, [getClient, validatorAddress, account.address]);
 
   function goToValidatorDetail() {

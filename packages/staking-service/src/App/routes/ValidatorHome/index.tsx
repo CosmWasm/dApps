@@ -1,5 +1,6 @@
 import { PageLayout } from "@cosmicdapp/design";
 import { CW20, Investment, nativeCoinToDisplay, TokenInfo, useSdk } from "@cosmicdapp/logic";
+import { Decimal } from "@cosmjs/math";
 import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
@@ -16,7 +17,6 @@ import {
   pathWithdraw,
 } from "../../paths";
 import { ButtonStack, MainStack, NavCenter, TitleNavStack } from "./style";
-import { Decimal } from "@cosmjs/math";
 
 const { Title } = Typography;
 
@@ -53,13 +53,17 @@ export function ValidatorHome(): JSX.Element {
   useEffect(() => {
     const client = getClient();
 
-    client.getContract(validatorAddress).then(async (contract) => {
-      const cw20contract = CW20(client).use(contract.address);
-      const tokenInfo = await cw20contract.tokenInfo();
-      const investment = await cw20contract.investment();
+    (async function updateValidatorData() {
+      const contract = await client.getContract(validatorAddress);
+      const cw20Contract = CW20(client).use(contract.address);
+
+      const [tokenInfo, investment] = await Promise.all([
+        cw20Contract.tokenInfo(),
+        cw20Contract.investment(),
+      ]);
 
       setValidatorData({ tokenInfo, investment });
-    });
+    })();
   }, [getClient, validatorAddress]);
 
   function goToWallet() {
