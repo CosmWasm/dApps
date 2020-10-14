@@ -1,30 +1,62 @@
-import { RedirectLocation, useAccount, useSdk } from "@cosmicdapp/logic";
+import {
+  loadLedgerWallet,
+  loadOrCreateWallet,
+  RedirectLocation,
+  useAccount,
+  useError,
+  useSdk,
+  WalletLoader,
+} from "@cosmicdapp/logic";
 import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { PageLayout } from "../../layout/PageLayout";
 import { Loading } from "../../logic/Loading";
-import { LightText, MainStack, WelcomeStack } from "./style";
+import { ErrorText, LightText, MainStack, WelcomeStack } from "./style";
 
 const { Title } = Typography;
+
+function disableLedgerLogin() {
+  const anyNavigator: any = navigator;
+  return !anyNavigator?.usb;
+}
 
 interface LoginProps {
   readonly pathAfterLogin: string;
   readonly appName: string;
   readonly appLogo: string;
+  readonly addressPrefix?: string;
 }
 
-export function Login({ pathAfterLogin, appName, appLogo }: LoginProps): JSX.Element {
+export function Login({ addressPrefix, pathAfterLogin, appName, appLogo }: LoginProps): JSX.Element {
   const history = useHistory();
   const state = history.location.state as RedirectLocation;
+  const { error, setError, clearError } = useError();
   const sdk = useSdk();
   const { refreshAccount, account } = useAccount();
 
   const [initializing, setInitializing] = useState(false);
 
-  function init() {
+  async function init(loadWallet: WalletLoader) {
     setInitializing(true);
-    sdk.init();
+    clearError();
+
+    try {
+      const signer = await loadWallet(addressPrefix);
+      await sdk.init(signer);
+    } catch (error) {
+      console.error(error);
+      setError(Error(error).message);
+      setInitializing(false);
+    }
+  }
+
+  async function initBrowser() {
+    await init(loadOrCreateWallet);
+  }
+
+  async function initLedger() {
+    await init(loadLedgerWallet);
   }
 
   useEffect(() => {
@@ -55,10 +87,14 @@ export function Login({ pathAfterLogin, appName, appLogo }: LoginProps): JSX.Ele
             <LightText>Welcome to your {appName}</LightText>
             <LightText>Select one of the following options to start:</LightText>
           </Typography>
-          <Button type="primary" onClick={init}>
+          {error && <ErrorText>{error}</ErrorText>}
+          <Button type="primary" onClick={initBrowser}>
             Browser (Demo)
           </Button>
-          <Button disabled type="primary">
+          <Button type="primary" disabled={disableLedgerLogin()} onClick={initLedger}>
+            Ledger (Secure)
+          </Button>
+          <Button type="primary" disabled>
             Keplr (Secure)
           </Button>
         </WelcomeStack>

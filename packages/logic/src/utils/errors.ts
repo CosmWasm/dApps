@@ -4,5 +4,5 @@ export function getErrorFromStackTrace(stackTrace: any): string {
   const match = stringStackTrace.match(/.*\s*$/g)[0];
   const error = match.substring(0, match.lastIndexOf(";"));
 
-  return error;
+  return error || stringStackTrace;
 }

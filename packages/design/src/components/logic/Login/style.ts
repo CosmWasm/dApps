@@ -20,3 +20,7 @@ export const LightText = styled(Text)`
   display: block;
   font-weight: lighter;
 `;
+
+export const ErrorText = styled(Text)`
+  color: var(--color-red);
+`;
