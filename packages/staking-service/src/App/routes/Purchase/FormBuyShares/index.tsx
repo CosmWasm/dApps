@@ -1,4 +1,3 @@
-import { OperationResultState } from "@cosmicdapp/design";
 import { displayAmountToNative, getErrorFromStackTrace, useAccount } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Button, Typography } from "antd";
@@ -30,7 +29,7 @@ export function FormBuyShares({ validatorData }: FormBuySharesProps): JSX.Elemen
     const nativeAmountCoin: Coin = { amount: nativeAmountString, denom: config.stakingToken };
 
     try {
-      const txHash = await validatorData.cw20contract.bond(nativeAmountCoin);
+      const txHash = await validatorData.cw20Contract.bond(nativeAmountCoin);
       if (!txHash) {
         throw Error("Transfer from failed");
       }
@@ -44,7 +43,7 @@ export function FormBuyShares({ validatorData }: FormBuySharesProps): JSX.Elemen
           message: `${amount} ${config.stakingToken} successfully bonded`,
           customButtonText: "Wallet",
           customButtonActionPath: `${pathWallet}/${validatorData.address}`,
-        } as OperationResultState,
+        },
       });
     } catch (stackTrace) {
       console.error(stackTrace);
@@ -56,7 +55,7 @@ export function FormBuyShares({ validatorData }: FormBuySharesProps): JSX.Elemen
           message: "Bond transaction failed:",
           error: getErrorFromStackTrace(stackTrace),
           customButtonActionPath: `${pathPurchase}/${validatorData.address}`,
-        } as OperationResultState,
+        },
       });
     }
   }

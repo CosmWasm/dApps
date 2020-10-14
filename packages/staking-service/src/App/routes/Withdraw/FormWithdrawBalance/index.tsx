@@ -1,4 +1,3 @@
-import { OperationResultState } from "@cosmicdapp/design";
 import { displayAmountToNative, getErrorFromStackTrace, useAccount } from "@cosmicdapp/logic";
 import { Decimal } from "@cosmjs/math";
 import { Button, Typography } from "antd";
@@ -29,7 +28,7 @@ export function FormWithdrawBalance({ validatorData }: FormWithdrawBalanceProps)
     const nativeAmountString = displayAmountToNative(amount, config.coinMap, config.stakingToken);
 
     try {
-      const txHash = await validatorData.cw20contract.unbond(nativeAmountString);
+      const txHash = await validatorData.cw20Contract.unbond(nativeAmountString);
       if (!txHash) {
         throw Error("Transfer from failed");
       }
@@ -43,7 +42,7 @@ export function FormWithdrawBalance({ validatorData }: FormWithdrawBalanceProps)
           message: `${amount} ${config.stakingToken} successfully bonded`,
           customButtonText: "Wallet",
           customButtonActionPath: `${pathWallet}/${validatorData.address}`,
-        } as OperationResultState,
+        },
       });
     } catch (stackTrace) {
       console.error(stackTrace);
@@ -55,7 +54,7 @@ export function FormWithdrawBalance({ validatorData }: FormWithdrawBalanceProps)
           message: "Bond transaction failed:",
           error: getErrorFromStackTrace(stackTrace),
           customButtonActionPath: `${pathWithdraw}/${validatorData.address}`,
-        } as OperationResultState,
+        },
       });
     }
   }
