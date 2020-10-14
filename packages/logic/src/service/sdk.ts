@@ -25,19 +25,19 @@ export function loadOrCreateMnemonic(): string {
 
 export type WalletLoader = (addressPrefix?: string) => Promise<OfflineSigner>;
 
-export const loadOrCreateWallet: WalletLoader = async function (addressPrefix) {
+export async function loadOrCreateWallet(addressPrefix?: string): Promise<OfflineSigner> {
   const mnemonic = loadOrCreateMnemonic();
   const hdPath = makeCosmoshubPath(0);
   const wallet = await Secp256k1Wallet.fromMnemonic(mnemonic, hdPath, addressPrefix);
   return wallet;
-};
+}
 
-export const loadLedgerWallet: WalletLoader = async function (addressPrefix) {
+export async function loadLedgerWallet(addressPrefix?: string): Promise<OfflineSigner> {
   const interactiveTimeout = 120_000;
   const ledgerTransport = await TransportWebUSB.create(interactiveTimeout, interactiveTimeout);
 
   return new LedgerSigner(ledgerTransport, { hdPaths: [makeCosmoshubPath(0)], prefix: addressPrefix });
-};
+}
 
 // this creates a new connection to a server at URL,
 // using a signing keyring generated from the given mnemonic
