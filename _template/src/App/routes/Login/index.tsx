@@ -1,33 +1,8 @@
-import { Button, Typography } from "antd";
+import { Login as LoginDesign } from "@cosmicdapp/design";
 import React from "react";
-import Center from "../../../theme/layout/Center";
-import Stack from "../../../theme/layout/Stack";
+import { pathHome } from "../../paths";
 import cosmWasmLogo from "./assets/cosmWasmLogo.svg";
-import "./Login.less";
 
-const { Title, Text } = Typography;
-
-function Login(): JSX.Element {
-  return (
-    <Center tag="main" className="Login">
-      <Stack className="MainStack">
-        <img src={cosmWasmLogo} alt="CosmWasm logo" />
-        <Stack className="WelcomeStack">
-          <Typography>
-            <Title level={2}>Hello!</Title>
-            <Text className="LightText">Welcome to your Template dApp</Text>
-            <Text className="LightText">Select one of the following options to start:</Text>
-          </Typography>
-          <Button disabled type="primary">
-            Browser (Demo)
-          </Button>
-          <Button disabled type="primary">
-            Keplr (Secure)
-          </Button>
-        </Stack>
-      </Stack>
-    </Center>
-  );
+export function Login(): JSX.Element {
+  return <LoginDesign pathAfterLogin={pathHome} appName="<app-name>" appLogo={cosmWasmLogo} />;
 }
-
-export default Login;
