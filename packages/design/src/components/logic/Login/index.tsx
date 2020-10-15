@@ -23,7 +23,8 @@ function disableLedgerLogin() {
 }
 
 function disableKeplrLogin() {
-  return true
+  const anyWindow: any = window;
+  return !anyWindow.getOfflineSigner;
 }
 
 interface LoginProps {
