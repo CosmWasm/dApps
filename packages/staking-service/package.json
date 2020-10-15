@@ -1,6 +1,6 @@
 {
   "name": "staking-service",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "homepage": "https://dapps.cosmwasm.com/stakes",
   "browserslist": [
@@ -14,8 +14,8 @@
     "test": "craco test"
   },
   "dependencies": {
-    "@cosmicdapp/design": "^0.2.0",
-    "@cosmicdapp/logic": "^0.2.0",
+    "@cosmicdapp/design": "^0.3.0",
+    "@cosmicdapp/logic": "^0.3.0",
     "@cosmjs/launchpad": "^0.23.0",
     "@cosmjs/math": "^0.23.0",
     "antd": "^4.5.4",
