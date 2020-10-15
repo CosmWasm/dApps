@@ -48,6 +48,10 @@ export async function loadLedgerWallet(addressPrefix?: string): Promise<OfflineS
   return new LedgerSigner(ledgerTransport, { hdPaths: [makeCosmoshubPath(0)], prefix: addressPrefix });
 }
 
+export async function loadKeplrWallet(_addressPrefix?: string): Promise<OfflineSigner> {
+  throw new Error("not implemented");
+}
+
 // this creates a new connection to a server at URL,
 // using a signing keyring generated from the given mnemonic
 export async function createClient(config: AppConfig, signer: OfflineSigner): Promise<SigningCosmWasmClient> {

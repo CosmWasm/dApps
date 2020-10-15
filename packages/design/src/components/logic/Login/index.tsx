@@ -1,4 +1,5 @@
 import {
+  loadKeplrWallet,
   loadLedgerWallet,
   loadOrCreateWallet,
   RedirectLocation,
@@ -19,6 +20,10 @@ const { Title } = Typography;
 function disableLedgerLogin() {
   const anyNavigator: any = navigator;
   return !anyNavigator?.usb;
+}
+
+function disableKeplrLogin() {
+  return true
 }
 
 interface LoginProps {
@@ -59,6 +64,10 @@ export function Login({ addressPrefix, pathAfterLogin, appName, appLogo }: Login
     await init(loadLedgerWallet);
   }
 
+  async function initKeplr() {
+    await init(loadKeplrWallet);
+  }
+
   useEffect(() => {
     if (sdk.initialized) {
       refreshAccount();
@@ -94,7 +103,7 @@ export function Login({ addressPrefix, pathAfterLogin, appName, appLogo }: Login
           <Button type="primary" disabled={disableLedgerLogin()} onClick={initLedger}>
             Ledger (Secure)
           </Button>
-          <Button type="primary" disabled>
+          <Button type="primary" disabled={disableKeplrLogin()} onClick={initKeplr}>
             Keplr (Secure)
           </Button>
         </WelcomeStack>
