@@ -1,23 +1,29 @@
-import { AccountProvider, BurnerWalletProvider, ErrorProvider } from "@cosmicdapp/logic";
+import { GlobalStyle } from "@cosmicdapp/design";
+import { AccountProvider, ErrorProvider, ProtectedSwitch, SdkProvider } from "@cosmicdapp/logic";
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { config } from "../config";
-import Login from "./routes/Login";
+import { pathLogin, pathOperationResult } from "./paths";
+import { Login } from "./routes/Login";
+import { OperationResult } from "./routes/OperationResult";
 
-function App(): JSX.Element {
+export function App(): JSX.Element {
   return (
     <ErrorProvider>
-      <BurnerWalletProvider config={config}>
+      <SdkProvider config={config}>
         <AccountProvider>
+          <GlobalStyle />
           <Router basename={process.env.PUBLIC_URL}>
             <Switch>
               <Route exact path="/" component={Login} />
+              <Route exact path={pathLogin} component={Login} />
+              <ProtectedSwitch authPath={pathLogin}>
+                <Route exact path={pathOperationResult} component={OperationResult} />
+              </ProtectedSwitch>
             </Switch>
           </Router>
         </AccountProvider>
-      </BurnerWalletProvider>
+      </SdkProvider>
     </ErrorProvider>
   );
 }
-
-export default App;

@@ -1,4 +1,4 @@
-import { AppConfig } from "@cosmicdapp/logic";
+import { AppConfig, CoinMap } from "@cosmicdapp/logic";
 
 const local: AppConfig = {
   httpUrl: "http://localhost:1317",
@@ -7,7 +7,11 @@ const local: AppConfig = {
   faucetUrl: "http://localhost:8000/credit",
   faucetToken: "COSM",
   addressPrefix: "cosmos",
-  codeId: 2,
+};
+
+const coinMap: CoinMap = {
+  ushell: { denom: "SHELL", fractionalDigits: 6 },
+  ureef: { denom: "REEF", fractionalDigits: 6 },
 };
 
 const coralnet: AppConfig = {
@@ -17,7 +21,7 @@ const coralnet: AppConfig = {
   faucetUrl: "https://faucet.coralnet.cosmwasm.com/credit",
   faucetToken: "SHELL",
   addressPrefix: "coral",
-  codeId: 5,
+  coinMap: coinMap,
 };
 
 // REACT_APP_LOCAL is set via `yarn start:local`
