@@ -48,7 +48,8 @@ export function Login({ addressPrefix, pathAfterLogin, appName, appLogo }: Login
     clearError();
 
     try {
-      const signer = await loadWallet(addressPrefix);
+      const chainId = "testing"; // TODO: Replace with chainId from config or chain itself
+      const signer = await loadWallet(chainId, addressPrefix);
       await sdk.init(signer);
     } catch (error) {
       console.error(error);
