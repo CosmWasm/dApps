@@ -1,29 +1,39 @@
-import { AppConfig, CoinMap } from "@cosmicdapp/logic";
+import { AppConfig } from "@cosmicdapp/logic";
 
 const local: AppConfig = {
+  chainId: "testing",
+  chainName: "Testing",
   addressPrefix: "cosmos",
-  gasPrice: 0.025,
+  rpcUrl: "http://localhost:26657",
   httpUrl: "http://localhost:1317",
-  feeToken: "ucosm",
   faucetUrl: "http://localhost:8000/credit",
+  feeToken: "ucosm",
+  stakingToken: "uatom",
   faucetToken: "COSM",
-};
-
-const coinMap: CoinMap = {
-  ushell: { denom: "SHELL", fractionalDigits: 6 },
-  ureef: { denom: "REEF", fractionalDigits: 6 },
+  coinMap: {
+    ucosm: { denom: "COSM", fractionalDigits: 6 },
+    uatom: { denom: "ATOM", fractionalDigits: 6 },
+  },
+  gasPrice: 0.025,
+  codeId: 107,
 };
 
 const coralnet: AppConfig = {
+  chainId: "cosmwasm-coral",
+  chainName: "Coral",
   addressPrefix: "coral",
-  gasPrice: 0.025,
+  rpcUrl: "https://rpc.coralnet.cosmwasm.com",
   httpUrl: "https://lcd.coralnet.cosmwasm.com",
+  faucetUrl: "https://faucet.coralnet.cosmwasm.com/credit",
   feeToken: "ushell",
   stakingToken: "ureef",
-  faucetUrl: "https://faucet.coralnet.cosmwasm.com/credit",
   faucetToken: "SHELL",
+  coinMap: {
+    ushell: { denom: "SHELL", fractionalDigits: 6 },
+    ureef: { denom: "REEF", fractionalDigits: 6 },
+  },
+  gasPrice: 0.025,
   codeId: 107,
-  coinMap,
 };
 
 // REACT_APP_LOCAL is set via `yarn start:local`

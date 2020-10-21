@@ -10,7 +10,7 @@ export function Login(): JSX.Element {
       pathAfterLogin={pathValidators}
       appName="Staking service"
       appLogo={cosmWasmLogo}
-      addressPrefix={config.addressPrefix}
+      config={config}
     />
   );
 }

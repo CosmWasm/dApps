@@ -1,4 +1,7 @@
 import {
+  AppConfig,
+  configKeplr,
+  loadKeplrWallet,
   loadLedgerWallet,
   loadOrCreateWallet,
   RedirectLocation,
@@ -21,14 +24,19 @@ function disableLedgerLogin() {
   return !anyNavigator?.usb;
 }
 
+function disableKeplrLogin() {
+  const anyWindow: any = window;
+  return !(anyWindow.getOfflineSigner && anyWindow.keplr.experimentalSuggestChain);
+}
+
 interface LoginProps {
   readonly pathAfterLogin: string;
   readonly appName: string;
   readonly appLogo: string;
-  readonly addressPrefix?: string;
+  readonly config: AppConfig;
 }
 
-export function Login({ addressPrefix, pathAfterLogin, appName, appLogo }: LoginProps): JSX.Element {
+export function Login({ config, pathAfterLogin, appName, appLogo }: LoginProps): JSX.Element {
   const history = useHistory();
   const state = history.location.state as RedirectLocation;
   const { error, setError, clearError } = useError();
@@ -42,7 +50,7 @@ export function Login({ addressPrefix, pathAfterLogin, appName, appLogo }: Login
     clearError();
 
     try {
-      const signer = await loadWallet(addressPrefix);
+      const signer = await loadWallet(config.chainId, config.addressPrefix);
       await sdk.init(signer);
     } catch (error) {
       console.error(error);
@@ -57,6 +65,18 @@ export function Login({ addressPrefix, pathAfterLogin, appName, appLogo }: Login
 
   async function initLedger() {
     await init(loadLedgerWallet);
+  }
+
+  async function initKeplr() {
+    const anyWindow: any = window;
+    try {
+      await anyWindow.keplr.experimentalSuggestChain(configKeplr(config));
+      await anyWindow.keplr.enable(config.chainId);
+      await init(loadKeplrWallet);
+    } catch (error) {
+      console.error(error);
+      setError(Error(error).message);
+    }
   }
 
   useEffect(() => {
@@ -94,7 +114,7 @@ export function Login({ addressPrefix, pathAfterLogin, appName, appLogo }: Login
           <Button type="primary" disabled={disableLedgerLogin()} onClick={initLedger}>
             Ledger (Secure)
           </Button>
-          <Button type="primary" disabled>
+          <Button type="primary" disabled={disableKeplrLogin()} onClick={initKeplr}>
             Keplr (Secure)
           </Button>
         </WelcomeStack>

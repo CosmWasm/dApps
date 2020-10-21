@@ -32,20 +32,28 @@ export function loadOrCreateMnemonic(): string {
   return generated;
 }
 
-export type WalletLoader = (addressPrefix?: string) => Promise<OfflineSigner>;
+export type WalletLoader = (chainId: string, addressPrefix?: string) => Promise<OfflineSigner>;
 
-export async function loadOrCreateWallet(addressPrefix?: string): Promise<OfflineSigner> {
+export async function loadOrCreateWallet(_chainId: string, addressPrefix?: string): Promise<OfflineSigner> {
   const mnemonic = loadOrCreateMnemonic();
   const hdPath = makeCosmoshubPath(0);
   const wallet = await Secp256k1HdWallet.fromMnemonic(mnemonic, hdPath, addressPrefix);
   return wallet;
 }
 
-export async function loadLedgerWallet(addressPrefix?: string): Promise<OfflineSigner> {
+export async function loadLedgerWallet(_chainId: string, addressPrefix?: string): Promise<OfflineSigner> {
   const interactiveTimeout = 120_000;
   const ledgerTransport = await TransportWebUSB.create(interactiveTimeout, interactiveTimeout);
 
   return new LedgerSigner(ledgerTransport, { hdPaths: [makeCosmoshubPath(0)], prefix: addressPrefix });
+}
+
+export async function loadKeplrWallet(chainId: string): Promise<OfflineSigner> {
+  const anyWindow: any = window;
+  if (!anyWindow.getOfflineSigner) {
+    throw new Error("Keplr extension is not available");
+  }
+  return anyWindow.getOfflineSigner(chainId);
 }
 
 // this creates a new connection to a server at URL,
