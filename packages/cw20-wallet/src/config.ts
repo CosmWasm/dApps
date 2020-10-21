@@ -1,7 +1,7 @@
 import { AppConfig } from "@cosmicdapp/logic";
 
 const local: AppConfig = {
-  chainId: "cosmwasm-cosmos",
+  chainId: "testing",
   addressPrefix: "cosmos",
   httpUrl: "http://localhost:1317",
   faucetUrl: "http://localhost:8000/credit",
