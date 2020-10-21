@@ -33,7 +33,9 @@ export interface KeplrConfig {
 
 export interface AppConfig {
   readonly chainId: string;
+  readonly chainName: string;
   readonly addressPrefix: string;
+  readonly rpcUrl: string;
   readonly httpUrl: string;
   readonly faucetUrl: string;
   readonly feeToken: string;
@@ -41,6 +43,53 @@ export interface AppConfig {
   readonly faucetToken: string;
   readonly coinMap: CoinMap;
   readonly gasPrice: number;
-  readonly keplrConfig?: KeplrConfig;
   readonly codeId?: number;
+}
+
+export function configKeplr(config: AppConfig): KeplrConfig {
+  return {
+    chainId: config.chainId,
+    chainName: config.chainName,
+    rpc: config.rpcUrl,
+    rest: config.httpUrl,
+    bech32Config: {
+      bech32PrefixAccAddr: `${config.addressPrefix}`,
+      bech32PrefixAccPub: `${config.addressPrefix}pub`,
+      bech32PrefixValAddr: `${config.addressPrefix}valoper`,
+      bech32PrefixValPub: `${config.addressPrefix}valoperpub`,
+      bech32PrefixConsAddr: `${config.addressPrefix}valcons`,
+      bech32PrefixConsPub: `${config.addressPrefix}valconspub`,
+    },
+    currencies: [
+      {
+        coinDenom: config.coinMap[config.feeToken].denom,
+        coinMinimalDenom: config.feeToken,
+        coinDecimals: config.coinMap[config.feeToken].fractionalDigits,
+      },
+      {
+        coinDenom: config.coinMap[config.stakingToken].denom,
+        coinMinimalDenom: config.stakingToken,
+        coinDecimals: config.coinMap[config.stakingToken].fractionalDigits,
+      },
+    ],
+    feeCurrencies: [
+      {
+        coinDenom: config.coinMap[config.faucetToken].denom,
+        coinMinimalDenom: config.faucetToken,
+        coinDecimals: config.coinMap[config.faucetToken].fractionalDigits,
+      },
+    ],
+    stakeCurrency: {
+      coinDenom: config.coinMap[config.stakingToken].denom,
+      coinMinimalDenom: config.stakingToken,
+      coinDecimals: config.coinMap[config.stakingToken].fractionalDigits,
+    },
+    gasPriceStep: {
+      low: config.gasPrice / 2,
+      average: config.gasPrice,
+      high: config.gasPrice * 2,
+    },
+    bip44: { coinType: 118 },
+    coinType: 118,
+  };
 }
