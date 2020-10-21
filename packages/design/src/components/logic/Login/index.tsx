@@ -1,5 +1,6 @@
 import {
   AppConfig,
+  configKeplr,
   loadKeplrWallet,
   loadLedgerWallet,
   loadOrCreateWallet,
@@ -21,6 +22,11 @@ const { Title } = Typography;
 function disableLedgerLogin() {
   const anyNavigator: any = navigator;
   return !anyNavigator?.usb;
+}
+
+function disableKeplrLogin() {
+  const anyWindow: any = window;
+  return !(anyWindow.getOfflineSigner && anyWindow.keplr.experimentalSuggestChain);
 }
 
 interface LoginProps {
@@ -64,18 +70,13 @@ export function Login({ config, pathAfterLogin, appName, appLogo }: LoginProps):
   async function initKeplr() {
     const anyWindow: any = window;
     try {
-      await anyWindow.keplr.experimentalSuggestChain(config.keplrConfig);
+      await anyWindow.keplr.experimentalSuggestChain(configKeplr(config));
       await anyWindow.keplr.enable(config.chainId);
       await init(loadKeplrWallet);
     } catch (error) {
       console.error(error);
       setError(Error(error).message);
     }
-  }
-
-  function disableKeplrLogin() {
-    const anyWindow: any = window;
-    return !(anyWindow.getOfflineSigner && anyWindow.keplr.experimentalSuggestChain && config.keplrConfig);
   }
 
   useEffect(() => {
