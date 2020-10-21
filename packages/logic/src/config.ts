@@ -74,9 +74,9 @@ export function configKeplr(config: AppConfig): KeplrConfig {
     ],
     feeCurrencies: [
       {
-        coinDenom: config.coinMap[config.faucetToken].denom,
-        coinMinimalDenom: config.faucetToken,
-        coinDecimals: config.coinMap[config.faucetToken].fractionalDigits,
+        coinDenom: config.coinMap[config.feeToken].denom,
+        coinMinimalDenom: config.feeToken,
+        coinDecimals: config.coinMap[config.feeToken].fractionalDigits,
       },
     ],
     stakeCurrency: {
