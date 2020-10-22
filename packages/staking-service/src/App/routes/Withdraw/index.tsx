@@ -116,8 +116,8 @@ export function Withdraw(): JSX.Element {
     setView(View.Form);
   }
 
-  return (
-    (view === View.Form && (
+  function renderForm() {
+    return (
       <PageLayout>
         <MainStack>
           <HeaderTitleStack>
@@ -128,8 +128,11 @@ export function Withdraw(): JSX.Element {
           <FormWithdrawBalance validatorData={validatorData} submitWithdrawBalance={submitWithdrawBalance} />
         </MainStack>
       </PageLayout>
-    )) ||
-    (view === View.Confirm && (
+    );
+  }
+
+  function renderConfirm() {
+    return (
       <PageLayout>
         <ConfirmStack>
           <img src={confirmIcon} alt="Confirm icon" />
@@ -142,7 +145,19 @@ export function Withdraw(): JSX.Element {
           </Button>
         </ConfirmStack>
       </PageLayout>
-    )) ||
-    (view === View.Loading && <Loading loadingText={`Withdrawing...`} />)
-  );
+    );
+  }
+
+  function renderLoading() {
+    return <Loading loadingText={`Withdrawing...`} />;
+  }
+
+  switch (view) {
+    case View.Form:
+      return renderForm();
+    case View.Confirm:
+      return renderConfirm();
+    case View.Loading:
+      return renderLoading();
+  }
 }
