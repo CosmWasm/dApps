@@ -160,5 +160,7 @@ export function Withdraw(): JSX.Element {
       return renderConfirm();
     case View.Loading:
       return renderLoading();
+    default:
+      return renderForm();
   }
 }
