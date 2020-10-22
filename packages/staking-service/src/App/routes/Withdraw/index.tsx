@@ -82,7 +82,7 @@ export function Withdraw(): JSX.Element {
     try {
       const txHash = await cw20Contract.unbond(nativeAmountString);
       if (!txHash) {
-        throw Error("Transfer from failed");
+        throw Error("Withdrawal failed");
       }
 
       refreshAccount();

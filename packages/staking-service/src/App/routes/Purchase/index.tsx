@@ -72,7 +72,7 @@ export function Purchase(): JSX.Element {
     try {
       const txHash = await cw20Contract.bond(nativeAmountCoin);
       if (!txHash) {
-        throw Error("Transfer from failed");
+        throw Error("Purchase failed");
       }
 
       refreshAccount();
