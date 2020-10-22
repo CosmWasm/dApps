@@ -1,21 +1,22 @@
-import { PageLayout, Loading } from "@cosmicdapp/design";
+import { Loading, PageLayout } from "@cosmicdapp/design";
 import {
   CW20,
   CW20Instance,
+  displayAmountToNative,
+  getErrorFromStackTrace,
   TokenInfo,
   useAccount,
   useSdk,
-  displayAmountToNative,
-  getErrorFromStackTrace,
 } from "@cosmicdapp/logic";
-import { Typography } from "antd";
+import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
-import { HeaderBackMenu } from "../../components/HeaderBackMenu";
-import { FormWithdrawBalance, FormWithdrawBalanceFields } from "./FormWithdrawBalance";
-import { HeaderTitleStack, MainStack } from "./style";
+import { useHistory, useParams } from "react-router-dom";
 import { config } from "../../../config";
+import { HeaderBackMenu } from "../../components/HeaderBackMenu";
 import { pathOperationResult, pathWallet, pathWithdraw } from "../../paths";
+import confirmIcon from "./assets/confirmIcon.svg";
+import { FormWithdrawBalance, FormWithdrawBalanceFields } from "./FormWithdrawBalance";
+import { ConfirmStack, ConfirmText, HeaderTitleStack, MainStack } from "./style";
 
 const { Title } = Typography;
 
@@ -24,12 +25,18 @@ export interface ValidatorData {
   readonly balance: string;
 }
 
+enum View {
+  Form = "FORM",
+  Confirm = "CONFIRM",
+  Loading = "LOADING",
+}
+
 interface WithdrawParams {
   readonly validatorAddress: string;
 }
 
 export function Withdraw(): JSX.Element {
-  const [loading, setLoading] = useState(false);
+  const [view, setView] = useState(View.Form);
 
   const history = useHistory();
   const { validatorAddress } = useParams<WithdrawParams>();
@@ -38,6 +45,7 @@ export function Withdraw(): JSX.Element {
 
   const [cw20Contract, setCw20Contract] = useState<CW20Instance>();
   const [validatorData, setValidatorData] = useState<ValidatorData>();
+  const [amount, setAmount] = useState("0");
 
   useEffect(() => {
     const client = getClient();
@@ -62,7 +70,12 @@ export function Withdraw(): JSX.Element {
   }, [cw20Contract, account.address]);
 
   async function submitWithdrawBalance({ amount }: FormWithdrawBalanceFields) {
-    setLoading(true);
+    setAmount(amount);
+    setView(View.Confirm);
+  }
+
+  async function acceptConfirm() {
+    setView(View.Loading);
 
     const nativeAmountString = displayAmountToNative(amount, config.coinMap, config.stakingToken);
 
@@ -98,9 +111,13 @@ export function Withdraw(): JSX.Element {
     }
   }
 
+  function declineConfirm() {
+    setAmount("0");
+    setView(View.Form);
+  }
+
   return (
-    (loading && <Loading loadingText={`Withdrawing...`} />) ||
-    (!loading && (
+    (view === View.Form && (
       <PageLayout>
         <MainStack>
           <HeaderTitleStack>
@@ -111,6 +128,21 @@ export function Withdraw(): JSX.Element {
           <FormWithdrawBalance validatorData={validatorData} submitWithdrawBalance={submitWithdrawBalance} />
         </MainStack>
       </PageLayout>
-    ))
+    )) ||
+    (view === View.Confirm && (
+      <PageLayout>
+        <ConfirmStack>
+          <img src={confirmIcon} alt="Confirm icon" />
+          <ConfirmText>Your tokens could take up to 3 weeks to be withdrawn...</ConfirmText>
+          <Button type="primary" onClick={acceptConfirm}>
+            Accept
+          </Button>
+          <Button type="primary" onClick={declineConfirm}>
+            Decline
+          </Button>
+        </ConfirmStack>
+      </PageLayout>
+    )) ||
+    (view === View.Loading && <Loading loadingText={`Withdrawing...`} />)
   );
 }

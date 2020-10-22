@@ -1,5 +1,8 @@
 import { Center, Stack } from "@cosmicdapp/design";
+import { Typography } from "antd";
 import styled from "styled-components";
+
+const { Text } = Typography;
 
 export const MainStack = styled(Stack)`
   & > * {
@@ -37,4 +40,15 @@ export const ButtonStack = styled(Stack)`
   & > * {
     --gap: var(--s0);
   }
+`;
+
+export const ConfirmStack = styled(Stack)`
+  & > * {
+    --gap: var(--s3);
+  }
+`;
+
+export const ConfirmText = styled(Text)`
+  font-size: var(--s-1);
+  color: var(--color-blue);
 `;
