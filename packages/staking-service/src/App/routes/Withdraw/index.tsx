@@ -50,10 +50,11 @@ export function Withdraw(): JSX.Element {
   useEffect(() => {
     const client = getClient();
 
-    client.getContract(validatorAddress).then((contract) => {
+    (async function updateCw20Contract() {
+      const contract = await client.getContract(validatorAddress);
       const cw20Contract = CW20(client).use(contract.address);
       setCw20Contract(cw20Contract);
-    });
+    })();
   }, [getClient, validatorAddress]);
 
   useEffect(() => {
