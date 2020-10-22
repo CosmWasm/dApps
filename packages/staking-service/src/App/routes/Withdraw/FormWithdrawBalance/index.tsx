@@ -1,76 +1,52 @@
-import { displayAmountToNative, getErrorFromStackTrace, useAccount } from "@cosmicdapp/logic";
 import { Decimal } from "@cosmjs/math";
 import { Button, Typography } from "antd";
 import { Formik } from "formik";
 import { Form, FormItem, Input } from "formik-antd";
 import React from "react";
-import { useHistory } from "react-router-dom";
+import * as Yup from "yup";
 import { ValidatorData } from "..";
-import { config } from "../../../../config";
-import { pathOperationResult, pathWallet, pathWithdraw } from "../../../paths";
 import { FormField, FormStack } from "./style";
 
 const { Text } = Typography;
 
-interface FormWithdrawBalanceFields {
+export interface FormWithdrawBalanceFields {
   readonly amount: string;
 }
 
 interface FormWithdrawBalanceProps {
   readonly validatorData: ValidatorData;
+  readonly submitWithdrawBalance: (values: FormWithdrawBalanceFields) => Promise<void>;
 }
 
-export function FormWithdrawBalance({ validatorData }: FormWithdrawBalanceProps): JSX.Element {
-  const history = useHistory();
-  const { refreshAccount } = useAccount();
+export function FormWithdrawBalance({
+  validatorData,
+  submitWithdrawBalance,
+}: FormWithdrawBalanceProps): JSX.Element {
+  const balanceDecimal = validatorData
+    ? Decimal.fromAtomics(validatorData.balance, validatorData.tokenInfo.decimals)
+    : Decimal.fromUserInput("0", 0);
 
-  async function submitWithdrawBalance({ amount }: FormWithdrawBalanceFields) {
-    const nativeAmountString = displayAmountToNative(amount, config.coinMap, config.stakingToken);
+  const maxAmount = balanceDecimal.toFloatApproximation();
 
-    try {
-      const txHash = await validatorData.cw20Contract.unbond(nativeAmountString);
-      if (!txHash) {
-        throw Error("Transfer from failed");
-      }
-
-      refreshAccount();
-
-      history.push({
-        pathname: pathOperationResult,
-        state: {
-          success: true,
-          message: `${amount} ${config.stakingToken} successfully bonded`,
-          customButtonText: "Wallet",
-          customButtonActionPath: `${pathWallet}/${validatorData.address}`,
-        },
-      });
-    } catch (stackTrace) {
-      console.error(stackTrace);
-
-      history.push({
-        pathname: pathOperationResult,
-        state: {
-          success: false,
-          message: "Bond transaction failed:",
-          error: getErrorFromStackTrace(stackTrace),
-          customButtonActionPath: `${pathWithdraw}/${validatorData.address}`,
-        },
-      });
-    }
-  }
-
-  const balance = validatorData
-    ? Decimal.fromAtomics(validatorData.balance, validatorData.tokenInfo.decimals).toString()
-    : "0";
+  const withdrawBalanceValidationSchema = Yup.object().shape({
+    amount: Yup.number()
+      .required("An amount is required")
+      .positive("Amount should be positive")
+      .max(maxAmount),
+  });
 
   return (
-    <Formik initialValues={{ amount: "" }} onSubmit={submitWithdrawBalance}>
+    <Formik
+      initialValues={{ amount: "" }}
+      onSubmit={submitWithdrawBalance}
+      validationSchema={withdrawBalanceValidationSchema}
+    >
       {(formikProps) => (
         <Form>
           <FormStack>
             <FormField>
               <Text>Balance</Text>
-              <Text>{balance}</Text>
+              <Text>{balanceDecimal.toString()}</Text>
             </FormField>
             <FormField>
               <Text>Withdraw</Text>

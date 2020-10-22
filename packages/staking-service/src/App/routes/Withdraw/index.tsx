@@ -1,19 +1,34 @@
-import { PageLayout } from "@cosmicdapp/design";
-import { CW20, CW20Instance, TokenInfo, useAccount, useSdk } from "@cosmicdapp/logic";
-import { Typography } from "antd";
+import { Loading, PageLayout } from "@cosmicdapp/design";
+import {
+  CW20,
+  CW20Instance,
+  displayAmountToNative,
+  getErrorFromStackTrace,
+  TokenInfo,
+  useAccount,
+  useSdk,
+} from "@cosmicdapp/logic";
+import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
+import { config } from "../../../config";
 import { HeaderBackMenu } from "../../components/HeaderBackMenu";
-import { FormWithdrawBalance } from "./FormWithdrawBalance";
-import { HeaderTitleStack, MainStack } from "./style";
+import { pathOperationResult, pathValidator, pathWallet, pathWithdraw } from "../../paths";
+import confirmIcon from "./assets/confirmIcon.svg";
+import { FormWithdrawBalance, FormWithdrawBalanceFields } from "./FormWithdrawBalance";
+import { ConfirmStack, ConfirmText, HeaderTitleStack, MainStack } from "./style";
 
 const { Title } = Typography;
 
 export interface ValidatorData {
-  readonly address: string;
-  readonly cw20Contract: CW20Instance;
   readonly tokenInfo: TokenInfo;
   readonly balance: string;
+}
+
+enum View {
+  Form = "FORM",
+  Confirm = "CONFIRM",
+  Loading = "LOADING",
 }
 
 interface WithdrawParams {
@@ -21,38 +36,131 @@ interface WithdrawParams {
 }
 
 export function Withdraw(): JSX.Element {
+  const [view, setView] = useState(View.Form);
+
+  const history = useHistory();
   const { validatorAddress } = useParams<WithdrawParams>();
   const { getClient } = useSdk();
-  const { account } = useAccount();
+  const { account, refreshAccount } = useAccount();
 
+  const [cw20Contract, setCw20Contract] = useState<CW20Instance>();
   const [validatorData, setValidatorData] = useState<ValidatorData>();
+  const [amount, setAmount] = useState("0");
 
   useEffect(() => {
     const client = getClient();
 
-    (async function updateValidatorData() {
+    (async function updateCw20Contract() {
       const contract = await client.getContract(validatorAddress);
       const cw20Contract = CW20(client).use(contract.address);
+      setCw20Contract(cw20Contract);
+    })();
+  }, [getClient, validatorAddress]);
 
+  useEffect(() => {
+    if (!cw20Contract) return;
+
+    (async function updateValidatorData() {
       const [tokenInfo, balance] = await Promise.all([
         cw20Contract.tokenInfo(),
         cw20Contract.balance(account.address),
       ]);
 
-      setValidatorData({ address: validatorAddress, cw20Contract, tokenInfo, balance });
+      setValidatorData({ tokenInfo, balance });
     })();
-  }, [getClient, validatorAddress, account.address]);
+  }, [cw20Contract, account.address]);
 
-  return (
-    <PageLayout>
-      <MainStack>
-        <HeaderTitleStack>
-          <HeaderBackMenu />
-          <Title>Withdraw</Title>
-          <Title level={2}>{validatorData?.tokenInfo.name ?? ""}</Title>
-        </HeaderTitleStack>
-        <FormWithdrawBalance validatorData={validatorData} />
-      </MainStack>
-    </PageLayout>
-  );
+  async function submitWithdrawBalance({ amount }: FormWithdrawBalanceFields) {
+    setAmount(amount);
+    setView(View.Confirm);
+  }
+
+  async function acceptConfirm() {
+    setView(View.Loading);
+
+    const nativeAmountString = displayAmountToNative(amount, config.coinMap, config.stakingToken);
+
+    try {
+      const txHash = await cw20Contract.unbond(nativeAmountString);
+      if (!txHash) {
+        throw Error("Withdrawal failed");
+      }
+
+      refreshAccount();
+
+      history.push({
+        pathname: pathOperationResult,
+        state: {
+          success: true,
+          message: `${amount} ${config.stakingToken} successfully bonded`,
+          customButtonText: "Wallet",
+          customButtonActionPath: `${pathWallet}/${validatorAddress}`,
+        },
+      });
+    } catch (stackTrace) {
+      console.error(stackTrace);
+
+      history.push({
+        pathname: pathOperationResult,
+        state: {
+          success: false,
+          message: "Bond transaction failed:",
+          error: getErrorFromStackTrace(stackTrace),
+          customButtonActionPath: `${pathWithdraw}/${validatorAddress}`,
+        },
+      });
+    }
+  }
+
+  function declineConfirm() {
+    setAmount("0");
+    setView(View.Form);
+  }
+
+  function renderForm() {
+    return (
+      <PageLayout>
+        <MainStack>
+          <HeaderTitleStack>
+            <HeaderBackMenu path={`${pathValidator}/${validatorAddress}`} />
+            <Title>Withdraw</Title>
+            <Title level={2}>{validatorData?.tokenInfo.name ?? ""}</Title>
+          </HeaderTitleStack>
+          <FormWithdrawBalance validatorData={validatorData} submitWithdrawBalance={submitWithdrawBalance} />
+        </MainStack>
+      </PageLayout>
+    );
+  }
+
+  function renderConfirm() {
+    return (
+      <PageLayout>
+        <ConfirmStack>
+          <img src={confirmIcon} alt="Confirm icon" />
+          <ConfirmText>Your tokens could take up to 3 weeks to be withdrawn...</ConfirmText>
+          <Button type="primary" onClick={acceptConfirm}>
+            Accept
+          </Button>
+          <Button type="primary" onClick={declineConfirm}>
+            Decline
+          </Button>
+        </ConfirmStack>
+      </PageLayout>
+    );
+  }
+
+  function renderLoading() {
+    return <Loading loadingText={`Withdrawing...`} />;
+  }
+
+  switch (view) {
+    case View.Form:
+      return renderForm();
+    case View.Confirm:
+      return renderConfirm();
+    case View.Loading:
+      return renderLoading();
+    default:
+      return renderForm();
+  }
 }

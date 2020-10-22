@@ -77,7 +77,7 @@ export function Wallet(): JSX.Element {
   return (
     <PageLayout>
       <MainStack>
-        <HeaderBackMenu />
+        <HeaderBackMenu path={`${pathValidator}/${validatorAddress}`} />
         <TitleNavStack>
           <Title>{validatorData?.tokenInfo.name ?? ""}</Title>
           <NavCenter>

@@ -1,17 +1,27 @@
-import { PageLayout } from "@cosmicdapp/design";
-import { CW20, CW20Instance, Investment, TokenInfo, useSdk } from "@cosmicdapp/logic";
+import { Loading, PageLayout } from "@cosmicdapp/design";
+import {
+  CW20,
+  CW20Instance,
+  displayAmountToNative,
+  getErrorFromStackTrace,
+  Investment,
+  TokenInfo,
+  useAccount,
+  useSdk,
+} from "@cosmicdapp/logic";
+import { Coin } from "@cosmjs/launchpad";
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
+import { config } from "../../../config";
 import { HeaderBackMenu } from "../../components/HeaderBackMenu";
-import { FormBuyShares } from "./FormBuyShares";
+import { pathOperationResult, pathPurchase, pathValidator, pathWallet } from "../../paths";
+import { FormBuyShares, FormBuySharesFields } from "./FormBuyShares";
 import { HeaderTitleStack, MainStack } from "./style";
 
 const { Title } = Typography;
 
 export interface ValidatorData {
-  readonly address: string;
-  readonly cw20Contract: CW20Instance;
   readonly tokenInfo: TokenInfo;
   readonly investment: Investment;
 }
@@ -21,37 +31,90 @@ interface PurchaseParams {
 }
 
 export function Purchase(): JSX.Element {
+  const [loading, setLoading] = useState(false);
+
+  const history = useHistory();
   const { validatorAddress } = useParams<PurchaseParams>();
   const { getClient } = useSdk();
+  const { refreshAccount } = useAccount();
 
+  const [cw20Contract, setCw20Contract] = useState<CW20Instance>();
   const [validatorData, setValidatorData] = useState<ValidatorData>();
 
   useEffect(() => {
     const client = getClient();
 
-    (async function updateValidatorData() {
+    (async function updateCw20Contract() {
       const contract = await client.getContract(validatorAddress);
       const cw20Contract = CW20(client).use(contract.address);
+      setCw20Contract(cw20Contract);
+    })();
+  }, [getClient, validatorAddress]);
 
+  useEffect(() => {
+    if (!cw20Contract) return;
+
+    (async function updateValidatorData() {
       const [tokenInfo, investment] = await Promise.all([
         cw20Contract.tokenInfo(),
         cw20Contract.investment(),
       ]);
 
-      setValidatorData({ address: validatorAddress, cw20Contract, tokenInfo, investment });
+      setValidatorData({ tokenInfo, investment });
     })();
-  }, [getClient, validatorAddress]);
+  }, [cw20Contract]);
+
+  async function submitBuyShares({ amount }: FormBuySharesFields) {
+    setLoading(true);
+
+    const nativeAmountString = displayAmountToNative(amount, config.coinMap, config.stakingToken);
+    const nativeAmountCoin: Coin = { amount: nativeAmountString, denom: config.stakingToken };
+
+    try {
+      const txHash = await cw20Contract.bond(nativeAmountCoin);
+      if (!txHash) {
+        throw Error("Purchase failed");
+      }
+
+      refreshAccount();
+
+      history.push({
+        pathname: pathOperationResult,
+        state: {
+          success: true,
+          message: `${amount} ${config.stakingToken} successfully bonded`,
+          customButtonText: "Wallet",
+          customButtonActionPath: `${pathWallet}/${validatorAddress}`,
+        },
+      });
+    } catch (stackTrace) {
+      console.error(stackTrace);
+
+      history.push({
+        pathname: pathOperationResult,
+        state: {
+          success: false,
+          message: "Bond transaction failed:",
+          error: getErrorFromStackTrace(stackTrace),
+          customButtonActionPath: `${pathPurchase}/${validatorAddress}`,
+        },
+      });
+    }
+  }
 
   return (
-    <PageLayout>
-      <MainStack>
-        <HeaderTitleStack>
-          <HeaderBackMenu />
-          <Title>Purchase</Title>
-          <Title level={2}>{validatorData?.tokenInfo.name ?? ""}</Title>
-        </HeaderTitleStack>
-        <FormBuyShares validatorData={validatorData} />
-      </MainStack>
-    </PageLayout>
+    (loading && <Loading loadingText={`Bonding...`} />) ||
+    (!loading && (
+      <PageLayout>
+        <MainStack>
+          <HeaderTitleStack>
+            <HeaderBackMenu path={`${pathValidator}/${validatorAddress}`} />
+            <Title>Purchase</Title>
+            <Title level={2}>{validatorData?.tokenInfo.name ?? ""}</Title>
+          </HeaderTitleStack>
+          <FormBuyShares validatorData={validatorData} submitBuyShares={submitBuyShares} />
+        </MainStack>
+      </PageLayout>
+    ))
   );
 }

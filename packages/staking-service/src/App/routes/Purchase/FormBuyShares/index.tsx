@@ -1,67 +1,48 @@
-import { displayAmountToNative, getErrorFromStackTrace, useAccount } from "@cosmicdapp/logic";
+import { useAccount } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
+import { Decimal } from "@cosmjs/math";
 import { Button, Typography } from "antd";
 import { Formik } from "formik";
 import { Form, FormItem, Input } from "formik-antd";
 import React from "react";
-import { useHistory } from "react-router-dom";
+import * as Yup from "yup";
 import { ValidatorData } from "..";
 import { config } from "../../../../config";
-import { pathOperationResult, pathPurchase, pathWallet } from "../../../paths";
 import { FormField, FormStack, StakePerToken } from "./style";
 
 const { Text } = Typography;
 
-interface FormBuySharesFields {
+export interface FormBuySharesFields {
   readonly amount: string;
 }
 
 interface FormBuySharesProps {
   readonly validatorData: ValidatorData;
+  readonly submitBuyShares: (values: FormBuySharesFields) => Promise<void>;
 }
 
-export function FormBuyShares({ validatorData }: FormBuySharesProps): JSX.Element {
-  const history = useHistory();
-  const { refreshAccount } = useAccount();
+export function FormBuyShares({ validatorData, submitBuyShares }: FormBuySharesProps): JSX.Element {
+  const { account } = useAccount();
 
-  async function submitBuyShares({ amount }: FormBuySharesFields) {
-    const nativeAmountString = displayAmountToNative(amount, config.coinMap, config.stakingToken);
-    const nativeAmountCoin: Coin = { amount: nativeAmountString, denom: config.stakingToken };
+  const stakingBalance: Coin = account.balance.find((coin) => coin.denom === config.stakingToken);
+  const stakingDecimals = config.coinMap[config.stakingToken].fractionalDigits;
+  const maxAmount = stakingBalance
+    ? Decimal.fromAtomics(stakingBalance.amount, stakingDecimals).toFloatApproximation()
+    : 0;
 
-    try {
-      const txHash = await validatorData.cw20Contract.bond(nativeAmountCoin);
-      if (!txHash) {
-        throw Error("Transfer from failed");
-      }
-
-      refreshAccount();
-
-      history.push({
-        pathname: pathOperationResult,
-        state: {
-          success: true,
-          message: `${amount} ${config.stakingToken} successfully bonded`,
-          customButtonText: "Wallet",
-          customButtonActionPath: `${pathWallet}/${validatorData.address}`,
-        },
-      });
-    } catch (stackTrace) {
-      console.error(stackTrace);
-
-      history.push({
-        pathname: pathOperationResult,
-        state: {
-          success: false,
-          message: "Bond transaction failed:",
-          error: getErrorFromStackTrace(stackTrace),
-          customButtonActionPath: `${pathPurchase}/${validatorData.address}`,
-        },
-      });
-    }
-  }
+  const buySharesValidationSchema = Yup.object().shape({
+    amount: Yup.number()
+      .required("An amount is required")
+      .positive("Amount should be positive")
+      .max(maxAmount),
+  });
 
   return (
-    <Formik initialValues={{ amount: "" }} onSubmit={submitBuyShares}>
+    <Formik
+      initialValues={{ amount: "" }}
+      onSubmit={submitBuyShares}
+      validationSchema={buySharesValidationSchema}
+    >
       {(formikProps) => {
         const formDisabled = !(formikProps.isValid && formikProps.dirty);
 
