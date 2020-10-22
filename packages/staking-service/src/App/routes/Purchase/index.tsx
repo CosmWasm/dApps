@@ -15,7 +15,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { config } from "../../../config";
 import { HeaderBackMenu } from "../../components/HeaderBackMenu";
-import { pathOperationResult, pathPurchase, pathWallet } from "../../paths";
+import { pathOperationResult, pathPurchase, pathValidator, pathWallet } from "../../paths";
 import { FormBuyShares, FormBuySharesFields } from "./FormBuyShares";
 import { HeaderTitleStack, MainStack } from "./style";
 
@@ -107,7 +107,7 @@ export function Purchase(): JSX.Element {
       <PageLayout>
         <MainStack>
           <HeaderTitleStack>
-            <HeaderBackMenu />
+            <HeaderBackMenu path={`${pathValidator}/${validatorAddress}`} />
             <Title>Purchase</Title>
             <Title level={2}>{validatorData?.tokenInfo.name ?? ""}</Title>
           </HeaderTitleStack>

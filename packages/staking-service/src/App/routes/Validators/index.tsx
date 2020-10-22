@@ -4,9 +4,9 @@ import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { config } from "../../../config";
-import { HeaderBackMenu } from "../../components/HeaderBackMenu";
-import { pathValidator, pathValidators } from "../../paths";
-import { BorderContainer, MainStack, ValidatorItem, ValidatorStack } from "./style";
+import { AccountMenu } from "../../components/AccountMenu";
+import { pathValidator } from "../../paths";
+import { BorderContainer, MainStack, MenuHeader, ValidatorItem, ValidatorStack } from "./style";
 
 const { Title, Text } = Typography;
 
@@ -64,7 +64,9 @@ export function Validators(): JSX.Element {
   return (
     <PageLayout>
       <MainStack>
-        <HeaderBackMenu path={pathValidators} />
+        <MenuHeader>
+          <AccountMenu />
+        </MenuHeader>
         <Title>Validators</Title>
         <ValidatorStack>
           {validatorsData.map((validator) => (

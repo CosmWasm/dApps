@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { config } from "../../../config";
 import { HeaderBackMenu } from "../../components/HeaderBackMenu";
-import { pathOperationResult, pathWallet, pathWithdraw } from "../../paths";
+import { pathOperationResult, pathValidator, pathWallet, pathWithdraw } from "../../paths";
 import confirmIcon from "./assets/confirmIcon.svg";
 import { FormWithdrawBalance, FormWithdrawBalanceFields } from "./FormWithdrawBalance";
 import { ConfirmStack, ConfirmText, HeaderTitleStack, MainStack } from "./style";
@@ -121,7 +121,7 @@ export function Withdraw(): JSX.Element {
       <PageLayout>
         <MainStack>
           <HeaderTitleStack>
-            <HeaderBackMenu />
+            <HeaderBackMenu path={`${pathValidator}/${validatorAddress}`} />
             <Title>Withdraw</Title>
             <Title level={2}>{validatorData?.tokenInfo.name ?? ""}</Title>
           </HeaderTitleStack>

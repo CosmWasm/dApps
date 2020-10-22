@@ -9,6 +9,11 @@ export const MainStack = styled(Stack)`
   }
 `;
 
+export const MenuHeader = styled.header`
+  display: flex;
+  justify-content: flex-end;
+`;
+
 export const ValidatorStack = styled(Stack)`
   & > * {
     --gap: 0;
