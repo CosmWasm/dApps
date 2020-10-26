@@ -42,19 +42,23 @@ export function Validators(): JSX.Element {
   useEffect(() => {
     const client = getClient();
 
-    client.getContracts(config.codeId).then((contracts) => {
-      contracts.forEach((contract) => {
+    (async function updateContracts() {
+      const contracts = await client.getContracts(config.codeId);
+
+      for (const contract of contracts) {
         const newCw20contract = CW20(client).use(contract.address);
         addContract(newCw20contract);
-      });
-    });
+      }
+    })();
   }, [getClient, addContract]);
 
   useEffect(() => {
     const validatorsDataPromises = cw20Contracts.map(getValidatorData);
-    Promise.all(validatorsDataPromises).then((validatorsData) =>
-      setValidatorsData(validatorsData.sort(validatorCompare)),
-    );
+
+    (async function updateValidatorsData() {
+      const validatorsData = await Promise.all(validatorsDataPromises);
+      setValidatorsData(validatorsData.sort(validatorCompare));
+    })();
   }, [cw20Contracts]);
 
   function goToValidator(address: string) {
