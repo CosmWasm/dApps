@@ -111,8 +111,7 @@ export function ValidatorHome(): JSX.Element {
           <Button type="primary" onClick={goToWithdraw}>
             Withdraw
           </Button>
-          {/* Disable while claims are only a number */}
-          <Button disabled type="primary" onClick={goToClaims}>
+          <Button type="primary" onClick={goToClaims}>
             Claims
           </Button>
         </ButtonStack>
