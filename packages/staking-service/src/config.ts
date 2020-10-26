@@ -15,7 +15,7 @@ const local: AppConfig = {
     uatom: { denom: "ATOM", fractionalDigits: 6 },
   },
   gasPrice: 0.025,
-  codeId: 107,
+  codeId: 129,
 };
 
 const coralnet: AppConfig = {
@@ -33,7 +33,7 @@ const coralnet: AppConfig = {
     ureef: { denom: "REEF", fractionalDigits: 6 },
   },
   gasPrice: 0.025,
-  codeId: 107,
+  codeId: 129,
 };
 
 // REACT_APP_LOCAL is set via `yarn start:local`
