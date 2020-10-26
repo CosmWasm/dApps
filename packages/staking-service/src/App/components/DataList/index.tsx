@@ -13,7 +13,7 @@ export function DataList(dataMap: DataListProps): JSX.Element {
         <React.Fragment key={key}>
           {index > 0 && <Divider />}
           <DataRow>
-            <KeyText>{key}</KeyText>
+            <KeyText>{key.charAt(0).toUpperCase() + key.slice(1)}</KeyText>
             <ValueText>{value}</ValueText>
           </DataRow>
         </React.Fragment>
