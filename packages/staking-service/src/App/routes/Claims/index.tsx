@@ -1,84 +1,152 @@
-import { PageLayout } from "@cosmicdapp/design";
-import { Button, Typography } from "antd";
-import React, { useState } from "react";
-import { DataList } from "../../components/DataList";
+import { Loading, PageLayout } from "@cosmicdapp/design";
+import { CW20, displayAmountToNative, getErrorFromStackTrace, useAccount, useSdk } from "@cosmicdapp/logic";
+import { Decimal } from "@cosmjs/math";
+import { Typography } from "antd";
+import React, { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
+import { config } from "../../../config";
 import { HeaderBackMenu } from "../../components/HeaderBackMenu";
-import { ButtonStack, HeaderTitleStack, MainStack } from "./style";
+import { pathClaims, pathOperationResult, pathWallet } from "../../paths";
+import { ClaimDetail } from "./components/ClaimDetail";
+import { ClaimList } from "./components/ClaimList";
+import { HeaderTitleStack, MainStack } from "./style";
 
 const { Title } = Typography;
 
-interface MockClaim {
-  readonly Date: string;
-  readonly Tokens: string;
-  readonly Atom: string;
+export interface ClaimData {
+  readonly date: Date;
+  readonly balance: string;
 }
 
-function getClaimLabel(claim: MockClaim) {
-  const [day, month] = claim.Date.split("/");
-  return `${day} ${month} - ${claim.Tokens.split(",")[0]} tokens`;
+interface ClaimsParams {
+  readonly validatorAddress: string;
 }
-
-const mockClaims: MockClaim[] = [
-  { Date: "20/Oct/20", Tokens: "500,000", Atom: "586" },
-  { Date: "18/Nov/20", Tokens: "140,000", Atom: "425" },
-];
 
 export function Claims(): JSX.Element {
+  const [loading, setLoading] = useState(false);
   const [claimIndex, setClaimIndex] = useState<number>();
 
+  const history = useHistory();
+  const { validatorAddress } = useParams<ClaimsParams>();
+  const { getClient } = useSdk();
+  const { account, refreshAccount } = useAccount();
+
+  const [validatorName, setValidatorName] = useState("");
+  const [claimsData, setClaimsData] = useState<readonly ClaimData[]>([]);
+  const [balanceToClaim, setBalanceToClaim] = useState("0");
+
+  useEffect(() => {
+    const client = getClient();
+
+    (async function updateNameAndClaims() {
+      const contract = await client.getContract(validatorAddress);
+      const cw20Contract = CW20(client).use(contract.address);
+
+      const [{ name }, { claims }] = await Promise.all([
+        cw20Contract.tokenInfo(),
+        cw20Contract.claims(account.address),
+      ]);
+
+      setValidatorName(name);
+
+      const claimsData: ClaimData[] = claims.map((claim) => {
+        const date = new Date(claim.released.at_time * 1000);
+
+        const decimals = config.coinMap[config.stakingToken].fractionalDigits;
+        const balance = Decimal.fromAtomics(claim.amount, decimals).toString();
+
+        return { date, balance };
+      });
+
+      setClaimsData(claimsData.sort((a, b) => a.date.valueOf() - b.date.valueOf()));
+    })();
+  }, [getClient, validatorAddress, account.address]);
+
+  useEffect(() => {
+    const decimals = config.coinMap[config.stakingToken].fractionalDigits;
+    const now = new Date().valueOf();
+
+    const readyClaims = claimsData.filter((claim) => claim.date.valueOf() < now);
+
+    const balances = readyClaims.map((claim) =>
+      Decimal.fromAtomics(
+        displayAmountToNative(claim.balance, config.coinMap, config.stakingToken),
+        decimals,
+      ),
+    );
+
+    const balanceToClaim = balances.reduce(
+      (previous, current) => previous.plus(current),
+      Decimal.fromAtomics("0", decimals),
+    );
+    setBalanceToClaim(balanceToClaim.toString());
+  }, [claimsData]);
+
+  async function claimAll() {
+    setLoading(true);
+
+    const client = getClient();
+    const contract = await client.getContract(validatorAddress);
+    const cw20Contract = CW20(client).use(contract.address);
+
+    try {
+      const txHash = await cw20Contract.claim();
+      if (!txHash) {
+        throw Error("Claim failed");
+      }
+
+      refreshAccount();
+
+      history.push({
+        pathname: pathOperationResult,
+        state: {
+          success: true,
+          message: `Successfully claimed`,
+          customButtonText: "Wallet",
+          customButtonActionPath: `${pathWallet}/${validatorAddress}`,
+        },
+      });
+    } catch (stackTrace) {
+      console.error(stackTrace);
+
+      history.push({
+        pathname: pathOperationResult,
+        state: {
+          success: false,
+          message: "Claim transaction failed:",
+          error: getErrorFromStackTrace(stackTrace),
+          customButtonActionPath: `${pathClaims}/${validatorAddress}`,
+        },
+      });
+    }
+  }
+
+  const showClaimList = claimIndex === undefined;
   const showClaimDetail = claimIndex !== undefined;
-  const disableNext = claimIndex === mockClaims.length - 1;
-  const disablePrevious = claimIndex === 0;
 
   return (
-    <PageLayout>
-      <MainStack>
-        <HeaderTitleStack>
-          <HeaderBackMenu />
-          <Title>Pending Claims</Title>
-          <Title level={2}>Iris Net</Title>
-        </HeaderTitleStack>
-        {!showClaimDetail && (
-          <ButtonStack>
-            {mockClaims.map((claim, index) => (
-              <Button
-                key={claim.Tokens + "todofixthiskey"}
-                type="primary"
-                onClick={() => {
-                  setClaimIndex(index);
-                }}
-              >
-                {getClaimLabel(claim)}
-              </Button>
-            ))}
-          </ButtonStack>
-        )}
-        {showClaimDetail && (
-          <>
-            <DataList {...mockClaims[claimIndex]} />
-            <ButtonStack>
-              <Button
-                type="primary"
-                disabled={disableNext}
-                onClick={() => {
-                  !disableNext && setClaimIndex((claimIndex) => claimIndex + 1);
-                }}
-              >
-                Next
-              </Button>
-              <Button
-                type="primary"
-                disabled={disablePrevious}
-                onClick={() => {
-                  !disablePrevious && setClaimIndex((claimIndex) => claimIndex - 1);
-                }}
-              >
-                Previous
-              </Button>
-            </ButtonStack>
-          </>
-        )}
-      </MainStack>
-    </PageLayout>
+    (loading && <Loading loadingText={`Claiming...`} />) ||
+    (!loading && (
+      <PageLayout>
+        <MainStack>
+          <HeaderTitleStack>
+            <HeaderBackMenu path={`${pathWallet}/${validatorAddress}`} />
+            <Title>Pending Claims</Title>
+            <Title level={2}>{validatorName}</Title>
+          </HeaderTitleStack>
+          {showClaimList && (
+            <ClaimList
+              claimsData={claimsData}
+              setClaimIndex={setClaimIndex}
+              balanceToClaim={balanceToClaim}
+              claimAll={claimAll}
+            />
+          )}
+          {showClaimDetail && (
+            <ClaimDetail claimsData={claimsData} claimIndex={claimIndex} setClaimIndex={setClaimIndex} />
+          )}
+        </MainStack>
+      </PageLayout>
+    ))
   );
 }
