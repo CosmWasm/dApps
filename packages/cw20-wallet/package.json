@@ -1,6 +1,6 @@
 {
   "name": "cw20-wallet",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "homepage": "https://dapps.cosmwasm.com/cw20-wallet",
   "browserslist": [
@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
-    "@cosmicdapp/design": "^0.3.0",
-    "@cosmicdapp/logic": "^0.3.0",
+    "@cosmicdapp/design": "^0.4.0",
+    "@cosmicdapp/logic": "^0.4.0",
     "@cosmjs/cosmwasm": "^0.23.0",
     "@cosmjs/crypto": "^0.23.0",
     "@cosmjs/launchpad": "^0.23.0",
