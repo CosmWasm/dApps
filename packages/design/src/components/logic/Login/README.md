@@ -2,6 +2,8 @@
 
 The reusable React component that provides the dApps with a local burner wallet, a ledger wallet, or a Keplr extension wallet.
 
+Live example of this component in the native wallet dApp: https://dapps.cosmwasm.com/wallet/
+
 ## How to use
 
 In a new dApp, that has the local `@cosmicdapp/design` package as a dependency, add the following code to the login route.
