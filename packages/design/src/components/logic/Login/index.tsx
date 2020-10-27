@@ -25,8 +25,10 @@ function disableLedgerLogin() {
 }
 
 function disableKeplrLogin() {
-  const anyWindow: any = window;
-  return !(anyWindow.getOfflineSigner && anyWindow.keplr.experimentalSuggestChain);
+  // TODO find check that works on reload
+  //const anyWindow: any = window;
+  //return !(anyWindow.getOfflineSigner && anyWindow.keplr.experimentalSuggestChain);
+  return false;
 }
 
 interface LoginProps {
