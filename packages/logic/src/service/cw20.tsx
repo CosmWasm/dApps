@@ -38,8 +38,13 @@ export interface Investment {
   readonly validator: string;
 }
 
+export interface Claim {
+  readonly amount: string;
+  readonly released: { readonly at_time: number };
+}
+
 export interface Claims {
-  readonly claims: number;
+  readonly claims: readonly Claim[];
 }
 
 export interface AllAccountsResponse {
@@ -69,6 +74,7 @@ export interface CW20Instance {
   transferFrom: (owner: string, recipient: string, amount: string) => Promise<string>;
   bond: (coin: Coin) => Promise<string>;
   unbond: (amount: string) => Promise<string>;
+  claim: () => Promise<string>;
 }
 
 export interface CW20Contract {
@@ -163,6 +169,11 @@ export const CW20 = (client: SigningCosmWasmClient): CW20Contract => {
       return result.transactionHash;
     };
 
+    const claim = async (): Promise<string> => {
+      const result = await client.execute(contractAddress, { claim: {} });
+      return result.transactionHash;
+    };
+
     return {
       contractAddress,
       balance,
@@ -181,6 +192,7 @@ export const CW20 = (client: SigningCosmWasmClient): CW20Contract => {
       transferFrom,
       bond,
       unbond,
+      claim,
     };
   };
   return { use };

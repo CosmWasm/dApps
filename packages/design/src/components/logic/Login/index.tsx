@@ -25,8 +25,10 @@ function disableLedgerLogin() {
 }
 
 function disableKeplrLogin() {
-  const anyWindow: any = window;
-  return !(anyWindow.getOfflineSigner && anyWindow.keplr.experimentalSuggestChain);
+  // TODO find check that works on reload
+  //const anyWindow: any = window;
+  //return !(anyWindow.getOfflineSigner && anyWindow.keplr.experimentalSuggestChain);
+  return false;
 }
 
 interface LoginProps {
@@ -112,7 +114,7 @@ export function Login({ config, pathAfterLogin, appName, appLogo }: LoginProps):
             Browser (Demo)
           </Button>
           <Button type="primary" disabled={disableLedgerLogin()} onClick={initLedger}>
-            Ledger (Secure)
+            Ledger (Secure, Chrome)
           </Button>
           <Button type="primary" disabled={disableKeplrLogin()} onClick={initKeplr}>
             Keplr (Secure)

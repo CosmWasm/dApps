@@ -1,5 +1,5 @@
 import { PageLayout } from "@cosmicdapp/design";
-import { Claims, CW20, Investment, TokenInfo, useAccount, useSdk } from "@cosmicdapp/logic";
+import { CW20, Investment, TokenInfo, useAccount, useSdk } from "@cosmicdapp/logic";
 import { Decimal } from "@cosmjs/math";
 import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
@@ -15,7 +15,7 @@ interface ValidatorData {
   readonly tokenInfo: TokenInfo;
   readonly investment: Investment;
   readonly balance: string;
-  readonly claims: Claims;
+  readonly numClaims: number;
 }
 
 function getValidatorDataMap(validatorData: ValidatorData) {
@@ -23,7 +23,7 @@ function getValidatorDataMap(validatorData: ValidatorData) {
 
   const stakePerToken = validatorData.investment.nominal_value;
   const balance = Decimal.fromAtomics(validatorData.balance, validatorData.tokenInfo.decimals).toString();
-  const claims = validatorData.claims.claims.toString();
+  const claims = validatorData.numClaims.toString();
 
   return { "Stake/Token": stakePerToken, Balance: balance, Claims: claims };
 }
@@ -47,14 +47,14 @@ export function Wallet(): JSX.Element {
       const contract = await client.getContract(validatorAddress);
       const cw20Contract = CW20(client).use(contract.address);
 
-      const [tokenInfo, investment, balance, claims] = await Promise.all([
+      const [tokenInfo, investment, balance, { claims }] = await Promise.all([
         cw20Contract.tokenInfo(),
         cw20Contract.investment(),
         cw20Contract.balance(account.address),
         cw20Contract.claims(account.address),
       ]);
 
-      setValidatorData({ tokenInfo, investment, balance, claims });
+      setValidatorData({ tokenInfo, investment, balance, numClaims: claims.length });
     })();
   }, [getClient, validatorAddress, account.address]);
 
@@ -94,8 +94,7 @@ export function Wallet(): JSX.Element {
           <Button type="primary" onClick={goToWithdraw}>
             Withdraw
           </Button>
-          {/* Disable while claims are only a number */}
-          <Button disabled type="primary" onClick={goToClaims}>
+          <Button type="primary" onClick={goToClaims}>
             Claims
           </Button>
         </ButtonStack>

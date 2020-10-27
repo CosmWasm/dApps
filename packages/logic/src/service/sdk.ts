@@ -64,7 +64,7 @@ export async function createClient(config: AppConfig, signer: OfflineSigner): Pr
   const gasLimits: GasLimits<CosmWasmFeeTable> = {
     upload: 1500000,
     init: 600000,
-    exec: 200000,
+    exec: 400000,
     migrate: 600000,
     send: 80000,
     changeAdmin: 80000,

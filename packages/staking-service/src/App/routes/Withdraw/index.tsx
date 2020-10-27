@@ -92,7 +92,7 @@ export function Withdraw(): JSX.Element {
         pathname: pathOperationResult,
         state: {
           success: true,
-          message: `${amount} ${config.stakingToken} successfully bonded`,
+          message: `${amount} ${config.stakingToken} successfully unbonded`,
           customButtonText: "Wallet",
           customButtonActionPath: `${pathWallet}/${validatorAddress}`,
         },
@@ -104,7 +104,7 @@ export function Withdraw(): JSX.Element {
         pathname: pathOperationResult,
         state: {
           success: false,
-          message: "Bond transaction failed:",
+          message: "Unbond transaction failed:",
           error: getErrorFromStackTrace(stackTrace),
           customButtonActionPath: `${pathWithdraw}/${validatorAddress}`,
         },
