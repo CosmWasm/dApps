@@ -112,7 +112,7 @@ export function Login({ config, pathAfterLogin, appName, appLogo }: LoginProps):
             Browser (Demo)
           </Button>
           <Button type="primary" disabled={disableLedgerLogin()} onClick={initLedger}>
-            Ledger (Secure)
+            Ledger (Secure, Chrome)
           </Button>
           <Button type="primary" disabled={disableKeplrLogin()} onClick={initKeplr}>
             Keplr (Secure)
