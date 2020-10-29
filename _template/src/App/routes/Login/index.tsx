@@ -6,11 +6,6 @@ import cosmWasmLogo from "./assets/cosmWasmLogo.svg";
 
 export function Login(): JSX.Element {
   return (
-    <LoginDesign
-      pathAfterLogin={pathHome}
-      appName="<app-name>"
-      appLogo={cosmWasmLogo}
-      addressPrefix={config.addressPrefix}
-    />
+    <LoginDesign pathAfterLogin={pathHome} appName="<app-name>" appLogo={cosmWasmLogo} config={config} />
   );
 }

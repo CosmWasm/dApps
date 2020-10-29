@@ -1,27 +1,37 @@
-import { AppConfig, CoinMap } from "@cosmicdapp/logic";
+import { AppConfig } from "@cosmicdapp/logic";
 
 const local: AppConfig = {
-  httpUrl: "http://localhost:1317",
-  feeToken: "ucosm",
-  gasPrice: 0.025,
-  faucetUrl: "http://localhost:8000/credit",
-  faucetToken: "COSM",
+  chainId: "testing",
+  chainName: "Testing",
   addressPrefix: "cosmos",
-};
-
-const coinMap: CoinMap = {
-  ushell: { denom: "SHELL", fractionalDigits: 6 },
-  ureef: { denom: "REEF", fractionalDigits: 6 },
+  rpcUrl: "http://localhost:26657",
+  httpUrl: "http://localhost:1317",
+  faucetUrl: "http://localhost:8000/credit",
+  feeToken: "ucosm",
+  stakingToken: "uatom",
+  faucetToken: "COSM",
+  coinMap: {
+    ucosm: { denom: "COSM", fractionalDigits: 6 },
+    uatom: { denom: "ATOM", fractionalDigits: 6 },
+  },
+  gasPrice: 0.025,
 };
 
 const coralnet: AppConfig = {
-  httpUrl: "https://lcd.coralnet.cosmwasm.com",
-  feeToken: "ushell",
-  gasPrice: 0.025,
-  faucetUrl: "https://faucet.coralnet.cosmwasm.com/credit",
-  faucetToken: "SHELL",
+  chainId: "cosmwasm-coral",
+  chainName: "Coral",
   addressPrefix: "coral",
-  coinMap: coinMap,
+  rpcUrl: "https://rpc.coralnet.cosmwasm.com",
+  httpUrl: "https://lcd.coralnet.cosmwasm.com",
+  faucetUrl: "https://faucet.coralnet.cosmwasm.com/credit",
+  feeToken: "ushell",
+  stakingToken: "ureef",
+  faucetToken: "SHELL",
+  coinMap: {
+    ushell: { denom: "SHELL", fractionalDigits: 6 },
+    ureef: { denom: "REEF", fractionalDigits: 6 },
+  },
+  gasPrice: 0.025,
 };
 
 // REACT_APP_LOCAL is set via `yarn start:local`
