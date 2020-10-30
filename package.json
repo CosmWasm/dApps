@@ -2,7 +2,7 @@
   "name": "d-apps",
   "private": true,
   "description": "Decentralized Apps showcasing CosmJS",
-  "homepage": "https://github.com/CosmWasm/dApps",
+  "homepage": "https://dapps.cosmwasm.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/CosmWasm/dApps.git"
