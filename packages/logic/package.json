@@ -1,8 +1,19 @@
 {
   "name": "@cosmicdapp/logic",
   "version": "0.4.0",
-  "private": true,
-  "license": "MIT",
+  "license": "Apache-2.0",
+  "description": "Utilities for CosmJS-based dApps",
+  "contributors": [
+    "Abel Fernández <abefernan@users.noreply.github.com>",
+    "Will Clark <willclarktech@users.noreply.github.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CosmWasm/dApps/tree/master/packages/logic"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/index.js",
   "module": "dist/logic.esm.js",
   "typings": "dist/index.d.ts",
