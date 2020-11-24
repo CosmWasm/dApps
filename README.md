@@ -16,6 +16,12 @@ Library with logic utilities that is used as a dependency in the rest of the pac
 
 Library with theming utilities and reusable React components that is used as a dependency in the dApps.
 
+### Create React App template
+
+[[code]](https://github.com/CosmWasm/dApps/tree/master/packages/cra-template)
+
+Custom template for creating a React app preloaded with the logic and design packages.
+
 ### Name service
 
 [[code]](https://github.com/CosmWasm/dApps/tree/master/packages/name-service)
