@@ -1,0 +1,11 @@
+{
+  "name": "json-schema-to-typescript-cli",
+  "version": "0.1.0",
+  "private": true,
+  "bin": {
+    "json-schema-to-typescript-cli": "bin/cli.js"
+  },
+  "dependencies": {
+    "json-schema-to-typescript": "^9.1.0"
+  }
+}
