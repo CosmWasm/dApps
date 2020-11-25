@@ -2,7 +2,9 @@
   "package": {
     "scripts": {
       "start": "craco start",
-      "build": "craco build",
+      "start:coralnet": "REACT_APP_NETWORK=coralnet craco start",
+      "start:heldernet": "REACT_APP_NETWORK=heldernet craco start",
+      "build": "REACT_APP_NETWORK=heldernet craco build",
       "test": "craco test"
     },
     "dependencies": {

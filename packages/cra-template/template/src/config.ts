@@ -1,5 +1,9 @@
 import { AppConfig } from "@cosmicdapp/logic";
 
+interface NetworkConfigs {
+  readonly [key: string]: AppConfig;
+}
+
 const local: AppConfig = {
   chainId: "testing",
   chainName: "Testing",
@@ -34,7 +38,35 @@ const coralnet: AppConfig = {
   gasPrice: 0.025,
 };
 
-// REACT_APP_LOCAL is set via `yarn start:local`
-const isLocal = process.env.NODE_ENV !== "production" && !!process.env.REACT_APP_LOCAL;
+const heldernet: AppConfig = {
+  chainId: "hackatom-wasm",
+  chainName: "Helder",
+  addressPrefix: "cosmos",
+  rpcUrl: "https://rpc.heldernet.cosmwasm.com/",
+  httpUrl: "https://lcd.heldernet.cosmwasm.com/",
+  faucetUrl: "https://faucet.heldernet.cosmwasm.com/credit",
+  feeToken: "ucosm",
+  stakingToken: "stake",
+  faucetToken: "COSM",
+  coinMap: {
+    ucosm: { denom: "COSM", fractionalDigits: 6 },
+    stake: { denom: "STAKE", fractionalDigits: 6 },
+  },
+  gasPrice: 0.025,
+};
 
-export const config = isLocal ? local : coralnet;
+const configs: NetworkConfigs = { local, coralnet, heldernet };
+
+function getAppConfig(): AppConfig {
+  const network = process.env.REACT_APP_NETWORK;
+  if (!network) return local;
+
+  const config = configs[network];
+  if (!config) {
+    throw new Error(`No configuration found for network ${network}`);
+  }
+
+  return config;
+}
+
+export const config = getAppConfig();
