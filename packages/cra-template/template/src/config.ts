@@ -46,11 +46,11 @@ const heldernet: AppConfig = {
   httpUrl: "https://lcd.heldernet.cosmwasm.com/",
   faucetUrl: "https://faucet.heldernet.cosmwasm.com/credit",
   feeToken: "ucosm",
-  stakingToken: "stake",
+  stakingToken: "ustake",
   faucetToken: "COSM",
   coinMap: {
     ucosm: { denom: "COSM", fractionalDigits: 6 },
-    stake: { denom: "STAKE", fractionalDigits: 6 },
+    ustake: { denom: "STAKE", fractionalDigits: 6 },
   },
   gasPrice: 0.025,
 };
