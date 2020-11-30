@@ -1,0 +1,25 @@
+{
+  "name": "@cosmicdapp/cra-template",
+  "version": "0.4.4",
+  "license": "Apache-2.0",
+  "description": "Create React App template for CosmJS-based dApps",
+  "contributors": [
+    "Abel Fernández <abefernan@users.noreply.github.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CosmWasm/dApps/tree/master/packages/cra-template"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "template.json",
+  "files": [
+    "template",
+    "template.json"
+  ],
+  "devDependencies": {
+    "json-schema-ref-parser-cli": "file:template/src/contracts/dependencies/json-schema-ref-parser-cli",
+    "json-schema-to-typescript-cli": "file:template/src/contracts/dependencies/json-schema-to-typescript-cli"
+  }
+}

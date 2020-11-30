@@ -1,6 +1,7 @@
 {
   "name": "staking-service",
   "version": "0.4.0",
+  "license": "Apache-2.0",
   "private": true,
   "homepage": "https://dapps.cosmwasm.com/stakes",
   "browserslist": [
@@ -10,14 +11,15 @@
   ],
   "scripts": {
     "start": "craco start",
-    "build": "craco build",
+    "start:heldernet": "REACT_APP_NETWORK=heldernet craco start",
+    "build": "REACT_APP_NETWORK=heldernet craco build",
     "test": "craco test"
   },
   "dependencies": {
-    "@cosmicdapp/design": "^0.4.0",
-    "@cosmicdapp/logic": "^0.4.0",
-    "@cosmjs/launchpad": "^0.23.0",
-    "@cosmjs/math": "^0.23.0",
+    "@cosmicdapp/design": "^0.4.4",
+    "@cosmicdapp/logic": "^0.4.4",
+    "@cosmjs/launchpad": "^0.23.1",
+    "@cosmjs/math": "^0.23.1",
     "antd": "^4.5.4",
     "clipboard-copy": "^3.1.0",
     "formik": "^2.1.5",

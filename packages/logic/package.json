@@ -1,8 +1,19 @@
 {
   "name": "@cosmicdapp/logic",
-  "version": "0.4.0",
-  "private": true,
-  "license": "MIT",
+  "version": "0.4.4",
+  "license": "Apache-2.0",
+  "description": "Utilities for CosmJS-based dApps",
+  "contributors": [
+    "Abel Fernández <abefernan@users.noreply.github.com>",
+    "Will Clark <willclarktech@users.noreply.github.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CosmWasm/dApps/tree/master/packages/logic"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/index.js",
   "module": "dist/logic.esm.js",
   "typings": "dist/index.d.ts",
@@ -18,11 +29,12 @@
     "prepare": "tsdx build"
   },
   "dependencies": {
-    "@cosmjs/cosmwasm": "^0.23.0",
-    "@cosmjs/crypto": "^0.23.0",
-    "@cosmjs/launchpad": "^0.23.0",
-    "@cosmjs/launchpad-ledger": "^0.23.0",
-    "@cosmjs/math": "^0.23.0",
+    "@cosmjs/cosmwasm": "^0.23.1",
+    "@cosmjs/crypto": "^0.23.1",
+    "@cosmjs/faucet-client": "^0.23.1",
+    "@cosmjs/launchpad": "^0.23.1",
+    "@cosmjs/launchpad-ledger": "^0.23.1",
+    "@cosmjs/math": "^0.23.1",
     "@ledgerhq/hw-transport-webusb": "^5.25.0"
   },
   "peerDependencies": {

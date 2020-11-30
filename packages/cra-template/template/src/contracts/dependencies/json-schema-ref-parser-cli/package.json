@@ -1,0 +1,11 @@
+{
+  "name": "json-schema-ref-parser-cli",
+  "version": "0.1.0",
+  "private": true,
+  "bin": {
+    "json-schema-ref-parser-cli": "bin/cli.js"
+  },
+  "dependencies": {
+    "@apidevtools/json-schema-ref-parser": "^9"
+  }
+}

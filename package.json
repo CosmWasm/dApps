@@ -1,5 +1,6 @@
 {
   "name": "d-apps",
+  "license": "Apache-2.0",
   "private": true,
   "description": "Decentralized Apps showcasing CosmJS",
   "homepage": "https://dapps.cosmwasm.com",

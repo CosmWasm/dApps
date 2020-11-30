@@ -1,0 +1,15 @@
+# Logs
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencies
+node_modules/
+
+# Built packages
+build/
+
+# OS-specific
+.DS_Store
+
+# IDE-specific
+.vscode/

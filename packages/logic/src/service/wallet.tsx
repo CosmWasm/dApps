@@ -1,4 +1,5 @@
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm";
+import { FaucetClient } from "@cosmjs/faucet-client";
 import { LcdClient, OfflineSigner, StakingExtension } from "@cosmjs/launchpad";
 import * as React from "react";
 import { useState } from "react";
@@ -51,11 +52,8 @@ export function SdkProvider({ config, children }: SdkProviderProps): JSX.Element
     if (config.faucetUrl) {
       const acct = await client.getAccount();
       if (!acct?.balance?.length) {
-        await fetch(config.faucetUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ticker: config.faucetToken, address }),
-        });
+        const faucet = new FaucetClient(config.faucetUrl);
+        await faucet.credit(address, config.feeToken);
       }
     }
 

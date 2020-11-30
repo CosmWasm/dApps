@@ -12,17 +12,60 @@
 3. Customize the `Login` component according to `@cosmicdapp/design`'s `Login` component's [`README.md`](https://github.com/CosmWasm/dApps/tree/master/packages/design/src/components/logic/Login).
 4. In the root directory of the monorepo, run:
 
-```shell
-yarn
-yarn build-deps
-```
+   ```shell
+   yarn
+   yarn build-deps
+   ```
 
-5. In the packages/[your-app] directory, run:
+5. In the packages/`[your-app]` directory, run:
 
-```shell
-yarn start
-```
+   ```shell
+   yarn start
+   ```
 
 ## New dApp from standalone template
 
-👷 Coming soon!
+### Create project
+
+1. Bootstrap a Create React App project preloaded with `@cosmicdapp`'s `logic` and `design` libraries.
+
+   Run the following command in any directory you want:
+
+   ```shell
+   yarn create react-app [your-app] --template @cosmicdapp/cra-template
+   ```
+
+   Or if you prefer to use `npm`:
+
+   ```shell
+   npx create-react-app [your-app] --template @cosmicdapp/cra-template
+   ```
+
+2. Customize `README.md` and `package.json`'s fields as you want.
+
+3. In `[your-app]` directory, run:
+
+   ```shell
+   yarn
+   yarn build-deps
+   ```
+
+4. And then:
+
+   ```shell
+   yarn start
+   ```
+
+### Generate types from a contract
+
+The bootstraped project has [`cw20-base`](https://github.com/CosmWasm/cosmwasm-plus/tree/master/contracts/cw20-base) types included in `src/contracts/types`.
+
+In order to generate types from another contract you might need, follow these steps:
+
+1. Copy the contract into `src/contracts/[your-contract]`.
+
+2. In `src/contracts`, run:
+
+   ```shell
+   ./scripts/get_dts.sh ./[your-contract]
+   ```

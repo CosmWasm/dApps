@@ -1,4 +1,4 @@
-import { AppConfig } from "@cosmicdapp/logic";
+import { AppConfig, getAppConfig, NetworkConfigs } from "@cosmicdapp/logic";
 
 const local: AppConfig = {
   chainId: "testing",
@@ -6,10 +6,9 @@ const local: AppConfig = {
   addressPrefix: "cosmos",
   rpcUrl: "http://localhost:26657",
   httpUrl: "http://localhost:1317",
-  faucetUrl: "http://localhost:8000/credit",
+  faucetUrl: "http://localhost:8000",
   feeToken: "ucosm",
   stakingToken: "uatom",
-  faucetToken: "COSM",
   coinMap: {
     ucosm: { denom: "COSM", fractionalDigits: 6 },
     uatom: { denom: "ATOM", fractionalDigits: 6 },
@@ -18,25 +17,22 @@ const local: AppConfig = {
   codeId: 40,
 };
 
-const coralnet: AppConfig = {
-  chainId: "cosmwasm-coral",
-  chainName: "Coral",
-  addressPrefix: "coral",
-  rpcUrl: "https://rpc.coralnet.cosmwasm.com",
-  httpUrl: "https://lcd.coralnet.cosmwasm.com",
-  faucetUrl: "https://faucet.coralnet.cosmwasm.com/credit",
-  feeToken: "ushell",
-  stakingToken: "ureef",
-  faucetToken: "SHELL",
+const heldernet: AppConfig = {
+  chainId: "hackatom-wasm",
+  chainName: "Heldernet",
+  addressPrefix: "cosmos",
+  rpcUrl: "https://rpc.heldernet.cosmwasm.com",
+  httpUrl: "https://lcd.heldernet.cosmwasm.com",
+  faucetUrl: "https://faucet.heldernet.cosmwasm.com",
+  feeToken: "ucosm",
+  stakingToken: "ustake",
   coinMap: {
-    ushell: { denom: "SHELL", fractionalDigits: 6 },
-    ureef: { denom: "REEF", fractionalDigits: 6 },
+    ucosm: { denom: "COSM", fractionalDigits: 6 },
+    ustake: { denom: "STAKE", fractionalDigits: 6 },
   },
   gasPrice: 0.025,
-  codeId: 40,
+  //codeId: 40,
 };
 
-// REACT_APP_LOCAL is set via `yarn start:local`
-const isLocal = process.env.NODE_ENV !== "production" && !!process.env.REACT_APP_LOCAL;
-
-export const config = isLocal ? local : coralnet;
+const configs: NetworkConfigs = { local, heldernet };
+export const config = getAppConfig(configs);
