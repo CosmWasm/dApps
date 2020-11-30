@@ -8,7 +8,6 @@
 
    ```shell
    yarn install
-   yarn build-deps
    ```
 
 3. And then:
