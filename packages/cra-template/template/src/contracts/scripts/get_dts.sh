@@ -12,9 +12,10 @@ TYPE_FILE=$(basename "$SOURCE_DIR").d.ts
 
 {
   echo "/*"
-  echo " * This file was generated with ❤️ by wasm.glass and is licensed"
-  echo " * for you under WTFPL OR 0BSD OR Unlicense OR MIT OR BSD-3-Clause."
-  echo " * Note that different terms apply for the contract's source code and schema."
+  echo " * This file is an attempt to generate type definitions from a JSON schema."
+  echo " * The result is often far from ideal but it should help you getting started."
+  echo " * Feel free to adapt this to your needs."
+  echo " *"
   echo " * Type generation powered by json-schema-to-typescript."
   echo " */"
   echo ""
