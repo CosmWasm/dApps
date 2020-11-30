@@ -12,17 +12,44 @@
 3. Customize the `Login` component according to `@cosmicdapp/design`'s `Login` component's [`README.md`](https://github.com/CosmWasm/dApps/tree/master/packages/design/src/components/logic/Login).
 4. In the root directory of the monorepo, run:
 
-```shell
-yarn
-yarn build-deps
-```
+   ```shell
+   yarn
+   yarn build-deps
+   ```
 
-5. In the packages/[your-app] directory, run:
+5. In the packages/`[your-app]` directory, run:
 
-```shell
-yarn start
-```
+   ```shell
+   yarn start
+   ```
 
 ## New dApp from standalone template
 
-👷 Coming soon!
+1. Bootstrap a Create React App project preloaded with `@cosmicdapp`'s `logic` and `design` libraries.
+
+   Run the following command in any directory you want:
+
+   ```shell
+   yarn create react-app [your-app] --template @cosmicdapp/cra-template
+   ```
+
+   Or if you prefer to use `npm`:
+
+   ```shell
+   npx create-react-app [your-app] --template @cosmicdapp/cra-template
+   ```
+
+2. Customize `README.md` and `package.json`'s fields as you want.
+
+3. In `[your-app]` directory, run:
+
+   ```shell
+   yarn
+   yarn build-deps
+   ```
+
+4. And then:
+
+   ```shell
+   yarn start
+   ```
