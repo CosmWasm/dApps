@@ -67,5 +67,5 @@ In order to generate types from another contract you might need, follow these st
 2. In `src/contracts`, run:
 
    ```shell
-   ./scripts/get_dts.sh ./[your-contract]
+   ./scripts/make_dts.sh ./[your-contract]
    ```
