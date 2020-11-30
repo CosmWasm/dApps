@@ -16,8 +16,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
-    "@cosmicdapp/design": "^0.4.0",
-    "@cosmicdapp/logic": "^0.4.0",
+    "@cosmicdapp/design": "^0.4.3",
+    "@cosmicdapp/logic": "^0.4.3",
     "@cosmjs/cosmwasm": "^0.23.0",
     "@cosmjs/crypto": "^0.23.0",
     "@cosmjs/launchpad": "^0.23.0",

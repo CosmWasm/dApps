@@ -1,6 +1,6 @@
 {
   "name": "@cosmicdapp/logic",
-  "version": "0.4.0",
+  "version": "0.4.3",
   "license": "Apache-2.0",
   "description": "Utilities for CosmJS-based dApps",
   "contributors": [
