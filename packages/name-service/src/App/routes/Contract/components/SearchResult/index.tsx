@@ -109,7 +109,12 @@ export function SearchResult({
     const payment = purchasePrice ? [purchasePrice] : undefined;
 
     getClient()
-      .execute(contractAddress, { register: { name: name } }, "Buying my name", payment)
+      .execute(
+        contractAddress,
+        { register: { name: name, metadata: `buy-${name}` } },
+        "Buying my name",
+        payment,
+      )
       .then(() => {
         accountProvider.refreshAccount();
 
