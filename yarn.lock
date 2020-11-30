@@ -1278,27 +1278,26 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@cosmjs/cosmwasm@^0.23.0":
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/@cosmjs/cosmwasm/-/cosmwasm-0.23.0.tgz#f9c46e32b7df80609bd204ada7aed3acba4b2ca5"
-  integrity sha512-iQUCU+JAqsChUAZBXZ519200JAgfB6ymjN06qrDrKjF9TJZeugByoojr4TwVrJrRfyTtUf3GtSU67NCnaKho8g==
+"@cosmjs/cosmwasm@^0.23.1":
+  version "0.23.1"
+  resolved "https://registry.yarnpkg.com/@cosmjs/cosmwasm/-/cosmwasm-0.23.1.tgz#bd6a57f3485dec1811091d13fa818e34b7e95079"
+  integrity sha512-k/Xc043osZ3Xiv+K2vIJ0pPcsdNwSf0zNN/KJ6gFsUBKb3rvnkQStJwdz1sG502WMj0sdvdjoQMozZtMYYls6g==
   dependencies:
-    "@cosmjs/crypto" "^0.23.0"
-    "@cosmjs/encoding" "^0.23.0"
-    "@cosmjs/launchpad" "^0.23.0"
-    "@cosmjs/math" "^0.23.0"
-    "@cosmjs/utils" "^0.23.0"
-    axios "^0.19.0"
+    "@cosmjs/crypto" "^0.23.1"
+    "@cosmjs/encoding" "^0.23.1"
+    "@cosmjs/launchpad" "^0.23.1"
+    "@cosmjs/math" "^0.23.1"
+    "@cosmjs/utils" "^0.23.1"
     pako "^1.0.11"
 
-"@cosmjs/crypto@^0.23.0":
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/@cosmjs/crypto/-/crypto-0.23.0.tgz#3abf731de7f16ab745301bb73b0999fbd7e2593f"
-  integrity sha512-UeY+odh5WFXwzHSJ4RHfCkYDKiLCmvtPnuvqU+9tm1w5MgGrfzKmetkFyLlDn/wHwNwyB3N52okc/U5+gVuReQ==
+"@cosmjs/crypto@^0.23.1":
+  version "0.23.1"
+  resolved "https://registry.yarnpkg.com/@cosmjs/crypto/-/crypto-0.23.1.tgz#1120b499fd191b39d2425ef9ad66b884f3309f92"
+  integrity sha512-7OfsiWgmXp/AlPVZzB1K97kxW4T4z9fgMsOPO505K7YPiHkgdHN2aDwR4/2KsTWaARhuVfF2hI0l5xpcs51BDA==
   dependencies:
-    "@cosmjs/encoding" "^0.23.0"
-    "@cosmjs/math" "^0.23.0"
-    "@cosmjs/utils" "^0.23.0"
+    "@cosmjs/encoding" "^0.23.1"
+    "@cosmjs/math" "^0.23.1"
+    "@cosmjs/utils" "^0.23.1"
     bip39 "^3.0.2"
     bn.js "^4.11.8"
     elliptic "^6.5.3"
@@ -1310,47 +1309,54 @@
     type-tagger "^1.0.0"
     unorm "^1.5.0"
 
-"@cosmjs/encoding@^0.23.0":
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/@cosmjs/encoding/-/encoding-0.23.0.tgz#10cc71a88c2b1303db167980a4d43658121b999a"
-  integrity sha512-rcpArez4t3UE1hFXYxZHZu+hfvyxvk838c9Llnj3JunTPTbyDAK4ag7xoqZ7W6A46VHOsABP+9ve+F+8jr9sLQ==
+"@cosmjs/encoding@^0.23.1":
+  version "0.23.1"
+  resolved "https://registry.yarnpkg.com/@cosmjs/encoding/-/encoding-0.23.1.tgz#b51cd2813499cfdeeb0f9cc7d050a45eb8b27bf4"
+  integrity sha512-rP5O3vYo0k6W329J+u5uKqJNrhmR4QTngLgsDvP/qsRRBfEiirhk+TQC8gjUlgnzoiCKCtWsiOyFP1z9Me9HIw==
   dependencies:
     base64-js "^1.3.0"
     bech32 "^1.1.4"
     readonly-date "^1.0.0"
 
-"@cosmjs/launchpad-ledger@^0.23.0":
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/@cosmjs/launchpad-ledger/-/launchpad-ledger-0.23.0.tgz#7b96ed5f48b8616123b32ae6f165c16a49d89e06"
-  integrity sha512-4BZnkA4RPz1Yu4ATkGPxIIMaCLXeo3lgr4t6pktpL3cz+dDnnXOHedMcRWfuv+NQarv8LsCRiqiGr4oV42YdAA==
+"@cosmjs/faucet-client@^0.23.1":
+  version "0.23.1"
+  resolved "https://registry.yarnpkg.com/@cosmjs/faucet-client/-/faucet-client-0.23.1.tgz#a5ccba5a84e26b1945bc851a081f28bbc794875a"
+  integrity sha512-dPvps2Baw/xEOTQTv8ZFGrAtTxlQj9uFQRHrHWz0FsK8axOZx8cP00ThO6yAuSjCb9AsVcaIg8GF7obCb785GQ==
   dependencies:
-    "@cosmjs/launchpad" "^0.23.0"
-    "@cosmjs/utils" "^0.23.0"
+    axios "^0.19.2"
+
+"@cosmjs/launchpad-ledger@^0.23.1":
+  version "0.23.1"
+  resolved "https://registry.yarnpkg.com/@cosmjs/launchpad-ledger/-/launchpad-ledger-0.23.1.tgz#e541576b4b8ee0cda2dff81ce1a7c2c9adc24ebb"
+  integrity sha512-RvlLmftbDzQq1HhxiVvK6PRPC6JUEkIJAhmaZOZna8KEAttxjCbVlXtH0uXcqTcvVU18PiEoeQoBFB7Ew9KtdQ==
+  dependencies:
+    "@cosmjs/launchpad" "^0.23.1"
+    "@cosmjs/utils" "^0.23.1"
     ledger-cosmos-js "^2.1.8"
     semver "^7.3.2"
 
-"@cosmjs/launchpad@^0.23.0":
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/@cosmjs/launchpad/-/launchpad-0.23.0.tgz#6e862af280d0c4a87576ddba86dc1b2cfee47b2f"
-  integrity sha512-dQMZtK60OvF3YgE8KP+ko5YIATohaXJo0QkkypwRnL/GFUP6vivM6eclAgdhSUAJx/n0m4ua8VUZDsdwNuuJKw==
+"@cosmjs/launchpad@^0.23.1":
+  version "0.23.1"
+  resolved "https://registry.yarnpkg.com/@cosmjs/launchpad/-/launchpad-0.23.1.tgz#ba5d3502096e22441853e144837f3f19ca687d80"
+  integrity sha512-O6qIn1UZ1MlOuyCtXL4FYICS3aWbdg4jMSoc/S3PgFdOlKHMwX87pliZV5vpl99kqUQH9YreaYOy1NmuDxvebQ==
   dependencies:
-    "@cosmjs/crypto" "^0.23.0"
-    "@cosmjs/encoding" "^0.23.0"
-    "@cosmjs/math" "^0.23.0"
-    "@cosmjs/utils" "^0.23.0"
+    "@cosmjs/crypto" "^0.23.1"
+    "@cosmjs/encoding" "^0.23.1"
+    "@cosmjs/math" "^0.23.1"
+    "@cosmjs/utils" "^0.23.1"
     axios "^0.19.0"
 
-"@cosmjs/math@^0.23.0":
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/@cosmjs/math/-/math-0.23.0.tgz#1d72cf1931ec7198973e9b5496bfdfd57b8dd8f3"
-  integrity sha512-f/y1xK9gDp1qjjttTIE7tV8ydznFxlMuf7r79iwXqeCl9ZULXEGZJDNPMOhfJOIeDB5MwfXnmOZn2p/BKNCGww==
+"@cosmjs/math@^0.23.1":
+  version "0.23.1"
+  resolved "https://registry.yarnpkg.com/@cosmjs/math/-/math-0.23.1.tgz#706f38742a9a1f6561cf2c4510f8e5ab001fc5e6"
+  integrity sha512-xjGGogFZXLdmRumE1Wr+GlPfKznIl5Qa6K6QyZr4IjBhfB6/ZzLUihliDJp2d8zbjBJgQt9RUwP/PaFQ/yGQNg==
   dependencies:
     bn.js "^4.11.8"
 
-"@cosmjs/utils@^0.23.0":
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/@cosmjs/utils/-/utils-0.23.0.tgz#90ef8de53fcb9c13353b0304fd8f247ff42443ae"
-  integrity sha512-+2lNn2v+KIhrmutq1em1ont711F19/1ZJJwLjyIbzEvTPgzraPqjBnxM4UQrKo85G7lJinsqxRKlzOnUjWmlJA==
+"@cosmjs/utils@^0.23.1":
+  version "0.23.1"
+  resolved "https://registry.yarnpkg.com/@cosmjs/utils/-/utils-0.23.1.tgz#2bac46ef08a1441c193535e97e4c45e2696020bf"
+  integrity sha512-++kW4itjxR9QyKOyI6jv0mbm1P/XV+xrwjzfkZHAHFa1tBHUFf+CswzO2mU6lBiCXkU630SMrkC9FNi12EEtnw==
 
 "@craco/craco@^5.6.4":
   version "5.6.4"
@@ -3813,7 +3819,7 @@ axe-core@^3.5.4:
   resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-3.5.5.tgz#84315073b53fa3c0c51676c588d59da09a192227"
   integrity sha512-5P0QZ6J5xGikH780pghEdbEKijCTrruK9KxtPZCFWUpef0f6GipO+xEZ5GKCb020mmqgbiNO6TcA55CriL784Q==
 
-axios@^0.19.0:
+axios@^0.19.0, axios@^0.19.2:
   version "0.19.2"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.19.2.tgz#3ea36c5d8818d0d5f8a8a97a6d36b86cdc00cb27"
   integrity sha512-fjgm5MvRHLhx+osE2xoekY70AhARk3a6hkN+3Io1jc00jtquGvxYlKlsFUhmUET0V5te6CcZI7lcv2Ym61mjHA==
