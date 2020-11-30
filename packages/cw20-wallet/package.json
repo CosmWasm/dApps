@@ -11,7 +11,8 @@
   ],
   "scripts": {
     "start": "craco start",
-    "build": "craco build",
+    "start:heldernet": "REACT_APP_NETWORK=heldernet craco start",
+    "build": "REACT_APP_NETWORK=heldernet craco build",
     "test": "craco test"
   },
   "dependencies": {
