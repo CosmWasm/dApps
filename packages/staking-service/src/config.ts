@@ -6,7 +6,7 @@ const local: AppConfig = {
   addressPrefix: "cosmos",
   rpcUrl: "http://localhost:26657",
   httpUrl: "http://localhost:1317",
-  faucetUrl: "http://localhost:8000/credit",
+  faucetUrl: "http://localhost:8000",
   feeToken: "ucosm",
   stakingToken: "uatom",
   coinMap: {
@@ -19,11 +19,11 @@ const local: AppConfig = {
 
 const heldernet: AppConfig = {
   chainId: "hackatom-wasm",
-  chainName: "Helder",
+  chainName: "Heldernet",
   addressPrefix: "cosmos",
   rpcUrl: "https://rpc.heldernet.cosmwasm.com",
   httpUrl: "https://lcd.heldernet.cosmwasm.com",
-  faucetUrl: "https://faucet.heldernet.cosmwasm.com/credit",
+  faucetUrl: "https://faucet.heldernet.cosmwasm.com",
   feeToken: "ucosm",
   stakingToken: "ustake",
   coinMap: {
