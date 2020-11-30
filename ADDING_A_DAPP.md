@@ -25,6 +25,8 @@
 
 ## New dApp from standalone template
 
+### Create project
+
 1. Bootstrap a Create React App project preloaded with `@cosmicdapp`'s `logic` and `design` libraries.
 
    Run the following command in any directory you want:
@@ -52,4 +54,18 @@
 
    ```shell
    yarn start
+   ```
+
+### Generate types from a contract
+
+The bootstraped project has [`cw20-base`](https://github.com/CosmWasm/cosmwasm-plus/tree/master/contracts/cw20-base) types included in `src/contracts/types`.
+
+In order to generate types from another contract you might need, follow these steps:
+
+1. Copy the contract into `src/contracts/[your-contract]`.
+
+2. In `src/contracts`, run:
+
+   ```shell
+   ./scripts/get_dts.sh ./[your-contract]
    ```
