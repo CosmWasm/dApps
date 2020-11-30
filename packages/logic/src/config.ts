@@ -40,10 +40,26 @@ export interface AppConfig {
   readonly faucetUrl: string;
   readonly feeToken: string;
   readonly stakingToken: string;
-  readonly faucetToken: string;
   readonly coinMap: CoinMap;
   readonly gasPrice: number;
   readonly codeId?: number;
+}
+
+export interface NetworkConfigs {
+  readonly local: AppConfig;
+  readonly [key: string]: AppConfig;
+}
+
+export function getAppConfig(configs: NetworkConfigs): AppConfig {
+  const network = process.env.REACT_APP_NETWORK;
+  if (!network) return configs.local;
+
+  const config = configs[network];
+  if (!config) {
+    throw new Error(`No configuration found for network ${network}`);
+  }
+
+  return config;
 }
 
 export function configKeplr(config: AppConfig): KeplrConfig {

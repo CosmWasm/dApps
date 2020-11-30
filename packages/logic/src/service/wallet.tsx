@@ -54,7 +54,7 @@ export function SdkProvider({ config, children }: SdkProviderProps): JSX.Element
         await fetch(config.faucetUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ticker: config.faucetToken, address }),
+          body: JSON.stringify({ denom: config.feeToken, address }),
         });
       }
     }
