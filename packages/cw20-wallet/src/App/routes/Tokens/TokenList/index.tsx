@@ -42,6 +42,7 @@ function TokenList(): JSX.Element {
   const [tokens, setTokens] = useState<readonly TokenData[]>([]);
 
   useEffect(() => {
+    if (!config.codeId) return;
     const client = getClient();
 
     client.getContracts(config.codeId).then((contracts) => {
