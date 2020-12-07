@@ -12,6 +12,7 @@ interface CosmWasmContextType {
   readonly init: (signer: OfflineSigner) => Promise<void>;
   readonly clear: () => void;
   readonly getClient: () => SigningCosmWasmClient;
+  readonly resetClient: (newUrl: string) => Promise<void>;
   readonly getStakingClient: () => LcdClient & StakingExtension;
 }
 
@@ -21,6 +22,9 @@ const defaultContext: CosmWasmContextType = {
   init: async () => {},
   clear: () => {},
   getClient: (): SigningCosmWasmClient => {
+    throw new Error("not yet initialized");
+  },
+  resetClient: async () => {
     throw new Error("not yet initialized");
   },
   getStakingClient: (): LcdClient & StakingExtension => {
@@ -45,7 +49,7 @@ export function SdkProvider({ config, children }: SdkProviderProps): JSX.Element
   }
 
   async function init(signer: OfflineSigner) {
-    const client = await createClient(config, signer);
+    let client = await createClient(config, signer);
     const address = client.senderAddress;
 
     // load from faucet if needed
@@ -57,6 +61,10 @@ export function SdkProvider({ config, children }: SdkProviderProps): JSX.Element
       }
     }
 
+    async function resetClient(newUrl: string) {
+      client = await createClient({ ...config, httpUrl: newUrl }, signer);
+    }
+
     const stakingClient = createStakingClient(config.httpUrl);
 
     setValue({
@@ -65,6 +73,7 @@ export function SdkProvider({ config, children }: SdkProviderProps): JSX.Element
       init: async () => {},
       clear,
       getClient: () => client,
+      resetClient,
       getStakingClient: () => stakingClient,
     });
   }
