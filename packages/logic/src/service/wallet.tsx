@@ -27,7 +27,7 @@ const defaultContext: CosmWasmContextType = {
   initialized: false,
   address: "",
   config: {},
-  init: () => {},
+  init: throwNotInitialized,
   clear: throwNotInitialized,
   getSigner: throwNotInitialized,
   getClient: throwNotInitialized,
