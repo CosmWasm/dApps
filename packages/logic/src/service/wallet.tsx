@@ -2,35 +2,38 @@ import { SigningCosmWasmClient } from "@cosmjs/cosmwasm";
 import { FaucetClient } from "@cosmjs/faucet-client";
 import { LcdClient, OfflineSigner, StakingExtension } from "@cosmjs/launchpad";
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AppConfig } from "../config";
 import { createClient, createStakingClient } from "./sdk";
-import { useEffect } from "react";
 
 interface CosmWasmContextType {
   readonly initialized: boolean;
   readonly address: string;
-  readonly init: (signer: OfflineSigner) => Promise<void>;
+  readonly config: Partial<AppConfig>;
+  readonly init: (signer: OfflineSigner) => void;
   readonly clear: () => void;
+  readonly getSigner: () => OfflineSigner;
   readonly getClient: () => SigningCosmWasmClient;
-  readonly resetClient: (newConfig: AppConfig, newSigner: OfflineSigner) => Promise<void>;
   readonly getStakingClient: () => LcdClient & StakingExtension;
+  readonly changeConfig: (updates: Partial<AppConfig>) => void;
+  readonly changeSigner: (newSigner: OfflineSigner) => void;
+}
+
+function throwNotInitialized(): any {
+  throw new Error("Not yet initialized");
 }
 
 const defaultContext: CosmWasmContextType = {
   initialized: false,
   address: "",
-  init: async () => {},
-  clear: () => {},
-  getClient: (): SigningCosmWasmClient => {
-    throw new Error("not yet initialized");
-  },
-  resetClient: async () => {
-    throw new Error("not yet initialized");
-  },
-  getStakingClient: (): LcdClient & StakingExtension => {
-    throw new Error("not yet initialized");
-  },
+  config: {},
+  init: () => {},
+  clear: throwNotInitialized,
+  getSigner: throwNotInitialized,
+  getClient: throwNotInitialized,
+  getStakingClient: throwNotInitialized,
+  changeConfig: throwNotInitialized,
+  changeSigner: throwNotInitialized,
 };
 
 const CosmWasmContext = React.createContext<CosmWasmContextType>(defaultContext);
@@ -41,49 +44,59 @@ interface SdkProviderProps extends React.HTMLAttributes<HTMLOrSVGElement> {
   readonly config: AppConfig;
 }
 
-export function SdkProvider({ config, children }: SdkProviderProps): JSX.Element {
-  const contextWithInit = { ...defaultContext, init };
-  const [value, setValue] = useState<CosmWasmContextType>(contextWithInit);
+export function SdkProvider({ config: configProp, children }: SdkProviderProps): JSX.Element {
+  const [config, setConfig] = useState(configProp);
+  const [signer, setSigner] = useState<OfflineSigner>();
   const [client, setClient] = useState<SigningCosmWasmClient>();
 
-  async function init(signer: OfflineSigner) {
-    const client = await createClient(config, signer);
-    setClient(client);
-  }
-
-  async function resetClient(newConfig: AppConfig, newSigner: OfflineSigner) {
-    const newClient = await createClient(newConfig, newSigner);
-    setClient(newClient);
-  }
+  const contextWithInit = { ...defaultContext, init: setSigner };
+  const [value, setValue] = useState<CosmWasmContextType>(contextWithInit);
 
   function clear() {
     setValue({ ...contextWithInit });
   }
 
-  useEffect(() => {
-    if (!client) return;
-    (async function updateValue() {
-      const address = client.senderAddress;
+  function changeConfig(updates: Partial<AppConfig>) {
+    setConfig((config) => ({ ...config, ...updates }));
+  }
 
+  useEffect(() => {
+    if (!signer) return;
+
+    (async function updateClient() {
+      const client = await createClient(config, signer);
+      setClient(client);
+    })();
+  }, [signer, config]);
+
+  useEffect(() => {
+    if (!signer || !client) return;
+
+    const address = client.senderAddress;
+    const stakingClient = createStakingClient(config.httpUrl);
+
+    (async function updateValue() {
       // load from faucet if needed
       if (config.faucetUrl) {
         const acct = await client.getAccount();
+
         if (!acct?.balance?.length) {
           const faucet = new FaucetClient(config.faucetUrl);
           await faucet.credit(address, config.feeToken);
         }
       }
 
-      const stakingClient = createStakingClient(config.httpUrl);
-
       setValue({
         initialized: true,
         address,
-        init: async () => {},
+        config,
+        init: () => {},
         clear,
+        getSigner: () => signer,
         getClient: () => client,
-        resetClient,
         getStakingClient: () => stakingClient,
+        changeConfig,
+        changeSigner: setSigner,
       });
     })();
   }, [client]);
