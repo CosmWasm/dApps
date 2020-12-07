@@ -5,6 +5,7 @@ import * as React from "react";
 import { useState } from "react";
 import { AppConfig } from "../config";
 import { createClient, createStakingClient } from "./sdk";
+import { useEffect } from "react";
 
 interface CosmWasmContextType {
   readonly initialized: boolean;
@@ -12,7 +13,7 @@ interface CosmWasmContextType {
   readonly init: (signer: OfflineSigner) => Promise<void>;
   readonly clear: () => void;
   readonly getClient: () => SigningCosmWasmClient;
-  readonly resetClient: (newUrl: string) => Promise<void>;
+  readonly resetClient: (newConfig: AppConfig, newSigner: OfflineSigner) => Promise<void>;
   readonly getStakingClient: () => LcdClient & StakingExtension;
 }
 
@@ -43,40 +44,49 @@ interface SdkProviderProps extends React.HTMLAttributes<HTMLOrSVGElement> {
 export function SdkProvider({ config, children }: SdkProviderProps): JSX.Element {
   const contextWithInit = { ...defaultContext, init };
   const [value, setValue] = useState<CosmWasmContextType>(contextWithInit);
+  const [client, setClient] = useState<SigningCosmWasmClient>();
+
+  async function init(signer: OfflineSigner) {
+    const client = await createClient(config, signer);
+    setClient(client);
+  }
+
+  async function resetClient(newConfig: AppConfig, newSigner: OfflineSigner) {
+    const newClient = await createClient(newConfig, newSigner);
+    setClient(newClient);
+  }
 
   function clear() {
     setValue({ ...contextWithInit });
   }
 
-  async function init(signer: OfflineSigner) {
-    let client = await createClient(config, signer);
-    const address = client.senderAddress;
+  useEffect(() => {
+    if (!client) return;
+    (async function updateValue() {
+      const address = client.senderAddress;
 
-    // load from faucet if needed
-    if (config.faucetUrl) {
-      const acct = await client.getAccount();
-      if (!acct?.balance?.length) {
-        const faucet = new FaucetClient(config.faucetUrl);
-        await faucet.credit(address, config.feeToken);
+      // load from faucet if needed
+      if (config.faucetUrl) {
+        const acct = await client.getAccount();
+        if (!acct?.balance?.length) {
+          const faucet = new FaucetClient(config.faucetUrl);
+          await faucet.credit(address, config.feeToken);
+        }
       }
-    }
 
-    async function resetClient(newUrl: string) {
-      client = await createClient({ ...config, httpUrl: newUrl }, signer);
-    }
+      const stakingClient = createStakingClient(config.httpUrl);
 
-    const stakingClient = createStakingClient(config.httpUrl);
-
-    setValue({
-      initialized: true,
-      address,
-      init: async () => {},
-      clear,
-      getClient: () => client,
-      resetClient,
-      getStakingClient: () => stakingClient,
-    });
-  }
+      setValue({
+        initialized: true,
+        address,
+        init: async () => {},
+        clear,
+        getClient: () => client,
+        resetClient,
+        getStakingClient: () => stakingClient,
+      });
+    })();
+  }, [client]);
 
   return <CosmWasmContext.Provider value={value}>{children}</CosmWasmContext.Provider>;
 }
