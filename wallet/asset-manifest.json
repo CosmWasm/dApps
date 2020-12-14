@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/wallet/static/css/main.de83174c.chunk.css",
-    "main.js": "/wallet/static/js/main.d9fcd6ea.chunk.js",
-    "main.js.map": "/wallet/static/js/main.d9fcd6ea.chunk.js.map",
+    "main.css": "/wallet/static/css/main.7ec6134c.chunk.css",
+    "main.js": "/wallet/static/js/main.d26746a6.chunk.js",
+    "main.js.map": "/wallet/static/js/main.d26746a6.chunk.js.map",
     "runtime-main.js": "/wallet/static/js/runtime-main.86db26d2.js",
     "runtime-main.js.map": "/wallet/static/js/runtime-main.86db26d2.js.map",
     "static/css/2.c02c243b.chunk.css": "/wallet/static/css/2.c02c243b.chunk.css",
-    "static/js/2.4fa6fe0c.chunk.js": "/wallet/static/js/2.4fa6fe0c.chunk.js",
-    "static/js/2.4fa6fe0c.chunk.js.map": "/wallet/static/js/2.4fa6fe0c.chunk.js.map",
+    "static/js/2.95e3923f.chunk.js": "/wallet/static/js/2.95e3923f.chunk.js",
+    "static/js/2.95e3923f.chunk.js.map": "/wallet/static/js/2.95e3923f.chunk.js.map",
     "index.html": "/wallet/index.html",
-    "precache-manifest.e959cde1efbee8b1336f5f21f0b5a3d7.js": "/wallet/precache-manifest.e959cde1efbee8b1336f5f21f0b5a3d7.js",
+    "precache-manifest.3847c3d1a349916132517bd3ad0dd7a8.js": "/wallet/precache-manifest.3847c3d1a349916132517bd3ad0dd7a8.js",
     "service-worker.js": "/wallet/service-worker.js",
     "static/css/2.c02c243b.chunk.css.map": "/wallet/static/css/2.c02c243b.chunk.css.map",
-    "static/css/main.de83174c.chunk.css.map": "/wallet/static/css/main.de83174c.chunk.css.map",
-    "static/js/2.4fa6fe0c.chunk.js.LICENSE.txt": "/wallet/static/js/2.4fa6fe0c.chunk.js.LICENSE.txt",
+    "static/css/main.7ec6134c.chunk.css.map": "/wallet/static/css/main.7ec6134c.chunk.css.map",
+    "static/js/2.95e3923f.chunk.js.LICENSE.txt": "/wallet/static/js/2.95e3923f.chunk.js.LICENSE.txt",
     "static/media/backArrow.svg": "/wallet/static/media/backArrow.9849fc2e.svg",
     "static/media/cosmWasmLogo.svg": "/wallet/static/media/cosmWasmLogo.15dccd19.svg",
     "static/media/failIcon.svg": "/wallet/static/media/failIcon.71513020.svg",
@@ -22,8 +22,8 @@
   "entrypoints": [
     "static/js/runtime-main.86db26d2.js",
     "static/css/2.c02c243b.chunk.css",
-    "static/js/2.4fa6fe0c.chunk.js",
-    "static/css/main.de83174c.chunk.css",
-    "static/js/main.d9fcd6ea.chunk.js"
+    "static/js/2.95e3923f.chunk.js",
+    "static/css/main.7ec6134c.chunk.css",
+    "static/js/main.d26746a6.chunk.js"
   ]
 }
