@@ -1,6 +1,6 @@
 {
   "name": "@cosmicdapp/design",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "license": "Apache-2.0",
   "description": "Styles and components for CosmJS-based dApps",
   "contributors": [

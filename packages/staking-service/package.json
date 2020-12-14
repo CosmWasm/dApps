@@ -16,7 +16,7 @@
     "test": "craco test"
   },
   "dependencies": {
-    "@cosmicdapp/design": "^0.4.4",
+    "@cosmicdapp/design": "^0.4.5",
     "@cosmicdapp/logic": "^0.4.5",
     "@cosmjs/launchpad": "^0.23.1",
     "@cosmjs/math": "^0.23.1",
