@@ -31,14 +31,14 @@ function disableKeplrLogin() {
   return false;
 }
 
-interface LoginProps {
+interface LoginProps extends React.HTMLAttributes<HTMLOrSVGElement> {
   readonly pathAfterLogin: string;
   readonly appName: string;
   readonly appLogo: string;
   readonly config: AppConfig;
 }
 
-export function Login({ config, pathAfterLogin, appName, appLogo }: LoginProps): JSX.Element {
+export function Login({ config, pathAfterLogin, appName, appLogo, ...restProps }: LoginProps): JSX.Element {
   const history = useHistory();
   const state = history.location.state as RedirectLocation;
   const { error, setError, clearError } = useError();
@@ -100,7 +100,7 @@ export function Login({ config, pathAfterLogin, appName, appLogo }: LoginProps):
   return initializing ? (
     <Loading loadingText="Initializing app..." />
   ) : (
-    <PageLayout>
+    <PageLayout {...restProps}>
       <MainStack>
         <img src={appLogo} alt="CosmWasm logo" />
         <WelcomeStack>
