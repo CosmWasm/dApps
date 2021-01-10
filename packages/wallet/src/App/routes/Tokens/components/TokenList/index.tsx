@@ -1,12 +1,12 @@
 import { nativeCoinToDisplay, useAccount, useError, useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
-import { Typography } from "antd";
+import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { config } from "../../../../../config";
 import { pathTokens } from "../../../../paths";
 import { TokenDetailState } from "../../../TokenDetail";
-import { BorderContainer, TokenItem, TokenStack } from "./style";
+import { TokenItem, TokenStack } from "./style";
 
 const { Text } = Typography;
 
@@ -43,18 +43,20 @@ export function TokenList({ currentAddress }: TokenListProps): JSX.Element {
         );
 
         return (
-          <TokenItem
+          <Button
             key={nativeToken.denom}
-            data-state={amAllowed ? "" : "forbidden"}
+            disabled={!amAllowed}
+            data-size="large"
+            type="primary"
             onClick={() => {
               amAllowed && goTokenDetail(nativeToken);
             }}
           >
-            <BorderContainer>
+            <TokenItem>
               <Text>{denomToDisplay}</Text>
               <Text>{amountToDisplay !== "0" ? amountToDisplay : "No tokens"}</Text>
-            </BorderContainer>
-          </TokenItem>
+            </TokenItem>
+          </Button>
         );
       })}
     </TokenStack>

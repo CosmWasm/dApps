@@ -1,12 +1,12 @@
 import { CW20, CW20Instance, useContracts, useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Decimal } from "@cosmjs/math";
-import { Typography } from "antd";
+import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { config } from "../../../../config";
 import { pathTokenDetail } from "../../../paths";
-import { BorderContainer, TokenItem, TokenStack } from "./style";
+import { TokenItem, TokenStack } from "./style";
 
 const { Text } = Typography;
 
@@ -68,12 +68,17 @@ function TokenList(): JSX.Element {
         const amountToDisplay = Decimal.fromAtomics(token.coin.amount, token.fractionalDigits).toString();
 
         return (
-          <TokenItem key={token.address} onClick={() => goTokenDetail(token.address)}>
-            <BorderContainer>
+          <Button
+            key={token.coin.denom}
+            data-size="large"
+            type="primary"
+            onClick={() => goTokenDetail(token.address)}
+          >
+            <TokenItem>
               <Text>{token.coin.denom}</Text>
               <Text>{amountToDisplay !== "0" ? amountToDisplay : "No tokens"}</Text>
-            </BorderContainer>
-          </TokenItem>
+            </TokenItem>
+          </Button>
         );
       })}
     </TokenStack>

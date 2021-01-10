@@ -109,8 +109,8 @@ function TokensAdd(): JSX.Element {
 
   return (
     <PageLayout>
-      <BackButton icon={backArrowIcon} path={pathTokens} />
       <MainStack>
+        <BackButton icon={backArrowIcon} path={pathTokens} />
         <Title>Add Other</Title>
         {showInputContract && (
           <Formik

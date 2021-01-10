@@ -3,7 +3,7 @@ import { History } from "history";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { PageLayout } from "../../layout/PageLayout";
-import { MainStack, ResultText } from "./style";
+import { MainStack, ResultText, ResultIcon } from "./style";
 
 interface ResultContent {
   readonly result: "success" | "failure";
@@ -71,7 +71,7 @@ export function OperationResult({
   return (
     <PageLayout>
       <MainStack>
-        <img src={icon} alt="Result icon" />
+        <ResultIcon src={icon} alt="Result icon" />
         <ResultText data-result={result}>{message}</ResultText>
         {error && <ResultText data-result={result}>{error}</ResultText>}
         <Button type="primary" onClick={chosenButtonAction}>

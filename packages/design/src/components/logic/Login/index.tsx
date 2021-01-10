@@ -15,7 +15,16 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { PageLayout } from "../../layout/PageLayout";
 import { Loading } from "../../logic/Loading";
-import { ErrorText, LightText, MainStack, WelcomeStack } from "./style";
+import {
+  ErrorText,
+  LightText,
+  Logo,
+  StackButtons,
+  StackButtonsError,
+  StackLogoText,
+  StackText,
+  StackTextButtons,
+} from "./style";
 
 const { Title } = Typography;
 
@@ -101,26 +110,30 @@ export function Login({ config, pathAfterLogin, appName, appLogo, ...restProps }
     <Loading loadingText="Initializing app..." />
   ) : (
     <PageLayout {...restProps}>
-      <MainStack>
-        <img src={appLogo} alt="CosmWasm logo" />
-        <WelcomeStack>
-          <Typography>
-            <Title level={2}>Hello!</Title>
+      <StackLogoText>
+        <Logo src={appLogo} alt="CosmWasm logo" />
+        <StackTextButtons>
+          <StackText>
+            <Title level={1}>Hello!</Title>
             <LightText>Welcome to your {appName}</LightText>
-            <LightText>Select one of the following options to start:</LightText>
-          </Typography>
-          {error && <ErrorText>{error}</ErrorText>}
-          <Button type="primary" onClick={initBrowser}>
-            Browser (Demo)
-          </Button>
-          <Button type="primary" disabled={disableLedgerLogin()} onClick={initLedger}>
-            Ledger (Secure, Chrome)
-          </Button>
-          <Button type="primary" disabled={disableKeplrLogin()} onClick={initKeplr}>
-            Keplr (Secure)
-          </Button>
-        </WelcomeStack>
-      </MainStack>
+            <LightText>Select one of the following options to start</LightText>
+          </StackText>
+          <StackButtonsError>
+            <StackButtons>
+              <Button data-size="large" type="primary" onClick={initBrowser}>
+                Browser (Demo)
+              </Button>
+              <Button data-size="large" type="primary" disabled={disableLedgerLogin()} onClick={initLedger}>
+                Ledger (Secure, Chrome)
+              </Button>
+              <Button data-size="large" type="primary" disabled={disableKeplrLogin()} onClick={initKeplr}>
+                Keplr (Secure)
+              </Button>
+            </StackButtons>
+            {error && <ErrorText>[ ! ] {error}</ErrorText>}
+          </StackButtonsError>
+        </StackTextButtons>
+      </StackLogoText>
     </PageLayout>
   );
 }

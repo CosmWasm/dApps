@@ -4,13 +4,26 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="dApps index" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <title>dApps index</title>
   </head>
   <body>
-    <ul>
-    <li><a href="/names">Name service</a></li>
-    <li><a href="/wallet">Native wallet</a></li>
-    <li><a href="/cw20-wallet">CW20 wallet</a></li>
-    <li><a href="/stakes">Staking service</a></li>
+    <div class="container">
+      <div class="logos">
+        <div>
+          <img src="assets/cosmwasmLogo.svg" alt="CosmWasm logo" />
+          <h1>CosmWasm</h1>
+        </div>
+        <img src="assets/cosmjsLogo.svg" alt="CosmJS logo" />
+      </div>
+      <h2>Welcome!</h2>
+      <p>Please select one of our apps</p>
+      <ul>
+        <li><a href="http://localhost:3001/names">Name Service</a></li>
+        <li><a href="http://localhost:3000/wallet">Native Wallet</a></li>
+        <li><a href="http://localhost:3002/cw20-wallet">CW20 Wallet</a></li>
+        <li><a href="/stakes">Staking Service</a></li>
+      </ul>
+    </div>
   </body>
 </html>

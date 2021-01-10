@@ -46,12 +46,14 @@ export const AllowanceItem = styled.div`
     margin-left: var(--s1);
   }
 
-  & > span {
+  span.ant-typography {
+    font-size: var(--s-1);
+  }
+
+  & > span.ant-typography {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-
-    font-size: var(--s-1);
   }
 `;
 
@@ -59,16 +61,14 @@ export const AllowanceAmountCopy = styled.div`
   display: flex;
   align-items: center;
 
-  span + img {
-    margin-left: var(--s-2);
-  }
-
   span {
-    font-size: var(--s1);
     font-weight: bolder;
+    flex-grow: 1;
+    flex-shrink: 0;
   }
 
   img {
+    margin-left: var(--s-2);
     cursor: pointer;
     height: var(--s-1);
   }

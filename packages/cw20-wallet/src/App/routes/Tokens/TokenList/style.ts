@@ -1,63 +1,20 @@
 import { Stack } from "@cosmicdapp/design";
 import styled from "styled-components";
 
-const TokenStack = styled(Stack)`
+export const TokenStack = styled(Stack)`
   & > * {
-    --gap: 0;
+    --gap: var(--s0);
   }
 `;
 
-const TokenItem = styled.div`
-  --v-padding: var(--s-2);
-  --border-size: 1px;
+export const TokenItem = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
 
-  padding-top: var(--v-padding);
-  padding-bottom: var(--v-padding);
-
-  padding-left: var(--s4);
-  margin-left: calc(-1 * var(--s4));
-  padding-right: var(--s4);
-  margin-right: calc(-1 * var(--s4));
-
-  margin-bottom: calc(-1 * var(--border-size));
-
-  cursor: pointer;
-
-  &:hover,
-  &:active,
-  &:focus {
-    background-color: var(--color-primary);
-
-    & * {
-      color: white;
-    }
-  }
-
-  &:first-child > * {
-    --border-size: 0;
-  }
-
-  & > * {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-
-    span:first-child {
-      font-family: var(--ff-iceland);
-      font-size: var(--s2);
-    }
-
-    span:not(:first-child) {
-      font-weight: bolder;
-      font-size: var(--s-1);
-    }
+  & span.ant-typography + span.ant-typography {
+    font-family: var(--ff-montserrat);
+    font-size: var(--s-1);
+    font-weight: bolder;
   }
 `;
-
-const BorderContainer = styled.div`
-  border-top: var(--border-size) solid var(--color-primary);
-  padding-top: var(--v-padding);
-  margin-top: calc(-1 * var(--v-padding));
-`;
-
-export { TokenStack, TokenItem, BorderContainer };

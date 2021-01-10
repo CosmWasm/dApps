@@ -1,4 +1,4 @@
-import { BackButton, Loading, OperationResultState, PageLayout, YourAccount } from "@cosmicdapp/design";
+import { BackButton, Loading, OperationResultState, PageLayout } from "@cosmicdapp/design";
 import {
   displayAmountToNative,
   getErrorFromStackTrace,
@@ -14,7 +14,7 @@ import { config } from "../../../config";
 import backArrowIcon from "../../assets/backArrow.svg";
 import { pathOperationResult, pathTokens } from "../../paths";
 import { FormSendTokens } from "./FormSendTokens";
-import { AccountStack, Amount, MainStack } from "./style";
+import { Amount, MainStack } from "./style";
 
 const { Title, Text } = Typography;
 
@@ -96,14 +96,11 @@ export function TokenDetail(): JSX.Element {
       <PageLayout>
         <MainStack>
           <BackButton icon={backArrowIcon} path={pathTokens} />
-          <AccountStack>
-            <Title>{nameToDisplay}</Title>
-            <YourAccount hideTitle hideBalance />
-          </AccountStack>
+          <Title>{nameToDisplay}</Title>
           <Amount>
             <Text>{`${amountInteger}${amountDecimal ? "." : ""}`}</Text>
             {amountDecimal && <Text>{amountDecimal}</Text>}
-            <Text>{" tokens"}</Text>
+            <Text>{" Tokens"}</Text>
           </Amount>
           <FormSendTokens
             tokenName={nameToDisplay}

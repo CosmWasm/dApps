@@ -16,18 +16,13 @@ export const AccountStack = styled(Stack)`
     overflow-wrap: anywhere;
   }
 
-  span {
+  span.ant-typography {
     display: block;
     font-size: var(--s-1);
-  }
 
-  span + span {
-    font-weight: bold;
-  }
-
-  button,
-  button span {
-    font-size: var(--s0);
+    & + span.ant-typography {
+      font-weight: bold;
+    }
   }
 
   button {

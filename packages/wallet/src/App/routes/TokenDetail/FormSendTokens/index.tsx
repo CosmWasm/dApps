@@ -1,12 +1,10 @@
-import { Button, Typography } from "antd";
+import { Button } from "antd";
 import { Formik } from "formik";
-import { Form, FormItem, Input } from "formik-antd";
+import { Form, Input } from "formik-antd";
 import React from "react";
 import * as Yup from "yup";
 import { sendAddressValidationSchema } from "../../../forms/validationSchemas";
-import { FormField, FormStack } from "./style";
-
-const { Text } = Typography;
+import { FormField, FormItemAddress, FormItemAmount, FormStack, FormText, FormTextToken } from "./style";
 
 interface FormSendTokensProps {
   readonly tokenName: string;
@@ -38,17 +36,17 @@ export function FormSendTokens({
         <Form>
           <FormStack>
             <FormField>
-              <Text>Send</Text>
-              <FormItem name="amount">
+              <FormText>Send</FormText>
+              <FormItemAmount name="amount">
                 <Input name="amount" placeholder="Enter amount" />
-              </FormItem>
-              <Text>{tokenName}</Text>
+              </FormItemAmount>
+              <FormTextToken>{tokenName}</FormTextToken>
             </FormField>
             <FormField>
-              <Text>to</Text>
-              <FormItem name="address">
+              <FormText>To</FormText>
+              <FormItemAddress name="address">
                 <Input name="address" placeholder="Enter address" />
-              </FormItem>
+              </FormItemAddress>
             </FormField>
             <Button
               type="primary"

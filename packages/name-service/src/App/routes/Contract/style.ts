@@ -24,6 +24,10 @@ export const SearchStack = styled(Stack)`
     --gap: var(--s2);
   }
 
+  span.ant-typography {
+    font-size: var(--s-1);
+  }
+
   .ant-form {
     margin-top: var(--gap);
   }

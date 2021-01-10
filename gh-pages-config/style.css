@@ -1,0 +1,123 @@
+@import url("https://fonts.googleapis.com/css2?family=Iceland&family=Montserrat:wght@300;400;700&display=swap");
+
+body,
+h1,
+h2,
+p,
+ul {
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+
+  background: rgba(31, 32, 72, 1);
+  background: linear-gradient(
+    90deg,
+    rgba(31, 32, 72, 1) 0%,
+    rgba(31, 31, 31, 1) 50%,
+    rgba(31, 32, 72, 1) 100%
+  );
+}
+
+.container {
+  width: 22rem;
+  margin: 0 auto;
+}
+
+.logos {
+  margin-top: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logos div {
+  display: flex;
+  align-items: center;
+}
+
+.logos img {
+  height: 2.25rem;
+}
+
+h1,
+h2 {
+  font-family: Iceland, sans-serif;
+}
+
+h2,
+p {
+  text-align: center;
+}
+
+h1 {
+  margin-left: 0.25rem;
+  color: white;
+  font-size: 2rem;
+  font-weight: lighter;
+}
+
+h2 {
+  margin-top: 2rem;
+  font-size: 3rem;
+  color: transparent;
+  background: linear-gradient(
+    90deg,
+    rgba(113, 100, 246, 1) 0%,
+    rgba(125, 97, 243, 1) 12%,
+    rgba(174, 117, 231, 1) 33%,
+    rgba(90, 67, 245, 1) 49%,
+    rgba(66, 160, 255, 1) 91%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+p {
+  font-family: Montserrat, sans-serif;
+  font-size: 0.875rem;
+  color: #7c95ff;
+}
+
+ul {
+  padding: 0;
+  margin-top: 2rem;
+}
+
+li {
+  list-style-type: none;
+  margin-top: 1rem;
+}
+
+li a {
+  display: block;
+  padding: 20px;
+  border-radius: 20px;
+  background: rgb(52, 48, 117);
+  background: linear-gradient(0deg, rgba(52, 48, 117, 1) 0%, rgba(36, 36, 61, 1) 50%);
+  font-family: Iceland, sans-serif;
+  font-size: 1.5rem;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+}
+
+li a:hover {
+  color: #f9b77a;
+}
+
+li a:focus {
+  outline: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(140, 136, 182, 1) 0%,
+    rgba(135, 126, 173, 1) 12%,
+    rgba(96, 80, 113, 1) 33%,
+    rgba(72, 59, 164, 1) 49%,
+    rgba(27, 85, 144, 1) 91%
+  );
+}

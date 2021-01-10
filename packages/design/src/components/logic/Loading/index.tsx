@@ -3,7 +3,7 @@ import * as React from "react";
 import { PageLayout } from "../../layout/PageLayout";
 import { StyledSpin } from "./style";
 
-const spinIndicator = <LoadingOutlined style={{ fontSize: "6.25rem" }} spin />;
+const spinIndicator = <LoadingOutlined style={{ fontSize: "6.25rem", color: "#7c95ff" }} spin />;
 
 interface LoadingProps {
   readonly loadingText?: string;

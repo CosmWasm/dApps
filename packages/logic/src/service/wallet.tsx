@@ -53,8 +53,16 @@ export function SdkProvider({ config: configProp, children }: SdkProviderProps):
   const [value, setValue] = useState<CosmWasmContextType>(contextWithInit);
 
   function clear() {
-    setValue({ ...contextWithInit });
+    setSigner(undefined);
   }
+
+  useEffect(() => {
+    if (signer) return;
+
+    setConfig(configProp);
+    setClient(undefined);
+    setValue(contextWithInit);
+  }, [signer]);
 
   function changeConfig(updates: Partial<AppConfig>) {
     setConfig((config) => ({ ...config, ...updates }));

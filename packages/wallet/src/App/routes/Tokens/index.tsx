@@ -18,7 +18,7 @@ export function Tokens(): JSX.Element {
         <Title>Tokens</Title>
         <FormSearchName currentAddress={currentAddress} setCurrentAddress={setCurrentAddress} />
         <TokenList currentAddress={currentAddress} />
-        <YourAccount hideTitle hideBalance />
+        <YourAccount hideBalance />
       </MainStack>
     </PageLayout>
   );

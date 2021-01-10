@@ -22,13 +22,16 @@ export const AccountStack = styled(Stack)`
 `;
 
 export const Amount = styled.div`
-  span {
-    font-size: var(--s4);
-    font-weight: bolder;
-    overflow-wrap: anywhere;
-  }
+  && {
+    span {
+      font-family: var(--ff-iceland);
+      font-size: var(--s2);
+      font-weight: bolder;
+      overflow-wrap: anywhere;
+    }
 
-  span + span {
-    font-size: var(--s1);
+    span + span {
+      font-size: var(--s1);
+    }
   }
 `;
