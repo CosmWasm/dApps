@@ -1,4 +1,4 @@
-import { printableBalance, useAccount } from "@cosmicdapp/logic";
+import { printableBalance, useSdk } from "@cosmicdapp/logic";
 import { Button, Divider, Typography } from "antd";
 import copyToClipboard from "clipboard-copy";
 import React from "react";
@@ -13,8 +13,7 @@ interface YourAccountProps extends StackProps {
 }
 
 export function YourAccount({ tag, hideTitle, hideBalance }: YourAccountProps): JSX.Element {
-  const accountProvider = useAccount();
-  const { address, balance } = accountProvider.account ?? { address: "", balance: [] };
+  const { address, balance } = useSdk();
 
   return (
     <AccountStack tag={tag}>
