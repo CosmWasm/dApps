@@ -29,12 +29,13 @@
     "prepare": "tsdx build"
   },
   "dependencies": {
-    "@cosmjs/cosmwasm": "^0.23.1",
-    "@cosmjs/crypto": "^0.23.1",
-    "@cosmjs/faucet-client": "^0.23.1",
-    "@cosmjs/launchpad": "^0.23.1",
-    "@cosmjs/launchpad-ledger": "^0.23.1",
-    "@cosmjs/math": "^0.23.1",
+    "@cosmjs/cosmwasm-stargate": "^0.24.0-alpha.17",
+    "@cosmjs/crypto": "^0.24.0-alpha.17",
+    "@cosmjs/faucet-client": "^0.24.0-alpha.17",
+    "@cosmjs/launchpad": "^0.24.0-alpha.17",
+    "@cosmjs/launchpad-ledger": "^0.24.0-alpha.17",
+    "@cosmjs/math": "^0.24.0-alpha.17",
+    "@cosmjs/proto-signing": "^0.24.0-alpha.17",
     "@ledgerhq/hw-transport-webusb": "^5.25.0"
   },
   "peerDependencies": {
