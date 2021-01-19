@@ -1,5 +1,5 @@
 import { Loading, PageLayout } from "@cosmicdapp/design";
-import { CW20, displayAmountToNative, getErrorFromStackTrace, useAccount, useSdk } from "@cosmicdapp/logic";
+import { CW20, displayAmountToNative, getErrorFromStackTrace, useSdk } from "@cosmicdapp/logic";
 import { Decimal } from "@cosmjs/math";
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
@@ -28,8 +28,7 @@ export function Claims(): JSX.Element {
 
   const history = useHistory();
   const { validatorAddress } = useParams<ClaimsParams>();
-  const { getClient } = useSdk();
-  const { account, refreshAccount } = useAccount();
+  const { getClient, address, refreshBalance } = useSdk();
 
   const [validatorName, setValidatorName] = useState("");
   const [claimsData, setClaimsData] = useState<readonly ClaimData[]>([]);
@@ -44,7 +43,7 @@ export function Claims(): JSX.Element {
 
       const [{ name }, { claims }] = await Promise.all([
         cw20Contract.tokenInfo(),
-        cw20Contract.claims(account.address),
+        cw20Contract.claims(address),
       ]);
 
       setValidatorName(name);
@@ -60,7 +59,7 @@ export function Claims(): JSX.Element {
 
       setClaimsData(claimsData.sort((a, b) => a.date.valueOf() - b.date.valueOf()));
     })();
-  }, [getClient, validatorAddress, account.address]);
+  }, [getClient, validatorAddress, address]);
 
   useEffect(() => {
     const decimals = config.coinMap[config.stakingToken].fractionalDigits;
@@ -95,7 +94,7 @@ export function Claims(): JSX.Element {
         throw Error("Claim failed");
       }
 
-      refreshAccount();
+      refreshBalance();
 
       history.push({
         pathname: pathOperationResult,

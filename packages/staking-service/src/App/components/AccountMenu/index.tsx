@@ -1,4 +1,4 @@
-import { useAccount } from "@cosmicdapp/logic";
+import { useSdk } from "@cosmicdapp/logic";
 import copyToClipboard from "clipboard-copy";
 import React, { useState } from "react";
 import avatarIcon from "./assets/avatar.svg";
@@ -23,7 +23,7 @@ export interface AccountMenuProps extends React.HTMLAttributes<HTMLOrSVGElement>
 }
 
 export function AccountMenu({ name, ...props }: AccountMenuProps): JSX.Element {
-  const { account } = useAccount();
+  const { address } = useSdk();
 
   // NOTE Link functionality not clear, removing for now
   /* const history = useHistory();
@@ -55,12 +55,12 @@ export function AccountMenu({ name, ...props }: AccountMenuProps): JSX.Element {
                 <NameText>{accountName} account</NameText>
               </AvatarName>
               <AddressCopyBox>
-                <AddressText>{account.address}</AddressText>
+                <AddressText>{address}</AddressText>
                 <AddressCopy
                   src={copyIcon}
                   alt="Copy address icon"
                   onClick={() => {
-                    copyToClipboard(account.address);
+                    copyToClipboard(address);
                   }}
                 />
               </AddressCopyBox>

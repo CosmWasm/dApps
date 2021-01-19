@@ -1,4 +1,4 @@
-import { useAccount } from "@cosmicdapp/logic";
+import { useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Decimal } from "@cosmjs/math";
 import { Button, Typography } from "antd";
@@ -22,9 +22,9 @@ interface FormBuySharesProps {
 }
 
 export function FormBuyShares({ validatorData, submitBuyShares }: FormBuySharesProps): JSX.Element {
-  const { account } = useAccount();
+  const { balance } = useSdk();
 
-  const stakingBalance: Coin = account.balance.find((coin) => coin.denom === config.stakingToken);
+  const stakingBalance: Coin = balance.find((coin) => coin.denom === config.stakingToken);
   const stakingDecimals = config.coinMap[config.stakingToken].fractionalDigits;
   const maxAmount = stakingBalance
     ? Decimal.fromAtomics(stakingBalance.amount, stakingDecimals).toFloatApproximation()

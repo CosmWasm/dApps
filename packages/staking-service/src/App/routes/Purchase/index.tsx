@@ -6,7 +6,6 @@ import {
   getErrorFromStackTrace,
   Investment,
   TokenInfo,
-  useAccount,
   useSdk,
 } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
@@ -35,8 +34,7 @@ export function Purchase(): JSX.Element {
 
   const history = useHistory();
   const { validatorAddress } = useParams<PurchaseParams>();
-  const { getClient } = useSdk();
-  const { refreshAccount } = useAccount();
+  const { getClient, refreshBalance } = useSdk();
 
   const [cw20Contract, setCw20Contract] = useState<CW20Instance>();
   const [validatorData, setValidatorData] = useState<ValidatorData>();
@@ -76,7 +74,7 @@ export function Purchase(): JSX.Element {
         throw Error("Purchase failed");
       }
 
-      refreshAccount();
+      refreshBalance();
 
       history.push({
         pathname: pathOperationResult,
