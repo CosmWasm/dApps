@@ -1,5 +1,5 @@
 import { BackButton, Loading, OperationResultState, PageLayout, YourAccount } from "@cosmicdapp/design";
-import { CW20, getErrorFromStackTrace, useAccount, useSdk } from "@cosmicdapp/logic";
+import { CW20, getErrorFromStackTrace, useSdk } from "@cosmicdapp/logic";
 import { Decimal } from "@cosmjs/math";
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
@@ -20,8 +20,7 @@ function TokenSend(): JSX.Element {
   const [loading, setLoading] = useState(false);
 
   const history = useHistory();
-  const { getClient } = useSdk();
-  const { account, refreshAccount } = useAccount();
+  const { getClient, address, refreshBalance } = useSdk();
 
   const { contractAddress, allowingAddress }: TokenSendParams = useParams();
   const fullPathTokenDetail = `${pathTokenDetail}/${contractAddress}/${allowingAddress ?? ""}`;
@@ -32,7 +31,7 @@ function TokenSend(): JSX.Element {
 
   useEffect(() => {
     const cw20Contract = CW20(getClient()).use(contractAddress);
-    const tokenAddress = allowingAddress ?? account.address;
+    const tokenAddress = allowingAddress ?? address;
 
     cw20Contract.tokenInfo().then(({ symbol, decimals }) => {
       setTokenName(symbol);
@@ -40,13 +39,11 @@ function TokenSend(): JSX.Element {
     });
 
     if (allowingAddress) {
-      cw20Contract
-        .allowance(allowingAddress, account.address)
-        .then((response) => setTokenAmount(response.allowance));
+      cw20Contract.allowance(allowingAddress, address).then((response) => setTokenAmount(response.allowance));
     } else {
       cw20Contract.balance(tokenAddress).then((balance) => setTokenAmount(balance));
     }
-  }, [getClient, contractAddress, allowingAddress, account.address]);
+  }, [getClient, contractAddress, allowingAddress, address]);
 
   const sendTokensAction = (values: FormSendTokensFields) => {
     setLoading(true);
@@ -63,7 +60,7 @@ function TokenSend(): JSX.Element {
             return Promise.reject("Transfer from failed");
           }
 
-          refreshAccount();
+          refreshBalance();
 
           history.push({
             pathname: pathOperationResult,
@@ -81,7 +78,7 @@ function TokenSend(): JSX.Element {
             return Promise.reject("Transfer failed");
           }
 
-          refreshAccount();
+          refreshBalance();
 
           history.push({
             pathname: pathOperationResult,

@@ -1,5 +1,5 @@
 import { BackButton, PageLayout } from "@cosmicdapp/design";
-import { AllowanceInfo, CW20, useAccount, useSdk } from "@cosmicdapp/logic";
+import { AllowanceInfo, CW20, useSdk } from "@cosmicdapp/logic";
 import { Decimal } from "@cosmjs/math";
 import { Button, Divider, Typography } from "antd";
 import React, { useEffect, useState } from "react";
@@ -24,8 +24,7 @@ interface AllowancesParams {
 
 function Allowances(): JSX.Element {
   const history = useHistory();
-  const { getClient } = useSdk();
-  const { account } = useAccount();
+  const { getClient, address } = useSdk();
 
   const { contractAddress }: AllowancesParams = useParams();
 
@@ -41,9 +40,9 @@ function Allowances(): JSX.Element {
       setTokenName(symbol);
       setFractionalDigits(decimals);
     });
-    cw20Contract.balance(account.address).then((balance) => setTokenAmount(balance));
-    cw20Contract.allAllowances(account.address).then(({ allowances }) => setAllowances(allowances));
-  }, [getClient, contractAddress, account.address]);
+    cw20Contract.balance(address).then((balance) => setTokenAmount(balance));
+    cw20Contract.allAllowances(address).then(({ allowances }) => setAllowances(allowances));
+  }, [getClient, contractAddress, address]);
 
   function goToAllowancesEdit(spender: string) {
     history.push(`${pathAllowances}/${contractAddress}${pathAllowanceEdit}/${spender}`);
