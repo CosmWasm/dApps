@@ -1,4 +1,3 @@
-export * from "./account";
 export * from "./contracts";
 export * from "./cw20";
 export * from "./error";

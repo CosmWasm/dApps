@@ -84,7 +84,7 @@ export interface CW20Contract {
 export const CW20 = (client: SigningCosmWasmClient): CW20Contract => {
   const use = (contractAddress: string): CW20Instance => {
     const balance = async (account?: string): Promise<string> => {
-      const address = account || client.senderAddress;
+      const address = account || client.signerAddress;
       const result = await client.queryContractSmart(contractAddress, { balance: { address } });
       return result.balance;
     };
