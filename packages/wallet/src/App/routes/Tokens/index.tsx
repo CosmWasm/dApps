@@ -1,5 +1,5 @@
 import { PageLayout, YourAccount } from "@cosmicdapp/design";
-import { useAccount } from "@cosmicdapp/logic";
+import { useSdk } from "@cosmicdapp/logic";
 import { Typography } from "antd";
 import React, { useState } from "react";
 import { FormSearchName } from "./components/FormSearchName";
@@ -9,8 +9,8 @@ import { MainStack } from "./style";
 const { Title } = Typography;
 
 export function Tokens(): JSX.Element {
-  const { account } = useAccount();
-  const [currentAddress, setCurrentAddress] = useState(account.address);
+  const { address } = useSdk();
+  const [currentAddress, setCurrentAddress] = useState(address);
 
   return (
     <PageLayout>

@@ -3,10 +3,10 @@ import {
   displayAmountToNative,
   getErrorFromStackTrace,
   nativeCoinToDisplay,
-  useAccount,
   useSdk,
 } from "@cosmicdapp/logic";
-import { Coin, isBroadcastTxFailure } from "@cosmjs/launchpad";
+import { Coin } from "@cosmjs/launchpad";
+import { isBroadcastTxFailure } from "@cosmjs/stargate";
 import { Typography } from "antd";
 import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
@@ -34,8 +34,7 @@ export function TokenDetail(): JSX.Element {
   const { tokenName }: TokenDetailParams = useParams();
   const { tokenAmount } = history.location.state as TokenDetailState;
 
-  const { getClient } = useSdk();
-  const accountProvider = useAccount();
+  const { getClient, refreshBalance } = useSdk();
 
   const sendTokensAction = (values) => {
     setLoading(true);
@@ -49,13 +48,13 @@ export function TokenDetail(): JSX.Element {
     const transferAmount: readonly Coin[] = [nativeTokenToTransfer];
 
     getClient()
-      .sendTokens(recipientAddress, transferAmount)
+      .sendTokens(address, recipientAddress, transferAmount)
       .then((result) => {
         if (isBroadcastTxFailure(result)) {
           return Promise.reject(result.rawLog);
         }
 
-        accountProvider.refreshAccount();
+        refreshBalance();
 
         history.push({
           pathname: pathOperationResult,
