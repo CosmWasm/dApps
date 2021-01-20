@@ -89,7 +89,7 @@ export function Claims(): JSX.Element {
     const cw20Contract = CW20(client).use(contract.address);
 
     try {
-      const txHash = await cw20Contract.claim();
+      const txHash = await cw20Contract.claim(address);
       if (!txHash) {
         throw Error("Claim failed");
       }

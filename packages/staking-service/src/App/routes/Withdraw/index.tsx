@@ -79,7 +79,7 @@ export function Withdraw(): JSX.Element {
     const nativeAmountString = displayAmountToNative(amount, config.coinMap, config.stakingToken);
 
     try {
-      const txHash = await cw20Contract.unbond(nativeAmountString);
+      const txHash = await cw20Contract.unbond(address, nativeAmountString);
       if (!txHash) {
         throw Error("Withdrawal failed");
       }
