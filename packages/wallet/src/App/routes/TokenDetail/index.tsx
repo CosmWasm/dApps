@@ -34,12 +34,11 @@ export function TokenDetail(): JSX.Element {
   const { tokenName }: TokenDetailParams = useParams();
   const { tokenAmount } = history.location.state as TokenDetailState;
 
-  const { getClient, refreshBalance } = useSdk();
+  const { getClient, address: userAddress, refreshBalance } = useSdk();
 
-  const sendTokensAction = (values) => {
+  const sendTokensAction = (values: { address: string; amount: string }) => {
     setLoading(true);
-    const { address, amount } = values;
-    const recipientAddress: string = address;
+    const { address: recipientAddress, amount } = values;
 
     // TODO: Add try catch so it does not fail i.e. too many decimals
     const amountToTransfer = displayAmountToNative(amount, config.coinMap, tokenName);
@@ -48,7 +47,7 @@ export function TokenDetail(): JSX.Element {
     const transferAmount: readonly Coin[] = [nativeTokenToTransfer];
 
     getClient()
-      .sendTokens(address, recipientAddress, transferAmount)
+      .sendTokens(userAddress, recipientAddress, transferAmount)
       .then((result) => {
         if (isBroadcastTxFailure(result)) {
           return Promise.reject(result.rawLog);
