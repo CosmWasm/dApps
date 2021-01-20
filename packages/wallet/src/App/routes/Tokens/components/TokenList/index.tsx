@@ -1,9 +1,8 @@
 import { nativeCoinToDisplay, useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Typography } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { config } from "../../../../../config";
 import { pathTokens } from "../../../../paths";
 import { TokenDetailState } from "../../../TokenDetail";
 import { BorderContainer, TokenItem, TokenStack } from "./style";
@@ -15,8 +14,23 @@ interface TokenListProps {
 }
 
 export function TokenList({ currentAddress }: TokenListProps): JSX.Element {
-  const { address, balance } = useSdk();
+  const { config, getClient, address, balance: userBalance } = useSdk();
   const amAllowed = address === currentAddress;
+  const [currentBalance, setCurrentBalance] = useState<readonly Coin[]>([]);
+
+  useEffect(() => {
+    if (amAllowed) {
+      setCurrentBalance(userBalance);
+    } else {
+      setCurrentBalance([]);
+      (async function updateCurrentBalance() {
+        for (const denom in config.coinMap) {
+          const coin = await getClient().getBalance(currentAddress, denom);
+          if (coin) setCurrentBalance((prev) => [...prev, coin]);
+        }
+      })();
+    }
+  }, [amAllowed, userBalance, currentAddress, config.coinMap, getClient]);
 
   const history = useHistory<TokenDetailState>();
   function goTokenDetail(token: Coin) {
@@ -25,7 +39,7 @@ export function TokenList({ currentAddress }: TokenListProps): JSX.Element {
 
   return (
     <TokenStack>
-      {balance.map((nativeToken) => {
+      {currentBalance.map((nativeToken) => {
         const { denom: denomToDisplay, amount: amountToDisplay } = nativeCoinToDisplay(
           nativeToken,
           config.coinMap,
