@@ -2,7 +2,7 @@ import { CW20, CW20Instance, useContracts, useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Decimal } from "@cosmjs/math";
 import { Typography } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { config } from "../../../../config";
 import { pathTokenDetail } from "../../../paths";
@@ -14,14 +14,6 @@ interface TokenData {
   readonly coin: Coin;
   readonly fractionalDigits: number;
   readonly address: string;
-}
-
-async function getTokenData(contract: CW20Instance): Promise<TokenData> {
-  const { symbol: denom, decimals: fractionalDigits } = await contract.tokenInfo();
-  const address = contract.contractAddress;
-  const amount = await contract.balance();
-
-  return { coin: { denom, amount }, fractionalDigits, address };
 }
 
 function tokenCompare(a: TokenData, b: TokenData) {
@@ -36,10 +28,20 @@ function tokenCompare(a: TokenData, b: TokenData) {
 
 function TokenList(): JSX.Element {
   const history = useHistory();
-  const { getClient } = useSdk();
+  const { getClient, address } = useSdk();
   const { contracts: cw20Contracts, addContract } = useContracts();
 
   const [tokens, setTokens] = useState<readonly TokenData[]>([]);
+
+  const getTokenData = useCallback(
+    async function getTokenData(contract: CW20Instance): Promise<TokenData> {
+      const { symbol: denom, decimals: fractionalDigits } = await contract.tokenInfo();
+      const amount = await contract.balance(address);
+
+      return { coin: { denom, amount }, fractionalDigits, address: contract.contractAddress };
+    },
+    [address],
+  );
 
   useEffect(() => {
     if (!config.codeId) return;
@@ -56,7 +58,7 @@ function TokenList(): JSX.Element {
   useEffect(() => {
     const tokenPromises = cw20Contracts.map(getTokenData);
     Promise.all(tokenPromises).then((tokens) => setTokens(tokens.sort(tokenCompare)));
-  }, [cw20Contracts]);
+  }, [cw20Contracts, getTokenData]);
 
   function goTokenDetail(tokenAddress: string) {
     history.push(`${pathTokenDetail}/${tokenAddress}`);

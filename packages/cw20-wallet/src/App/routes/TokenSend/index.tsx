@@ -55,25 +55,27 @@ function TokenSend(): JSX.Element {
 
     try {
       if (allowingAddress) {
-        cw20Contract.transferFrom(allowingAddress, recipientAddress, transferAmount).then((txHash) => {
-          if (!txHash) {
-            return Promise.reject("Transfer from failed");
-          }
+        cw20Contract
+          .transferFrom(address, allowingAddress, recipientAddress, transferAmount)
+          .then((txHash) => {
+            if (!txHash) {
+              return Promise.reject("Transfer from failed");
+            }
 
-          refreshBalance();
+            refreshBalance();
 
-          history.push({
-            pathname: pathOperationResult,
-            state: {
-              success: true,
-              message: `${amount} ${tokenName} successfully sent to ${recipientAddress} with allowance from ${allowingAddress}`,
-              customButtonText: "Token detail",
-              customButtonActionPath: fullPathTokenDetail,
-            } as OperationResultState,
+            history.push({
+              pathname: pathOperationResult,
+              state: {
+                success: true,
+                message: `${amount} ${tokenName} successfully sent to ${recipientAddress} with allowance from ${allowingAddress}`,
+                customButtonText: "Token detail",
+                customButtonActionPath: fullPathTokenDetail,
+              } as OperationResultState,
+            });
           });
-        });
       } else {
-        cw20Contract.transfer(recipientAddress, transferAmount).then((txHash) => {
+        cw20Contract.transfer(address, recipientAddress, transferAmount).then((txHash) => {
           if (!txHash) {
             return Promise.reject("Transfer failed");
           }

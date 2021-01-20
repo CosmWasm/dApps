@@ -52,11 +52,13 @@ function AllowanceEdit(): JSX.Element {
 
       if (decNewAmount.isGreaterThan(decCurrentAmount)) {
         allowanceOperation = cw20Contract.increaseAllowance(
+          address,
           spenderAddress,
           decNewAmount.minus(decCurrentAmount).atomics,
         );
       } else {
         allowanceOperation = cw20Contract.decreaseAllowance(
+          address,
           spenderAddress,
           decCurrentAmount.minus(decNewAmount).atomics,
         );
