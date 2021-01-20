@@ -40,7 +40,7 @@ export interface Investment {
 
 export interface Claim {
   readonly amount: string;
-  readonly released: { readonly at_time: number };
+  readonly release_at: { readonly at_time: number };
 }
 
 export interface Claims {

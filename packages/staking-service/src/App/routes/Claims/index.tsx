@@ -49,7 +49,7 @@ export function Claims(): JSX.Element {
       setValidatorName(name);
 
       const claimsData: ClaimData[] = claims.map((claim) => {
-        const date = new Date(claim.released.at_time * 1000);
+        const date = new Date(claim.release_at.at_time * 1000);
 
         const decimals = config.coinMap[config.stakingToken].fractionalDigits;
         const balance = Decimal.fromAtomics(claim.amount, decimals).toString();
