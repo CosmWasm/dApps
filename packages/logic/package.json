@@ -36,7 +36,7 @@
     "@cosmjs/launchpad-ledger": "^0.24.0-alpha.17",
     "@cosmjs/math": "^0.24.0-alpha.17",
     "@cosmjs/proto-signing": "^0.24.0-alpha.17",
-    "@ledgerhq/hw-transport-webusb": "^5.25.0"
+    "@ledgerhq/hw-transport-webusb": "^5.39.1"
   },
   "peerDependencies": {
     "react": ">=16",
