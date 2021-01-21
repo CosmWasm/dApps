@@ -14,8 +14,7 @@ const local: AppConfig = {
     uatom: { denom: "ATOM", fractionalDigits: 6 },
   },
   gasPrice: 0.025,
-  // TODO make sure it's correct
-  codeId: 40,
+  codeId: 2,
 };
 
 const musselnet: AppConfig = {

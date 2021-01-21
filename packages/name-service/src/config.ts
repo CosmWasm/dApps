@@ -14,8 +14,8 @@ const local: AppConfig = {
     uatom: { denom: "ATOM", fractionalDigits: 6 },
   },
   gasPrice: 0.025,
-  // TODO make sure it's correct
-  codeId: 5,
+  // Replace with proper codeId from the previously uploaded name service contracts
+  codeId: -1,
 };
 
 const musselnet: AppConfig = {
