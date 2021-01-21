@@ -61,19 +61,19 @@ export function SdkProvider({ config: configProp, children }: SdkProviderProps):
   const contextWithInit = { ...defaultContext, init: setSigner };
   const [value, setValue] = useState<CosmWasmContextType>(contextWithInit);
 
-  function clear() {
+  function clear(): void {
     setValue({ ...contextWithInit });
     setClient(undefined);
     setSigner(undefined);
     setConfig(configProp);
   }
 
-  function changeConfig(updates: Partial<AppConfig>) {
+  function changeConfig(updates: Partial<AppConfig>): void {
     setConfig((config) => ({ ...config, ...updates }));
   }
 
   // Get balance for each coin specified in config.coinMap
-  async function refreshBalance(address: string, balance: Coin[]) {
+  async function refreshBalance(address: string, balance: Coin[]): Promise<void> {
     if (!client) return;
 
     balance.length = 0;
@@ -84,7 +84,7 @@ export function SdkProvider({ config: configProp, children }: SdkProviderProps):
   }
 
   // Get feeToken balance from faucet
-  async function hitFaucet(address: string) {
+  async function hitFaucet(address: string): Promise<void> {
     if (!config.faucetUrl || !config.feeToken) return;
 
     try {
@@ -99,7 +99,7 @@ export function SdkProvider({ config: configProp, children }: SdkProviderProps):
   useEffect(() => {
     if (!signer) return;
 
-    (async function updateClient() {
+    (async function updateClient(): Promise<void> {
       try {
         const client = await createClient(config, signer);
         setClient(client);
@@ -115,7 +115,7 @@ export function SdkProvider({ config: configProp, children }: SdkProviderProps):
     const balance: Coin[] = [];
     const stakingClient = createStakingClient(config.httpUrl);
 
-    (async function updateValue() {
+    (async function updateValue(): Promise<void> {
       const address = (await signer.getAccounts())[0].address;
 
       await refreshBalance(address, balance);
