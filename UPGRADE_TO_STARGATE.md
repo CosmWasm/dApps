@@ -1,6 +1,10 @@
 # How to upgrade a dApp to Stargate
 
-Since `@cosmjs/cosmwasm-stargate` brings some API changes, a few tweaks need to be made to an existing Launchpad codebase.
+This guide is intended for dApp developers who have created a functional frontend application using @cosmjs based on v0.23 for a launchpad-based chain, and who wish to upgrade the dApp to work well with a stargate based chain.
+
+## Dependencies
+
+The first step that needs to be made is to ensure the dApp is using a Stargate compatible version of CosmJS, that being v0.24.0-alpha.17 or greater.
 
 ## SigningCosmWasmClient
 
