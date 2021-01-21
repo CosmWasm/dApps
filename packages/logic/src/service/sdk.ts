@@ -57,7 +57,7 @@ export async function loadKeplrWallet(chainId: string): Promise<OfflineSigner> {
   }
 
   const signer = anyWindow.getOfflineSigner(chainId);
-  signer.signAmino = signer.sign;
+  signer.signAmino = signer.signAmino ?? signer.sign;
 
   return Promise.resolve(signer);
 }
