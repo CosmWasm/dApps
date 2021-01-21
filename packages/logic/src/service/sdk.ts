@@ -55,7 +55,11 @@ export async function loadKeplrWallet(chainId: string): Promise<OfflineSigner> {
   if (!anyWindow.getOfflineSigner) {
     throw new Error("Keplr extension is not available");
   }
-  return anyWindow.getOfflineSigner(chainId);
+
+  const signer = anyWindow.getOfflineSigner(chainId);
+  signer.signAmino = signer.sign;
+
+  return Promise.resolve(signer);
 }
 
 // this creates a new connection to a server at URL,
