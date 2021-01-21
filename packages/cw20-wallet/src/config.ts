@@ -3,8 +3,8 @@ import { AppConfig, getAppConfig, NetworkConfigs } from "@cosmicdapp/logic";
 const local: AppConfig = {
   chainId: "testing",
   chainName: "Testing",
-  addressPrefix: "cosmos",
-  rpcUrl: "http://localhost:26657",
+  addressPrefix: "wasm",
+  rpcUrl: "http://localhost:26659",
   httpUrl: "http://localhost:1317",
   faucetUrl: "http://localhost:8000",
   feeToken: "ucosm",
@@ -14,25 +14,25 @@ const local: AppConfig = {
     uatom: { denom: "ATOM", fractionalDigits: 6 },
   },
   gasPrice: 0.025,
-  codeId: 40,
+  codeId: 2,
 };
 
-const heldernet: AppConfig = {
-  chainId: "hackatom-wasm",
-  chainName: "Heldernet",
-  addressPrefix: "cosmos",
-  rpcUrl: "https://rpc.heldernet.cosmwasm.com",
-  httpUrl: "https://lcd.heldernet.cosmwasm.com",
-  faucetUrl: "https://faucet.heldernet.cosmwasm.com",
-  feeToken: "ucosm",
-  stakingToken: "ustake",
+const musselnet: AppConfig = {
+  chainId: "musselnet-2",
+  chainName: "Musselnet",
+  addressPrefix: "wasm",
+  rpcUrl: "https://rpc.musselnet.cosmwasm.com",
+  httpUrl: "https://lcd.musselnet.cosmwasm.com",
+  faucetUrl: "https://faucet.musselnet.cosmwasm.com",
+  feeToken: "umayo",
+  stakingToken: "ufrites",
   coinMap: {
-    ucosm: { denom: "COSM", fractionalDigits: 6 },
-    ustake: { denom: "STAKE", fractionalDigits: 6 },
+    umayo: { denom: "MAYO", fractionalDigits: 6 },
+    ufrites: { denom: "FRITES", fractionalDigits: 6 },
   },
   gasPrice: 0.025,
-  //codeId: 40,
+  codeId: 4,
 };
 
-const configs: NetworkConfigs = { local, heldernet };
+const configs: NetworkConfigs = { local, musselnet };
 export const config = getAppConfig(configs);

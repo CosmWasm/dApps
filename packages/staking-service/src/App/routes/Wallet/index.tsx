@@ -1,5 +1,5 @@
 import { PageLayout } from "@cosmicdapp/design";
-import { CW20, Investment, TokenInfo, useAccount, useSdk } from "@cosmicdapp/logic";
+import { CW20, Investment, TokenInfo, useSdk } from "@cosmicdapp/logic";
 import { Decimal } from "@cosmjs/math";
 import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
@@ -35,8 +35,7 @@ interface WalletParams {
 export function Wallet(): JSX.Element {
   const history = useHistory();
   const { validatorAddress } = useParams<WalletParams>();
-  const { getClient } = useSdk();
-  const { account } = useAccount();
+  const { getClient, address } = useSdk();
 
   const [validatorData, setValidatorData] = useState<ValidatorData>();
 
@@ -50,13 +49,13 @@ export function Wallet(): JSX.Element {
       const [tokenInfo, investment, balance, { claims }] = await Promise.all([
         cw20Contract.tokenInfo(),
         cw20Contract.investment(),
-        cw20Contract.balance(account.address),
-        cw20Contract.claims(account.address),
+        cw20Contract.balance(address),
+        cw20Contract.claims(address),
       ]);
 
       setValidatorData({ tokenInfo, investment, balance, numClaims: claims.length });
     })();
-  }, [getClient, validatorAddress, account.address]);
+  }, [getClient, validatorAddress, address]);
 
   function goToValidatorDetail() {
     history.push(`${pathValidator}/${validatorAddress}${pathDetail}`);

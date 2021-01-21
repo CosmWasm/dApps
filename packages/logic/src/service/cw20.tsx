@@ -1,4 +1,4 @@
-import { SigningCosmWasmClient } from "@cosmjs/cosmwasm";
+import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { Coin } from "@cosmjs/launchpad";
 
 export type Expiration =
@@ -40,7 +40,7 @@ export interface Investment {
 
 export interface Claim {
   readonly amount: string;
-  readonly released: { readonly at_time: number };
+  readonly release_at: { readonly at_time: number };
 }
 
 export interface Claims {
@@ -56,25 +56,25 @@ export interface CW20Instance {
   readonly contractAddress: string;
 
   // queries
-  balance: (address?: string) => Promise<string>;
+  balance: (address: string) => Promise<string>;
   allowance: (owner: string, spender: string) => Promise<AllowanceResponse>;
   allAllowances: (owner: string, startAfter?: string, limit?: number) => Promise<AllAllowancesResponse>;
   allAccounts: (startAfter?: string, limit?: number) => Promise<readonly string[]>;
   tokenInfo: () => Promise<TokenInfo>;
   investment: () => Promise<Investment>;
   claims: (address: string) => Promise<Claims>;
-  minter: () => Promise<any>;
+  minter: (sender: string) => Promise<any>;
 
   // actions
-  mint: (recipient: string, amount: string) => Promise<string>;
-  transfer: (recipient: string, amount: string) => Promise<string>;
-  burn: (amount: string) => Promise<string>;
-  increaseAllowance: (recipient: string, amount: string) => Promise<string>;
-  decreaseAllowance: (recipient: string, amount: string) => Promise<string>;
-  transferFrom: (owner: string, recipient: string, amount: string) => Promise<string>;
-  bond: (coin: Coin) => Promise<string>;
-  unbond: (amount: string) => Promise<string>;
-  claim: () => Promise<string>;
+  mint: (sender: string, recipient: string, amount: string) => Promise<string>;
+  transfer: (sender: string, recipient: string, amount: string) => Promise<string>;
+  burn: (sender: string, amount: string) => Promise<string>;
+  increaseAllowance: (sender: string, recipient: string, amount: string) => Promise<string>;
+  decreaseAllowance: (sender: string, recipient: string, amount: string) => Promise<string>;
+  transferFrom: (sender: string, owner: string, recipient: string, amount: string) => Promise<string>;
+  bond: (sender: string, coin: Coin) => Promise<string>;
+  unbond: (sender: string, amount: string) => Promise<string>;
+  claim: (sender: string) => Promise<string>;
 }
 
 export interface CW20Contract {
@@ -83,8 +83,7 @@ export interface CW20Contract {
 
 export const CW20 = (client: SigningCosmWasmClient): CW20Contract => {
   const use = (contractAddress: string): CW20Instance => {
-    const balance = async (account?: string): Promise<string> => {
-      const address = account || client.senderAddress;
+    const balance = async (address: string): Promise<string> => {
       const result = await client.queryContractSmart(contractAddress, { balance: { address } });
       return result.balance;
     };
@@ -127,50 +126,61 @@ export const CW20 = (client: SigningCosmWasmClient): CW20Contract => {
     };
 
     // mints tokens, returns transactionHash
-    const mint = async (recipient: string, amount: string): Promise<string> => {
-      const result = await client.execute(contractAddress, { mint: { recipient, amount } });
+    const mint = async (sender: string, recipient: string, amount: string): Promise<string> => {
+      const result = await client.execute(sender, contractAddress, { mint: { recipient, amount } });
       return result.transactionHash;
     };
 
     // transfers tokens, returns transactionHash
-    const transfer = async (recipient: string, amount: string): Promise<string> => {
-      const result = await client.execute(contractAddress, { transfer: { recipient, amount } });
+    const transfer = async (sender: string, recipient: string, amount: string): Promise<string> => {
+      const result = await client.execute(sender, contractAddress, { transfer: { recipient, amount } });
       return result.transactionHash;
     };
 
     // burns tokens, returns transactionHash
-    const burn = async (amount: string): Promise<string> => {
-      const result = await client.execute(contractAddress, { burn: { amount } });
+    const burn = async (sender: string, amount: string): Promise<string> => {
+      const result = await client.execute(sender, contractAddress, { burn: { amount } });
       return result.transactionHash;
     };
 
-    const increaseAllowance = async (spender: string, amount: string): Promise<string> => {
-      const result = await client.execute(contractAddress, { increase_allowance: { spender, amount } });
+    const increaseAllowance = async (sender: string, spender: string, amount: string): Promise<string> => {
+      const result = await client.execute(sender, contractAddress, {
+        increase_allowance: { spender, amount },
+      });
       return result.transactionHash;
     };
 
-    const decreaseAllowance = async (spender: string, amount: string): Promise<string> => {
-      const result = await client.execute(contractAddress, { decrease_allowance: { spender, amount } });
+    const decreaseAllowance = async (sender: string, spender: string, amount: string): Promise<string> => {
+      const result = await client.execute(sender, contractAddress, {
+        decrease_allowance: { spender, amount },
+      });
       return result.transactionHash;
     };
 
-    const transferFrom = async (owner: string, recipient: string, amount: string): Promise<string> => {
-      const result = await client.execute(contractAddress, { transfer_from: { owner, recipient, amount } });
+    const transferFrom = async (
+      sender: string,
+      owner: string,
+      recipient: string,
+      amount: string,
+    ): Promise<string> => {
+      const result = await client.execute(sender, contractAddress, {
+        transfer_from: { owner, recipient, amount },
+      });
       return result.transactionHash;
     };
 
-    const bond = async (coin: Coin): Promise<string> => {
-      const result = await client.execute(contractAddress, { bond: {} }, undefined, [coin]);
+    const bond = async (sender: string, coin: Coin): Promise<string> => {
+      const result = await client.execute(sender, contractAddress, { bond: {} }, undefined, [coin]);
       return result.transactionHash;
     };
 
-    const unbond = async (amount: string): Promise<string> => {
-      const result = await client.execute(contractAddress, { unbond: { amount } });
+    const unbond = async (sender: string, amount: string): Promise<string> => {
+      const result = await client.execute(sender, contractAddress, { unbond: { amount } });
       return result.transactionHash;
     };
 
-    const claim = async (): Promise<string> => {
-      const result = await client.execute(contractAddress, { claim: {} });
+    const claim = async (sender: string): Promise<string> => {
+      const result = await client.execute(sender, contractAddress, { claim: {} });
       return result.transactionHash;
     };
 

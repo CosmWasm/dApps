@@ -1,5 +1,5 @@
 import { BackButton, Loading, OperationResultState, PageLayout } from "@cosmicdapp/design";
-import { CW20, getErrorFromStackTrace, useAccount, useSdk } from "@cosmicdapp/logic";
+import { CW20, getErrorFromStackTrace, useSdk } from "@cosmicdapp/logic";
 import { Decimal } from "@cosmjs/math";
 import { Button, Typography } from "antd";
 import { Formik } from "formik";
@@ -26,8 +26,7 @@ function AllowanceAdd(): JSX.Element {
   const [loading, setLoading] = useState(false);
 
   const history = useHistory();
-  const { getClient } = useSdk();
-  const { account } = useAccount();
+  const { getClient, address } = useSdk();
 
   const { contractAddress }: AllowanceAddParams = useParams();
 
@@ -50,7 +49,7 @@ function AllowanceAdd(): JSX.Element {
 
     const cw20Contract = CW20(getClient()).use(contractAddress);
 
-    cw20Contract.allowance(account.address, spenderAddress).then(({ allowance }) => {
+    cw20Contract.allowance(address, spenderAddress).then(({ allowance }) => {
       const decNewAmount = Decimal.fromUserInput(newAmount, tokenDecimals);
       const decCurrentAmount = Decimal.fromAtomics(allowance, tokenDecimals);
 
@@ -59,11 +58,13 @@ function AllowanceAdd(): JSX.Element {
 
         if (decNewAmount.isGreaterThan(decCurrentAmount)) {
           allowanceOperation = cw20Contract.increaseAllowance(
+            address,
             spenderAddress,
             decNewAmount.minus(decCurrentAmount).atomics,
           );
         } else {
           allowanceOperation = cw20Contract.decreaseAllowance(
+            address,
             spenderAddress,
             decCurrentAmount.minus(decNewAmount).atomics,
           );

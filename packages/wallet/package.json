@@ -10,15 +10,17 @@
     "last 2 safari versions"
   ],
   "scripts": {
-    "start": "craco start",
-    "start:heldernet": "REACT_APP_NETWORK=heldernet craco start",
-    "build": "REACT_APP_NETWORK=heldernet craco build",
+    "start:base": "craco start",
+    "start:local": "REACT_APP_NETWORK=local yarn start:base",
+    "start:musselnet": "REACT_APP_NETWORK=musselnet yarn start:base",
+    "start": "yarn start:musselnet",
+    "build": "REACT_APP_NETWORK=musselnet craco build",
     "test": "craco test"
   },
   "dependencies": {
     "@cosmicdapp/design": "^0.4.5",
     "@cosmicdapp/logic": "^0.4.5",
-    "@cosmjs/launchpad": "^0.23.1",
+    "@cosmjs/launchpad": "^0.24.0-alpha.18",
     "antd": "^4.5.4",
     "formik": "^2.1.5",
     "formik-antd": "^2.0.1",

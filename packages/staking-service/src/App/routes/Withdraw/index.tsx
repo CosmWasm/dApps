@@ -5,7 +5,6 @@ import {
   displayAmountToNative,
   getErrorFromStackTrace,
   TokenInfo,
-  useAccount,
   useSdk,
 } from "@cosmicdapp/logic";
 import { Button, Typography } from "antd";
@@ -40,8 +39,7 @@ export function Withdraw(): JSX.Element {
 
   const history = useHistory();
   const { validatorAddress } = useParams<WithdrawParams>();
-  const { getClient } = useSdk();
-  const { account, refreshAccount } = useAccount();
+  const { getClient, address, refreshBalance } = useSdk();
 
   const [cw20Contract, setCw20Contract] = useState<CW20Instance>();
   const [validatorData, setValidatorData] = useState<ValidatorData>();
@@ -63,12 +61,12 @@ export function Withdraw(): JSX.Element {
     (async function updateValidatorData() {
       const [tokenInfo, balance] = await Promise.all([
         cw20Contract.tokenInfo(),
-        cw20Contract.balance(account.address),
+        cw20Contract.balance(address),
       ]);
 
       setValidatorData({ tokenInfo, balance });
     })();
-  }, [cw20Contract, account.address]);
+  }, [cw20Contract, address]);
 
   async function submitWithdrawBalance({ amount }: FormWithdrawBalanceFields) {
     setAmount(amount);
@@ -81,12 +79,12 @@ export function Withdraw(): JSX.Element {
     const nativeAmountString = displayAmountToNative(amount, config.coinMap, config.stakingToken);
 
     try {
-      const txHash = await cw20Contract.unbond(nativeAmountString);
+      const txHash = await cw20Contract.unbond(address, nativeAmountString);
       if (!txHash) {
         throw Error("Withdrawal failed");
       }
 
-      refreshAccount();
+      refreshBalance();
 
       history.push({
         pathname: pathOperationResult,

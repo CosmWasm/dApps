@@ -1,5 +1,5 @@
 import { Loading, PageLayout } from "@cosmicdapp/design";
-import { CW20, displayAmountToNative, getErrorFromStackTrace, useAccount, useSdk } from "@cosmicdapp/logic";
+import { CW20, displayAmountToNative, getErrorFromStackTrace, useSdk } from "@cosmicdapp/logic";
 import { Decimal } from "@cosmjs/math";
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
@@ -28,8 +28,7 @@ export function Claims(): JSX.Element {
 
   const history = useHistory();
   const { validatorAddress } = useParams<ClaimsParams>();
-  const { getClient } = useSdk();
-  const { account, refreshAccount } = useAccount();
+  const { getClient, address, refreshBalance } = useSdk();
 
   const [validatorName, setValidatorName] = useState("");
   const [claimsData, setClaimsData] = useState<readonly ClaimData[]>([]);
@@ -44,13 +43,13 @@ export function Claims(): JSX.Element {
 
       const [{ name }, { claims }] = await Promise.all([
         cw20Contract.tokenInfo(),
-        cw20Contract.claims(account.address),
+        cw20Contract.claims(address),
       ]);
 
       setValidatorName(name);
 
       const claimsData: ClaimData[] = claims.map((claim) => {
-        const date = new Date(claim.released.at_time * 1000);
+        const date = new Date(claim.release_at.at_time * 1000);
 
         const decimals = config.coinMap[config.stakingToken].fractionalDigits;
         const balance = Decimal.fromAtomics(claim.amount, decimals).toString();
@@ -60,7 +59,7 @@ export function Claims(): JSX.Element {
 
       setClaimsData(claimsData.sort((a, b) => a.date.valueOf() - b.date.valueOf()));
     })();
-  }, [getClient, validatorAddress, account.address]);
+  }, [getClient, validatorAddress, address]);
 
   useEffect(() => {
     const decimals = config.coinMap[config.stakingToken].fractionalDigits;
@@ -90,12 +89,12 @@ export function Claims(): JSX.Element {
     const cw20Contract = CW20(client).use(contract.address);
 
     try {
-      const txHash = await cw20Contract.claim();
+      const txHash = await cw20Contract.claim(address);
       if (!txHash) {
         throw Error("Claim failed");
       }
 
-      refreshAccount();
+      refreshBalance();
 
       history.push({
         pathname: pathOperationResult,

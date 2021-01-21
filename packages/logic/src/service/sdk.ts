@@ -1,4 +1,5 @@
-import { CosmWasmFeeTable, SigningCosmWasmClient } from "@cosmjs/cosmwasm";
+import { CosmWasmFeeTable } from "@cosmjs/cosmwasm-launchpad";
+import { codec, SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { Bip39, Random } from "@cosmjs/crypto";
 import {
   GasLimits,
@@ -11,6 +12,7 @@ import {
   StakingExtension,
 } from "@cosmjs/launchpad";
 import { LedgerSigner } from "@cosmjs/launchpad-ledger";
+import { Registry } from "@cosmjs/proto-signing";
 import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { AppConfig } from "../config";
 
@@ -53,14 +55,26 @@ export async function loadKeplrWallet(chainId: string): Promise<OfflineSigner> {
   if (!anyWindow.getOfflineSigner) {
     throw new Error("Keplr extension is not available");
   }
-  return anyWindow.getOfflineSigner(chainId);
+
+  const signer = anyWindow.getOfflineSigner(chainId);
+  signer.signAmino = signer.signAmino ?? signer.sign;
+
+  return Promise.resolve(signer);
 }
 
 // this creates a new connection to a server at URL,
 // using a signing keyring generated from the given mnemonic
 export async function createClient(config: AppConfig, signer: OfflineSigner): Promise<SigningCosmWasmClient> {
-  const firstAddress = (await signer.getAccounts())[0].address;
-  const gasPrice = GasPrice.fromString(`${config.gasPrice}${config.feeToken}`);
+  const msgStoreCodeTypeUrl = "/cosmwasm.wasm.v1beta1.MsgStoreCode";
+  const msgInstantiateContractTypeUrl = "/cosmwasm.wasm.v1beta1.MsgInstantiateContract";
+  const msgExecuteContractTypeUrl = "/cosmwasm.wasm.v1beta1.MsgExecuteContract";
+  const { MsgStoreCode, MsgInstantiateContract, MsgExecuteContract } = codec.cosmwasm.wasm.v1beta1;
+
+  const typeRegistry = new Registry();
+  typeRegistry.register(msgStoreCodeTypeUrl, MsgStoreCode);
+  typeRegistry.register(msgInstantiateContractTypeUrl, MsgInstantiateContract);
+  typeRegistry.register(msgExecuteContractTypeUrl, MsgExecuteContract);
+
   const gasLimits: GasLimits<CosmWasmFeeTable> = {
     upload: 1500000,
     init: 600000,
@@ -70,7 +84,12 @@ export async function createClient(config: AppConfig, signer: OfflineSigner): Pr
     changeAdmin: 80000,
   };
 
-  return new SigningCosmWasmClient(config.httpUrl, firstAddress, signer, gasPrice, gasLimits);
+  return SigningCosmWasmClient.connectWithSigner(config.rpcUrl, signer, {
+    prefix: config.addressPrefix,
+    registry: typeRegistry,
+    gasPrice: GasPrice.fromString(`${config.gasPrice}${config.feeToken}`),
+    gasLimits: gasLimits,
+  });
 }
 
 export function createStakingClient(apiUrl: string): LcdClient & StakingExtension {

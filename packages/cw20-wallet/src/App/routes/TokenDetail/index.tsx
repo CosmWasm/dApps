@@ -1,5 +1,5 @@
 import { BackButton, PageLayout, YourAccount } from "@cosmicdapp/design";
-import { CW20, useAccount, useSdk } from "@cosmicdapp/logic";
+import { CW20, useSdk } from "@cosmicdapp/logic";
 import { Decimal } from "@cosmjs/math";
 import { Button, Divider, Typography } from "antd";
 import React, { useEffect, useState } from "react";
@@ -18,8 +18,7 @@ interface TokenDetailParams {
 
 function TokenDetail(): JSX.Element {
   const history = useHistory();
-  const { getClient } = useSdk();
-  const { account } = useAccount();
+  const { getClient, address } = useSdk();
 
   const { contractAddress, allowingAddress: allowingAddressParam }: TokenDetailParams = useParams();
 
@@ -32,14 +31,14 @@ function TokenDetail(): JSX.Element {
 
   useEffect(() => {
     const cw20Contract = CW20(getClient()).use(contractAddress);
-    const tokenAddress = allowingAddress ?? account.address;
+    const tokenAddress = allowingAddress ?? address;
 
     cw20Contract.tokenInfo().then(({ symbol, decimals }) => {
       setTokenName(symbol);
       setFractionalDigits(decimals);
     });
     cw20Contract.balance(tokenAddress).then((balance) => setTokenAmount(balance));
-  }, [getClient, contractAddress, allowingAddress, account.address]);
+  }, [getClient, contractAddress, allowingAddress, address]);
 
   function updateAllowance(allowingAddress: string) {
     if (!allowingAddress) {
@@ -51,9 +50,7 @@ function TokenDetail(): JSX.Element {
     setAllowingAddress(allowingAddress);
 
     const cw20contract = CW20(getClient()).use(contractAddress);
-    cw20contract
-      .allowance(allowingAddress, account.address)
-      .then((response) => setAllowance(response.allowance));
+    cw20contract.allowance(allowingAddress, address).then((response) => setAllowance(response.allowance));
   }
 
   function goToSend() {

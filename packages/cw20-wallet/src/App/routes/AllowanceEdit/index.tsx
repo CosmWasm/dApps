@@ -1,5 +1,5 @@
 import { BackButton, Loading, OperationResultState, PageLayout } from "@cosmicdapp/design";
-import { CW20, getErrorFromStackTrace, useAccount, useSdk } from "@cosmicdapp/logic";
+import { CW20, getErrorFromStackTrace, useSdk } from "@cosmicdapp/logic";
 import { Decimal } from "@cosmjs/math";
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
@@ -20,8 +20,7 @@ function AllowanceEdit(): JSX.Element {
   const [loading, setLoading] = useState(false);
 
   const history = useHistory();
-  const { getClient } = useSdk();
-  const { account } = useAccount();
+  const { getClient, address } = useSdk();
 
   const { contractAddress, spenderAddress }: AllowanceEditParams = useParams();
 
@@ -36,10 +35,8 @@ function AllowanceEdit(): JSX.Element {
       setTokenName(tokenInfo.symbol);
       setTokenDecimals(tokenInfo.decimals);
     });
-    cw20Contract
-      .allowance(account.address, spenderAddress)
-      .then(({ allowance }) => setAllowanceAmount(allowance));
-  }, [getClient, contractAddress, account.address, spenderAddress]);
+    cw20Contract.allowance(address, spenderAddress).then(({ allowance }) => setAllowanceAmount(allowance));
+  }, [getClient, contractAddress, address, spenderAddress]);
 
   const submitChangeAmount = (values: FormChangeAmountFields) => {
     setLoading(true);
@@ -55,11 +52,13 @@ function AllowanceEdit(): JSX.Element {
 
       if (decNewAmount.isGreaterThan(decCurrentAmount)) {
         allowanceOperation = cw20Contract.increaseAllowance(
+          address,
           spenderAddress,
           decNewAmount.minus(decCurrentAmount).atomics,
         );
       } else {
         allowanceOperation = cw20Contract.decreaseAllowance(
+          address,
           spenderAddress,
           decCurrentAmount.minus(decNewAmount).atomics,
         );

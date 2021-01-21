@@ -5,7 +5,6 @@ import {
   loadLedgerWallet,
   loadOrCreateWallet,
   RedirectLocation,
-  useAccount,
   useError,
   useSdk,
   WalletLoader,
@@ -43,7 +42,6 @@ export function Login({ config, pathAfterLogin, appName, appLogo, ...restProps }
   const state = history.location.state as RedirectLocation;
   const { error, setError, clearError } = useError();
   const sdk = useSdk();
-  const { refreshAccount, account } = useAccount();
 
   const [initializing, setInitializing] = useState(false);
 
@@ -53,7 +51,7 @@ export function Login({ config, pathAfterLogin, appName, appLogo, ...restProps }
 
     try {
       const signer = await loadWallet(config.chainId, config.addressPrefix);
-      await sdk.init(signer);
+      sdk.init(signer);
     } catch (error) {
       console.error(error);
       setError(Error(error).message);
@@ -82,20 +80,14 @@ export function Login({ config, pathAfterLogin, appName, appLogo, ...restProps }
   }
 
   useEffect(() => {
-    if (sdk.initialized) {
-      refreshAccount();
-    }
-  }, [sdk.initialized, refreshAccount]);
+    if (!sdk.initialized) return;
 
-  useEffect(() => {
-    if (account) {
-      if (state) {
-        history.push(state.redirectPathname, state.redirectState);
-      } else {
-        history.push(pathAfterLogin);
-      }
+    if (state) {
+      history.push(state.redirectPathname, state.redirectState);
+    } else {
+      history.push(pathAfterLogin);
     }
-  }, [account, state, history]);
+  }, [sdk.initialized, state, history]);
 
   return initializing ? (
     <Loading loadingText="Initializing app..." />

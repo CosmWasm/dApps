@@ -1,5 +1,5 @@
 import { BackButton, Loading, OperationResultState, PageLayout, YourAccount } from "@cosmicdapp/design";
-import { getErrorFromStackTrace, printableCoin, useAccount, useError, useSdk } from "@cosmicdapp/logic";
+import { getErrorFromStackTrace, printableCoin, useError, useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
@@ -23,8 +23,7 @@ export function Transfer(): JSX.Element {
 
   const history = useHistory();
   const { setError } = useError();
-  const { getClient } = useSdk();
-  const accountProvider = useAccount();
+  const { getClient, address, refreshBalance } = useSdk();
 
   const [loading, setLoading] = useState(false);
   const [newOwnerAddress, setNewOwnerAddress] = useState("");
@@ -45,13 +44,14 @@ export function Transfer(): JSX.Element {
 
     getClient()
       .execute(
+        address,
         contractAddress,
         { transfer: { name: name, to: newOwnerAddress } },
         "Transferring my name",
         payment,
       )
       .then(() => {
-        accountProvider.refreshAccount();
+        refreshBalance();
 
         history.push({
           pathname: pathOperationResult,

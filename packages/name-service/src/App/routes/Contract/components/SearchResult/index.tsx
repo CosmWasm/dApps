@@ -1,5 +1,5 @@
 import { OperationResultState } from "@cosmicdapp/design";
-import { getErrorFromStackTrace, printableCoin, useAccount, useError, useSdk } from "@cosmicdapp/logic";
+import { getErrorFromStackTrace, printableCoin, useError, useSdk } from "@cosmicdapp/logic";
 import { Coin } from "@cosmjs/launchpad";
 import { Button, Typography } from "antd";
 import copyToClipboard from "clipboard-copy";
@@ -70,8 +70,7 @@ export function SearchResult({
 
   const history = useHistory();
   const { setError, error } = useError();
-  const { getClient } = useSdk();
-  const accountProvider = useAccount();
+  const { getClient, address, refreshBalance } = useSdk();
 
   const [nameOwnerAddress, setNameOwnerAddress] = useState("");
   const [prices, setPrices] = useState<Prices>({});
@@ -110,13 +109,14 @@ export function SearchResult({
 
     getClient()
       .execute(
+        address,
         contractAddress,
         { register: { name: name, metadata: `buy-${name}` } },
         "Buying my name",
         payment,
       )
       .then(() => {
-        accountProvider.refreshAccount();
+        refreshBalance();
 
         history.push({
           pathname: pathOperationResult,
@@ -148,7 +148,7 @@ export function SearchResult({
   }
 
   const { message, actionText, action } = getResult(
-    accountProvider.account.address,
+    address,
     nameOwnerAddress,
     prices,
     tryRegister,
