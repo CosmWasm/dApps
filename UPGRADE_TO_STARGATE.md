@@ -24,24 +24,26 @@ import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 const client = SigningCosmWasmClient.connectWithSigner(endpoint, signer, options);
 ```
 
-The `options` argument is a `SigningCosmWasmClientOptions` object with several properties, being the `registry` the most notable one. It comes from `@cosmjs/proto-signing` and it needs to be instantiated with the types you may need, like this:
+The `options` argument is a `SigningCosmWasmClientOptions` object with several properties that you may need to configure:
 
 ```typescript
-import { Registry } from "@cosmjs/proto-signing";
+import { CosmWasmFeeTable } from "@cosmjs/cosmwasm-launchpad";
+import { GasLimits, GasPrice } from "@cosmjs/launchpad";
 
-const typeRegistry = new Registry();
+const gasLimits: GasLimits<CosmWasmFeeTable> = {
+  upload: 1500000,
+  init: 600000,
+  exec: 400000,
+  migrate: 600000,
+  send: 80000,
+  changeAdmin: 80000,
+};
 
-typeRegistry.register("/cosmwasm.wasm.v1beta1.MsgStoreCode", MsgStoreCode);
-typeRegistry.register("/cosmwasm.wasm.v1beta1.MsgInstantiateContract", MsgInstantiateContract);
-typeRegistry.register("/cosmwasm.wasm.v1beta1.MsgExecuteContract", MsgExecuteContract);
-```
-
-The generated types come from the `codec` namespace in `@cosmjs/cosmwasm-stargate`:
-
-```typescript
-import { codec } from "@cosmjs/cosmwasm-stargate";
-
-const { MsgStoreCode, MsgInstantiateContract, MsgExecuteContract } = codec.cosmwasm.wasm.v1beta1;
+const options = {
+  prefix: "wasm",
+  gasPrice: GasPrice.fromString("0.025ucosm"),
+  gasLimits: gasLimits,
+};
 ```
 
 ## Balance query
