@@ -102,9 +102,14 @@ const cw20Contract = CW20(client).use(contractAddress);
 cw20Contract.transfer(senderAddress, recipientAddress, transferAmount);
 ```
 
+## Secure login with Ledger or Keplr
 
-The Chrome backend for USB support has been recently changed and so the `@ledgerhq/hw-transport-webusb` dependency has been updated to the latest stable release (`5.39.1`) in order for the ledger to work as usual.
+Signing with a ledger or the Keplr extension still works with the stargate client, it just needs a few minor adjustments.
 
-## Login with Keplr
+### Ledger
 
-The current signer provided by the published version of Keplr does not provide the needed `signAmino()` method, but it provides a `sign()` method with the same signature. A copy of this method renamed to `signAmino` is added to the signer if it does not already exist, before using it to the client.
+The Chrome backend for USB support has been recently changed and so the `@ledgerhq/hw-transport-webusb` dependency has to be updated to the latest stable release (`5.39.1`) in order for the ledger to work as usual.
+
+### Keplr
+
+The current signer provided by the published version of Keplr does not provide the needed `signAmino()` method, but it provides a `sign()` method with the same signature. A copy of this method renamed to `signAmino` is added to the signer if it does not already exist, before using it to create the client. The adapter code for achieving this can be seen [here](https://github.com/CosmWasm/dApps/blob/master/packages/logic/src/service/sdk.ts#L60).
