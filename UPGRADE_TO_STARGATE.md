@@ -11,13 +11,17 @@ The first step that needs to be made is to ensure the dApp is using a Stargate c
 In order to create a signing client, instead of using:
 
 ```typescript
-new SigningCosmWasmClient(endpoint, address, signer, gasPrice, gasLimits);
+import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-launchpad";
+
+const client = new SigningCosmWasmClient(endpoint, address, signer, gasPrice, gasLimits);
 ```
 
 Use the following:
 
 ```typescript
-SigningCosmWasmClient.connectWithSigner(endpoint, signer, options);
+import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
+
+const client = SigningCosmWasmClient.connectWithSigner(endpoint, signer, options);
 ```
 
 The `options` argument is a `SigningCosmWasmClientOptions` object with several properties, being the `registry` the most notable one. It comes from `@cosmjs/proto-signing` and it needs to be instantiated with the types you may need, like this:
@@ -45,12 +49,14 @@ const { MsgStoreCode, MsgInstantiateContract, MsgExecuteContract } = codec.cosmw
 The Launchpad version of the dApps used to have an `AccountProvider` for accessing an account's address and balance. Since the `Account` interface from Stargate no longer provides its balance, it has been removed in favor of `SdkProvider`, which queries it with:
 
 ```typescript
-CosmWasmClient.getBalance(address: string, searchDenom: string);
+client.getBalance(address: string, searchDenom: string);
 ```
 
 It now makes it accessible via a React hook, along with the address and a method to refresh the balance:
 
 ```typescript
+import { useSdk } from "@cosmicdapp/logic";
+
 const { address, balance, refreshBalance } = useSdk();
 ```
 
