@@ -66,7 +66,42 @@ const { address, balance, refreshBalance } = useSdk();
 
 The `SigningCosmWasmClient.execute()` method now has a `senderAddress` string as first parameter, so the following methods from the CW20 service's `CW20Instance` object also need to have that parameter: `balance`, `minter`, `mint`, `transfer`, `burn`, `increaseAllowance`, `decreaseAllowance`, `transferFrom`, `bond`, `unbond`, `claim`.
 
-## Login with Ledger
+In order to execute a contract (a transfer operation in this example), instead of:
+
+```typescript
+const result = await client.execute(contractAddress, { transfer: { recipient, amount } });
+```
+
+Use the following:
+
+```typescript
+const result = await client.execute(sender, contractAddress, { transfer: { recipient, amount } });
+```
+
+When using the CW20 service utility (this code also exemplifies transfer), instead of:
+
+```typescript
+import { useSdk } from "@cosmicdapp/logic";
+
+const { getClient } = useSdk();
+const client = getClient();
+
+const cw20Contract = CW20(client).use(contractAddress);
+cw20Contract.transfer(recipientAddress, transferAmount);
+```
+
+The following needs to be done:
+
+```typescript
+import { useSdk } from "@cosmicdapp/logic";
+
+const { getClient, address: senderAddress } = useSdk();
+const client = getClient();
+
+const cw20Contract = CW20(client).use(contractAddress);
+cw20Contract.transfer(senderAddress, recipientAddress, transferAmount);
+```
+
 
 The Chrome backend for USB support has been recently changed and so the `@ledgerhq/hw-transport-webusb` dependency has been updated to the latest stable release (`5.39.1`) in order for the ledger to work as usual.
 
