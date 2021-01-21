@@ -132,12 +132,8 @@ export function SdkProvider({ config: configProp, children }: SdkProviderProps):
         changeConfig,
         address,
         balance,
-        refreshBalance: async () => {
-          await refreshBalance(address, balance);
-        },
-        hitFaucet: async () => {
-          await hitFaucet(address);
-        },
+        refreshBalance: refreshBalance.bind(null, address, balance),
+        hitFaucet: hitFaucet.bind(null, address),
         getSigner: () => signer,
         changeSigner: setSigner,
         getClient: () => client,
