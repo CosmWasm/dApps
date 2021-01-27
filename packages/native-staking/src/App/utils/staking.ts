@@ -4,6 +4,18 @@ import { codec } from "@cosmjs/stargate";
 import { useEffect, useState } from "react";
 
 export type StakingValidator = codec.cosmos.staking.v1beta1.IValidator;
+export interface EncodeObject<T, V> {
+  readonly typeUrl: T;
+  readonly value: V;
+}
+export type EncodeMsgDelegate = EncodeObject<
+  "/cosmos.staking.v1beta1.MsgDelegate",
+  codec.cosmos.staking.v1beta1.IMsgDelegate
+>;
+export type EncodeMsgUndelegate = EncodeObject<
+  "/cosmos.staking.v1beta1.MsgUndelegate",
+  codec.cosmos.staking.v1beta1.IMsgUndelegate
+>;
 
 export function useStakingValidator(validatorAddress: string): StakingValidator {
   const { setError } = useError();
