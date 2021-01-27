@@ -28,12 +28,12 @@ export function Validators(): JSX.Element {
   const history = useHistory();
   const { getStakingClient } = useSdk();
 
-  const [validatorsData, setValidatorsData] = useState<ValidatorData[]>([]);
+  const [validatorsData, setValidatorsData] = useState<readonly ValidatorData[]>([]);
 
   useEffect(() => {
     (async function updateValidatorsData() {
-      const { validators } = await getStakingClient().staking.unverified.validators("0");
-      const validatorsData = validators
+      const { validators } = await getStakingClient().staking.unverified.validators("BOND_STATUS_BONDED");
+      const validatorsData: readonly ValidatorData[] = validators
         .map((validator) => ({
           name: validator.description.moniker,
           address: validator.operatorAddress,
