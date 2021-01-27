@@ -1,7 +1,10 @@
+import { useSdk } from "@cosmicdapp/logic";
+import { Decimal } from "@cosmjs/math";
 import { Button, Typography } from "antd";
 import { Formik } from "formik";
 import { Form, FormItem, Input } from "formik-antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import * as Yup from "yup";
 import { StakingValidator } from "../../../utils/staking";
 import { FormField, FormStack } from "./style";
 
@@ -17,35 +20,51 @@ interface FormWithdrawBalanceProps {
 }
 
 export function FormWithdrawBalance({
-  //validator,
+  validator,
   submitWithdrawBalance,
 }: FormWithdrawBalanceProps): JSX.Element {
-  //TODO: get from Delegation
-  /* const balanceDecimal = validatorData
-    ? Decimal.fromAtomics(validatorData.balance, validatorData.tokenInfo.decimals)
-    : Decimal.fromUserInput("0", 0);
+  const { config, getStakingClient, address } = useSdk();
 
-  const maxAmount = balanceDecimal.toFloatApproximation();
+  const [balance, setBalance] = useState<Decimal>(Decimal.fromUserInput("0", 0));
 
+  const maxAmount = balance.toFloatApproximation();
   const withdrawBalanceValidationSchema = Yup.object().shape({
     amount: Yup.number()
       .required("An amount is required")
       .positive("Amount should be positive")
       .max(maxAmount),
-  }); */
+  });
+
+  useEffect(() => {
+    if (!validator) return;
+
+    (async function updateBalance() {
+      const { delegationResponse } = await getStakingClient().staking.unverified.delegation(
+        address,
+        validator.operatorAddress,
+      );
+      const { balance } = delegationResponse;
+      const balanceDecimal = Decimal.fromAtomics(
+        balance.amount,
+        config.coinMap[config.stakingToken].fractionalDigits,
+      );
+
+      setBalance(balanceDecimal);
+    })();
+  }, [address, validator, config, getStakingClient]);
 
   return (
     <Formik
       initialValues={{ amount: "" }}
       onSubmit={submitWithdrawBalance}
-      //validationSchema={withdrawBalanceValidationSchema}
+      validationSchema={withdrawBalanceValidationSchema}
     >
       {(formikProps) => (
         <Form>
           <FormStack>
             <FormField>
               <Text>Balance</Text>
-              <Text>balance value</Text>
+              <Text>{balance.toString()}</Text>
             </FormField>
             <FormField>
               <Text>Withdraw</Text>
