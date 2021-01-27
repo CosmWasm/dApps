@@ -1,10 +1,9 @@
 import { useError, useSdk } from "@cosmicdapp/logic";
-import { StakingDelegationResponse, StakingValidatorResponse } from "@cosmjs/launchpad";
 import { Decimal } from "@cosmjs/math";
+import { codec } from "@cosmjs/stargate";
 import { useEffect, useState } from "react";
 
-export type StakingValidator = StakingValidatorResponse["result"];
-export type StakingDelegation = StakingDelegationResponse["result"];
+export type StakingValidator = codec.cosmos.staking.v1beta1.IValidator;
 
 export function useStakingValidator(validatorAddress: string): StakingValidator {
   const { setError } = useError();
@@ -14,7 +13,7 @@ export function useStakingValidator(validatorAddress: string): StakingValidator 
   useEffect(() => {
     (async function updateValidator() {
       try {
-        const { result: validator } = await getStakingClient().staking.validator(validatorAddress);
+        const { validator } = await getStakingClient().staking.unverified.validator(validatorAddress);
         setValidator(validator);
       } catch (error) {
         setError(error.message);
