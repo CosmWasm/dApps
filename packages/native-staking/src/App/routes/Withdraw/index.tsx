@@ -2,55 +2,41 @@ import { Loading, PageLayout } from "@cosmicdapp/design";
 import { displayAmountToNative, getErrorFromStackTrace, useSdk } from "@cosmicdapp/logic";
 import { Coin, coins } from "@cosmjs/launchpad";
 import { isBroadcastTxFailure } from "@cosmjs/stargate";
-import { Button, Typography } from "antd";
+import { Typography } from "antd";
 import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { config } from "../../../config";
 import { HeaderBackMenu } from "../../components/HeaderBackMenu";
 import { pathOperationResult, pathValidator, pathWallet, pathWithdraw } from "../../paths";
-import { useStakingValidator } from "../../utils/staking";
-import confirmIcon from "./assets/confirmIcon.svg";
+import { EncodeMsgUndelegate, useStakingValidator } from "../../utils/staking";
 import { FormWithdrawBalance, FormWithdrawBalanceFields } from "./FormWithdrawBalance";
-import { ConfirmStack, ConfirmText, HeaderTitleStack, MainStack } from "./style";
+import { HeaderTitleStack, MainStack } from "./style";
 
 const { Title } = Typography;
-
-enum View {
-  Form = "FORM",
-  Confirm = "CONFIRM",
-  Loading = "LOADING",
-}
 
 interface WithdrawParams {
   readonly validatorAddress: string;
 }
 
 export function Withdraw(): JSX.Element {
-  const [view, setView] = useState(View.Form);
+  const [loading, setLoading] = useState(false);
 
   const history = useHistory();
   const { validatorAddress } = useParams<WithdrawParams>();
   const { getClient, address, refreshBalance } = useSdk();
 
   const validator = useStakingValidator(validatorAddress);
-  const [amount, setAmount] = useState("0");
 
   async function submitWithdrawBalance({ amount }: FormWithdrawBalanceFields) {
-    setAmount(amount);
-    setView(View.Confirm);
-  }
-
-  async function acceptConfirm() {
-    setView(View.Loading);
-
+    setLoading(true);
     const nativeAmountString = displayAmountToNative(amount, config.coinMap, config.stakingToken);
     const nativeAmountCoin: Coin = { amount: nativeAmountString, denom: config.stakingToken };
 
-    const undelegateMsg = {
-      typeUrl: "cosmos-sdk/MsgUndelegate",
+    const undelegateMsg: EncodeMsgUndelegate = {
+      typeUrl: "/cosmos.staking.v1beta1.MsgUndelegate",
       value: {
-        delegator_address: address,
-        validator_address: validatorAddress,
+        delegatorAddress: address,
+        validatorAddress: validatorAddress,
         amount: nativeAmountCoin,
       },
     };
@@ -75,7 +61,7 @@ export function Withdraw(): JSX.Element {
         pathname: pathOperationResult,
         state: {
           success: true,
-          message: `${amount} ${config.stakingToken} successfully unbonded`,
+          message: `${amount} ${config.stakingToken} successfully undelegated`,
           customButtonText: "Wallet",
           customButtonActionPath: `${pathWallet}/${validatorAddress}`,
         },
@@ -87,7 +73,7 @@ export function Withdraw(): JSX.Element {
         pathname: pathOperationResult,
         state: {
           success: false,
-          message: "Unbond transaction failed:",
+          message: "Undelegate transaction failed:",
           error: getErrorFromStackTrace(stackTrace),
           customButtonActionPath: `${pathWithdraw}/${validatorAddress}`,
         },
@@ -95,13 +81,9 @@ export function Withdraw(): JSX.Element {
     }
   }
 
-  function declineConfirm() {
-    setAmount("0");
-    setView(View.Form);
-  }
-
-  function renderForm() {
-    return (
+  return (
+    (loading && <Loading loadingText={`Undelegating...`} />) ||
+    (!loading && (
       <PageLayout>
         <MainStack>
           <HeaderTitleStack>
@@ -112,38 +94,6 @@ export function Withdraw(): JSX.Element {
           <FormWithdrawBalance validator={validator} submitWithdrawBalance={submitWithdrawBalance} />
         </MainStack>
       </PageLayout>
-    );
-  }
-
-  function renderConfirm() {
-    return (
-      <PageLayout>
-        <ConfirmStack>
-          <img src={confirmIcon} alt="Confirm icon" />
-          <ConfirmText>Your tokens could take up to 3 weeks to be withdrawn...</ConfirmText>
-          <Button type="primary" onClick={acceptConfirm}>
-            Accept
-          </Button>
-          <Button type="primary" onClick={declineConfirm}>
-            Decline
-          </Button>
-        </ConfirmStack>
-      </PageLayout>
-    );
-  }
-
-  function renderLoading() {
-    return <Loading loadingText={`Withdrawing...`} />;
-  }
-
-  switch (view) {
-    case View.Form:
-      return renderForm();
-    case View.Confirm:
-      return renderConfirm();
-    case View.Loading:
-      return renderLoading();
-    default:
-      return renderForm();
-  }
+    ))
+  );
 }
