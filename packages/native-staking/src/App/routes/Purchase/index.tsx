@@ -8,7 +8,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { config } from "../../../config";
 import { HeaderBackMenu } from "../../components/HeaderBackMenu";
 import { pathOperationResult, pathPurchase, pathValidator, pathWallet } from "../../paths";
-import { useStakingValidator } from "../../utils/staking";
+import { EncodeMsgDelegate, useStakingValidator } from "../../utils/staking";
 import { FormBuyShares, FormBuySharesFields } from "./FormBuyShares";
 import { HeaderTitleStack, MainStack } from "./style";
 
@@ -33,11 +33,11 @@ export function Purchase(): JSX.Element {
     const nativeAmountString = displayAmountToNative(amount, config.coinMap, config.stakingToken);
     const nativeAmountCoin: Coin = { amount: nativeAmountString, denom: config.stakingToken };
 
-    const delegateMsg = {
-      typeUrl: "cosmos-sdk/MsgDelegate",
+    const delegateMsg: EncodeMsgDelegate = {
+      typeUrl: "/cosmos.staking.v1beta1.MsgDelegate",
       value: {
-        delegator_address: address,
-        validator_address: validatorAddress,
+        delegatorAddress: address,
+        validatorAddress: validatorAddress,
         amount: nativeAmountCoin,
       },
     };
