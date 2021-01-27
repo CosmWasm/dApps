@@ -1,17 +1,10 @@
 import { CosmWasmFeeTable } from "@cosmjs/cosmwasm-launchpad";
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { Bip39, Random } from "@cosmjs/crypto";
-import {
-  GasLimits,
-  GasPrice,
-  LcdClient,
-  makeCosmoshubPath,
-  OfflineSigner,
-  Secp256k1HdWallet,
-  setupStakingExtension,
-  StakingExtension,
-} from "@cosmjs/launchpad";
-import { LedgerSigner } from "@cosmjs/launchpad-ledger";
+import { GasLimits, GasPrice, makeCosmoshubPath, OfflineSigner, Secp256k1HdWallet } from "@cosmjs/launchpad";
+import { LedgerSigner } from "@cosmjs/ledger-amino";
+import { QueryClient, setupStakingExtension, StakingExtension } from "@cosmjs/stargate";
+import { Client as TendermintClient } from "@cosmjs/tendermint-rpc";
 import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { AppConfig } from "../config";
 
@@ -80,6 +73,7 @@ export async function createClient(config: AppConfig, signer: OfflineSigner): Pr
   });
 }
 
-export function createStakingClient(apiUrl: string): LcdClient & StakingExtension {
-  return LcdClient.withExtensions({ apiUrl }, setupStakingExtension);
+export async function createStakingClient(apiUrl: string): Promise<QueryClient & StakingExtension> {
+  const tmClient = await TendermintClient.connect(apiUrl);
+  return QueryClient.withExtensions(tmClient, setupStakingExtension);
 }
