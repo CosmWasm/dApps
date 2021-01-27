@@ -7,27 +7,27 @@ import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { config } from "../../../config";
 import { HeaderBackMenu } from "../../components/HeaderBackMenu";
-import { pathOperationResult, pathValidator, pathWallet, pathWithdraw } from "../../paths";
+import { pathOperationResult, pathUndelegate, pathValidator, pathWallet } from "../../paths";
 import { EncodeMsgUndelegate, useStakingValidator } from "../../utils/staking";
-import { FormWithdrawBalance, FormWithdrawBalanceFields } from "./FormWithdrawBalance";
+import { FormUndelegateBalance, FormUndelegateBalanceFields } from "./FormUndelegateBalance";
 import { HeaderTitleStack, MainStack } from "./style";
 
 const { Title } = Typography;
 
-interface WithdrawParams {
+interface UndelegateParams {
   readonly validatorAddress: string;
 }
 
-export function Withdraw(): JSX.Element {
+export function Undelegate(): JSX.Element {
   const [loading, setLoading] = useState(false);
 
   const history = useHistory();
-  const { validatorAddress } = useParams<WithdrawParams>();
+  const { validatorAddress } = useParams<UndelegateParams>();
   const { getClient, address, refreshBalance } = useSdk();
 
   const validator = useStakingValidator(validatorAddress);
 
-  async function submitWithdrawBalance({ amount }: FormWithdrawBalanceFields) {
+  async function submitUndelegateBalance({ amount }: FormUndelegateBalanceFields) {
     setLoading(true);
     const nativeAmountString = displayAmountToNative(amount, config.coinMap, config.stakingToken);
     const nativeAmountCoin: Coin = { amount: nativeAmountString, denom: config.stakingToken };
@@ -52,7 +52,7 @@ export function Withdraw(): JSX.Element {
     try {
       const response = await getClient().signAndBroadcast(address, [undelegateMsg], fee);
       if (isBroadcastTxFailure(response)) {
-        throw Error("Withdrawal failed");
+        throw Error("Undelegate failed");
       }
 
       refreshBalance();
@@ -75,7 +75,7 @@ export function Withdraw(): JSX.Element {
           success: false,
           message: "Undelegate transaction failed:",
           error: getErrorFromStackTrace(stackTrace),
-          customButtonActionPath: `${pathWithdraw}/${validatorAddress}`,
+          customButtonActionPath: `${pathUndelegate}/${validatorAddress}`,
         },
       });
     }
@@ -88,10 +88,10 @@ export function Withdraw(): JSX.Element {
         <MainStack>
           <HeaderTitleStack>
             <HeaderBackMenu path={`${pathValidator}/${validatorAddress}`} />
-            <Title>Withdraw</Title>
+            <Title>Undelegate</Title>
             <Title level={2}>{validator?.description.moniker ?? ""}</Title>
           </HeaderTitleStack>
-          <FormWithdrawBalance validator={validator} submitWithdrawBalance={submitWithdrawBalance} />
+          <FormUndelegateBalance validator={validator} submitUndelegateBalance={submitUndelegateBalance} />
         </MainStack>
       </PageLayout>
     ))

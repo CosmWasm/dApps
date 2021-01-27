@@ -10,25 +10,25 @@ import { FormField, FormStack } from "./style";
 
 const { Text } = Typography;
 
-export interface FormWithdrawBalanceFields {
+export interface FormUndelegateBalanceFields {
   readonly amount: string;
 }
 
-interface FormWithdrawBalanceProps {
+interface FormUndelegateBalanceProps {
   readonly validator: StakingValidator;
-  readonly submitWithdrawBalance: (values: FormWithdrawBalanceFields) => Promise<void>;
+  readonly submitUndelegateBalance: (values: FormUndelegateBalanceFields) => Promise<void>;
 }
 
-export function FormWithdrawBalance({
+export function FormUndelegateBalance({
   validator,
-  submitWithdrawBalance,
-}: FormWithdrawBalanceProps): JSX.Element {
+  submitUndelegateBalance,
+}: FormUndelegateBalanceProps): JSX.Element {
   const { config, getStakingClient, address } = useSdk();
 
   const [balance, setBalance] = useState<Decimal>(Decimal.fromUserInput("0", 0));
 
   const maxAmount = balance.toFloatApproximation();
-  const withdrawBalanceValidationSchema = Yup.object().shape({
+  const undelegateBalanceValidationSchema = Yup.object().shape({
     amount: Yup.number()
       .required("An amount is required")
       .positive("Amount should be positive")
@@ -56,8 +56,8 @@ export function FormWithdrawBalance({
   return (
     <Formik
       initialValues={{ amount: "" }}
-      onSubmit={submitWithdrawBalance}
-      validationSchema={withdrawBalanceValidationSchema}
+      onSubmit={submitUndelegateBalance}
+      validationSchema={undelegateBalanceValidationSchema}
     >
       {(formikProps) => (
         <Form>
@@ -67,7 +67,7 @@ export function FormWithdrawBalance({
               <Text>{balance.toString()}</Text>
             </FormField>
             <FormField>
-              <Text>Withdraw</Text>
+              <Text>Undelegate</Text>
               <FormItem name="amount">
                 <Input name="amount" placeholder="Enter amount" />
               </FormItem>
@@ -77,7 +77,7 @@ export function FormWithdrawBalance({
               onClick={formikProps.submitForm}
               disabled={!(formikProps.isValid && formikProps.dirty)}
             >
-              Withdraw
+              Undelegate
             </Button>
           </FormStack>
         </Form>

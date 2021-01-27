@@ -10,10 +10,10 @@ import { HeaderBackMenu } from "../../components/HeaderBackMenu";
 import {
   pathDetail,
   pathPurchase,
+  pathUndelegate,
   pathValidator,
   pathValidators,
   pathWallet,
-  pathWithdraw,
 } from "../../paths";
 import { StakingValidator, useStakingValidator } from "../../utils/staking";
 import { ButtonStack, MainStack, NavCenter, TitleNavStack } from "./style";
@@ -55,8 +55,8 @@ export function ValidatorHome(): JSX.Element {
     history.push(`${pathPurchase}/${validatorAddress}`);
   }
 
-  function goToWithdraw() {
-    history.push(`${pathWithdraw}/${validatorAddress}`);
+  function goToUndelegate() {
+    history.push(`${pathUndelegate}/${validatorAddress}`);
   }
 
   return (
@@ -81,8 +81,8 @@ export function ValidatorHome(): JSX.Element {
           <Button type="primary" onClick={goToPurchase}>
             Buy
           </Button>
-          <Button type="primary" onClick={goToWithdraw}>
-            Withdraw
+          <Button type="primary" onClick={goToUndelegate}>
+            Undelegate
           </Button>
         </ButtonStack>
       </MainStack>

@@ -8,19 +8,19 @@ import {
   pathLogin,
   pathOperationResult,
   pathPurchase,
+  pathUndelegate,
   pathValidator,
   pathValidators,
   pathWallet,
-  pathWithdraw,
 } from "./paths";
 import { Login } from "./routes/Login";
 import { OperationResult } from "./routes/OperationResult";
 import { Purchase } from "./routes/Purchase";
+import { Undelegate } from "./routes/Undelegate";
 import { ValidatorDetail } from "./routes/ValidatorDetail";
 import { ValidatorHome } from "./routes/ValidatorHome";
 import { Validators } from "./routes/Validators";
 import { Wallet } from "./routes/Wallet";
-import { Withdraw } from "./routes/Withdraw";
 
 export function App(): JSX.Element {
   return (
@@ -42,7 +42,7 @@ export function App(): JSX.Element {
                 />
                 <Route exact path={`${pathWallet}/:validatorAddress`} component={Wallet} />
                 <Route exact path={`${pathPurchase}/:validatorAddress`} component={Purchase} />
-                <Route exact path={`${pathWithdraw}/:validatorAddress`} component={Withdraw} />
+                <Route exact path={`${pathUndelegate}/:validatorAddress`} component={Undelegate} />
                 <Route exact path={pathOperationResult} component={OperationResult} />
               </ProtectedSwitch>
             </Switch>
