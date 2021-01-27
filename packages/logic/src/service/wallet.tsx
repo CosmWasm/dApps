@@ -124,7 +124,7 @@ export function SdkProvider({ config: configProp, children }: SdkProviderProps):
       }
       await refreshBalance(address, balance);
 
-      const stakingClient = await createStakingClient(config.httpUrl);
+      const stakingClient = await createStakingClient(config.rpcUrl);
 
       setValue({
         initialized: true,
