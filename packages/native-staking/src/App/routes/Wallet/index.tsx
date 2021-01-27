@@ -19,7 +19,7 @@ function getValidatorMap(validator: StakingValidator, balance: readonly Coin[]) 
   const stakingCoin = balance.find((coin) => coin.denom === config.stakingToken);
   const stakingBalance = nativeCoinToDisplay(stakingCoin, config.coinMap).amount;
 
-  return { "Min. Delegation": validator.min_self_delegation, Balance: stakingBalance };
+  return { "Min. Delegation": validator.minSelfDelegation, Balance: stakingBalance };
 }
 
 interface WalletParams {

@@ -28,8 +28,8 @@ function getValidatorMap(validator?: StakingValidator) {
 
   return {
     Tokens: tokensAmount,
-    "Delegator Shares": validator.delegator_shares,
-    "Min. Delegation": validator.min_self_delegation,
+    "Delegator Shares": validator.delegatorShares,
+    "Min. Delegation": validator.minSelfDelegation,
   };
 }
 

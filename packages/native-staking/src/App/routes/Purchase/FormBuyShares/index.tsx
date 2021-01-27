@@ -51,7 +51,7 @@ export function FormBuyShares({ validator, submitBuyShares }: FormBuySharesProps
             <FormStack>
               <StakePerToken>
                 <Text>Min. Delegation:</Text>
-                <Text>{validator?.min_self_delegation}</Text>
+                <Text>{validator?.minSelfDelegation}</Text>
               </StakePerToken>
               <FormField>
                 <Text>{config.coinMap[config.stakingToken].denom}</Text>

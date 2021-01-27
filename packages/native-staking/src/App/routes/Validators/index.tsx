@@ -32,11 +32,11 @@ export function Validators(): JSX.Element {
 
   useEffect(() => {
     (async function updateValidatorsData() {
-      const { result: validators } = await getStakingClient().staking.validators();
+      const { validators } = await getStakingClient().staking.unverified.validators("0");
       const validatorsData = validators
         .map((validator) => ({
           name: validator.description.moniker,
-          address: validator.operator_address,
+          address: validator.operatorAddress,
         }))
         .sort(validatorCompare);
 

@@ -23,7 +23,7 @@ function getValidatorMap(validator?: StakingValidator) {
 
   const tokensCoin: Coin = { denom: config.stakingToken, amount: validator.tokens };
   const tokensAmount = nativeCoinToDisplay(tokensCoin, config.coinMap).amount;
-  const commissionPercent = `${parseFloat(validator.commission.commission_rates.rate)} %`;
+  const commissionPercent = `${parseFloat(validator.commission.commissionRates.rate)} %`;
 
   return { Tokens: tokensAmount, Commission: commissionPercent };
 }
