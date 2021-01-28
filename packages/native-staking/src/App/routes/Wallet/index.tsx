@@ -7,7 +7,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { config } from "../../../config";
 import { DataList } from "../../components/DataList";
 import { HeaderBackMenu } from "../../components/HeaderBackMenu";
-import { pathDetail, pathPurchase, pathUndelegate, pathValidator } from "../../paths";
+import { pathDetail, pathDelegate, pathUndelegate, pathValidator } from "../../paths";
 import { StakingValidator, useStakingValidator } from "../../utils/staking";
 import { ButtonStack, MainStack, NavCenter, TitleNavStack } from "./style";
 
@@ -37,8 +37,8 @@ export function Wallet(): JSX.Element {
     history.push(`${pathValidator}/${validatorAddress}${pathDetail}`);
   }
 
-  function goToPurchase() {
-    history.push(`${pathPurchase}/${validatorAddress}`);
+  function goToDelegate() {
+    history.push(`${pathDelegate}/${validatorAddress}`);
   }
 
   function goToUndelegate() {
@@ -59,8 +59,8 @@ export function Wallet(): JSX.Element {
         </TitleNavStack>
         <DataList {...getValidatorMap(validator, balance)} />
         <ButtonStack>
-          <Button type="primary" onClick={goToPurchase}>
-            Buy
+          <Button type="primary" onClick={goToDelegate}>
+            Delegate
           </Button>
           <Button type="primary" onClick={goToUndelegate}>
             Undelegate

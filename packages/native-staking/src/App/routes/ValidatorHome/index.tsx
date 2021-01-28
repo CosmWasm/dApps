@@ -8,8 +8,8 @@ import { config } from "../../../config";
 import { DataList } from "../../components/DataList";
 import { HeaderBackMenu } from "../../components/HeaderBackMenu";
 import {
+  pathDelegate,
   pathDetail,
-  pathPurchase,
   pathUndelegate,
   pathValidator,
   pathValidators,
@@ -51,8 +51,8 @@ export function ValidatorHome(): JSX.Element {
     history.push(`${pathValidator}/${validatorAddress}${pathDetail}`);
   }
 
-  function goToPurchase() {
-    history.push(`${pathPurchase}/${validatorAddress}`);
+  function goToDelegate() {
+    history.push(`${pathDelegate}/${validatorAddress}`);
   }
 
   function goToUndelegate() {
@@ -78,8 +78,8 @@ export function ValidatorHome(): JSX.Element {
         </TitleNavStack>
         <DataList {...getValidatorMap(validator)} />
         <ButtonStack>
-          <Button type="primary" onClick={goToPurchase}>
-            Buy
+          <Button type="primary" onClick={goToDelegate}>
+            Delegate
           </Button>
           <Button type="primary" onClick={goToUndelegate}>
             Undelegate

@@ -7,7 +7,7 @@ import {
   pathDetail,
   pathLogin,
   pathOperationResult,
-  pathPurchase,
+  pathDelegate,
   pathUndelegate,
   pathValidator,
   pathValidators,
@@ -15,7 +15,7 @@ import {
 } from "./paths";
 import { Login } from "./routes/Login";
 import { OperationResult } from "./routes/OperationResult";
-import { Purchase } from "./routes/Purchase";
+import { Delegate } from "./routes/Delegate";
 import { Undelegate } from "./routes/Undelegate";
 import { ValidatorDetail } from "./routes/ValidatorDetail";
 import { ValidatorHome } from "./routes/ValidatorHome";
@@ -41,7 +41,7 @@ export function App(): JSX.Element {
                   component={ValidatorDetail}
                 />
                 <Route exact path={`${pathWallet}/:validatorAddress`} component={Wallet} />
-                <Route exact path={`${pathPurchase}/:validatorAddress`} component={Purchase} />
+                <Route exact path={`${pathDelegate}/:validatorAddress`} component={Delegate} />
                 <Route exact path={`${pathUndelegate}/:validatorAddress`} component={Undelegate} />
                 <Route exact path={pathOperationResult} component={OperationResult} />
               </ProtectedSwitch>

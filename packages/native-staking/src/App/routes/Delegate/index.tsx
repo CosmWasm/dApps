@@ -7,27 +7,27 @@ import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { config } from "../../../config";
 import { HeaderBackMenu } from "../../components/HeaderBackMenu";
-import { pathOperationResult, pathPurchase, pathValidator, pathWallet } from "../../paths";
+import { pathOperationResult, pathDelegate, pathValidator, pathWallet } from "../../paths";
 import { EncodeMsgDelegate, useStakingValidator } from "../../utils/staking";
-import { FormBuyShares, FormBuySharesFields } from "./FormBuyShares";
+import { FormDelegateBalance, FormDelegateBalanceFields } from "./FormDelegateBalance";
 import { HeaderTitleStack, MainStack } from "./style";
 
 const { Title } = Typography;
 
-interface PurchaseParams {
+interface DelegateParams {
   readonly validatorAddress: string;
 }
 
-export function Purchase(): JSX.Element {
+export function Delegate(): JSX.Element {
   const [loading, setLoading] = useState(false);
 
   const history = useHistory();
-  const { validatorAddress } = useParams<PurchaseParams>();
+  const { validatorAddress } = useParams<DelegateParams>();
   const { getClient, address, refreshBalance } = useSdk();
 
   const validator = useStakingValidator(validatorAddress);
 
-  async function submitBuyShares({ amount }: FormBuySharesFields) {
+  async function submitDelegateBalance({ amount }: FormDelegateBalanceFields) {
     setLoading(true);
 
     const nativeAmountString = displayAmountToNative(amount, config.coinMap, config.stakingToken);
@@ -53,7 +53,7 @@ export function Purchase(): JSX.Element {
     try {
       const response = await getClient().signAndBroadcast(address, [delegateMsg], fee);
       if (isBroadcastTxFailure(response)) {
-        throw Error("Purchase failed");
+        throw Error("Delegate failed");
       }
 
       refreshBalance();
@@ -76,7 +76,7 @@ export function Purchase(): JSX.Element {
           success: false,
           message: "Bond transaction failed:",
           error: getErrorFromStackTrace(stackTrace),
-          customButtonActionPath: `${pathPurchase}/${validatorAddress}`,
+          customButtonActionPath: `${pathDelegate}/${validatorAddress}`,
         },
       });
     }
@@ -89,10 +89,10 @@ export function Purchase(): JSX.Element {
         <MainStack>
           <HeaderTitleStack>
             <HeaderBackMenu path={`${pathValidator}/${validatorAddress}`} />
-            <Title>Purchase</Title>
+            <Title>Delegate</Title>
             <Title level={2}>{validator?.description.moniker ?? ""}</Title>
           </HeaderTitleStack>
-          <FormBuyShares validator={validator} submitBuyShares={submitBuyShares} />
+          <FormDelegateBalance validator={validator} submitDelegateBalance={submitDelegateBalance} />
         </MainStack>
       </PageLayout>
     ))

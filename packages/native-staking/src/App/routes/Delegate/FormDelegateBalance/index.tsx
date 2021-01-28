@@ -12,16 +12,19 @@ import { FormField, FormStack, StakePerToken } from "./style";
 
 const { Text } = Typography;
 
-export interface FormBuySharesFields {
+export interface FormDelegateBalanceFields {
   readonly amount: string;
 }
 
-interface FormBuySharesProps {
+interface FormDelegateBalanceProps {
   readonly validator: StakingValidator;
-  readonly submitBuyShares: (values: FormBuySharesFields) => Promise<void>;
+  readonly submitDelegateBalance: (values: FormDelegateBalanceFields) => Promise<void>;
 }
 
-export function FormBuyShares({ validator, submitBuyShares }: FormBuySharesProps): JSX.Element {
+export function FormDelegateBalance({
+  validator,
+  submitDelegateBalance,
+}: FormDelegateBalanceProps): JSX.Element {
   const { balance } = useSdk();
 
   const stakingBalance: Coin = balance.find((coin) => coin.denom === config.stakingToken);
@@ -30,7 +33,7 @@ export function FormBuyShares({ validator, submitBuyShares }: FormBuySharesProps
     ? Decimal.fromAtomics(stakingBalance.amount, stakingDecimals).toFloatApproximation()
     : 0;
 
-  const buySharesValidationSchema = Yup.object().shape({
+  const delegateBalanceValidationSchema = Yup.object().shape({
     amount: Yup.number()
       .required("An amount is required")
       .positive("Amount should be positive")
@@ -40,8 +43,8 @@ export function FormBuyShares({ validator, submitBuyShares }: FormBuySharesProps
   return (
     <Formik
       initialValues={{ amount: "" }}
-      onSubmit={submitBuyShares}
-      validationSchema={buySharesValidationSchema}
+      onSubmit={submitDelegateBalance}
+      validationSchema={delegateBalanceValidationSchema}
     >
       {(formikProps) => {
         const formDisabled = !(formikProps.isValid && formikProps.dirty);
@@ -60,7 +63,7 @@ export function FormBuyShares({ validator, submitBuyShares }: FormBuySharesProps
                 </FormItem>
               </FormField>
               <Button type="primary" onClick={formikProps.submitForm} disabled={formDisabled}>
-                Buy
+                Delegate
               </Button>
             </FormStack>
           </Form>
