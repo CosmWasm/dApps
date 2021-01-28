@@ -4,23 +4,22 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { config } from "../config";
 import {
-  pathDetail,
+  pathDelegate,
   pathLogin,
   pathOperationResult,
-  pathDelegate,
+  pathRewards,
   pathUndelegate,
-  pathValidator,
   pathValidators,
-  pathWallet,
 } from "./paths";
+import { Delegate } from "./routes/Delegate";
 import { Login } from "./routes/Login";
 import { OperationResult } from "./routes/OperationResult";
-import { Delegate } from "./routes/Delegate";
+import { Rewards } from "./routes/Rewards";
 import { Undelegate } from "./routes/Undelegate";
-import { ValidatorDetail } from "./routes/ValidatorDetail";
-import { ValidatorHome } from "./routes/ValidatorHome";
+import { Validator } from "./routes/Validator";
 import { Validators } from "./routes/Validators";
-import { Wallet } from "./routes/Wallet";
+
+const paramValidatorAddress = "/:validatorAddress";
 
 export function App(): JSX.Element {
   return (
@@ -34,15 +33,22 @@ export function App(): JSX.Element {
               <Route exact path={pathLogin} component={Login} />
               <ProtectedSwitch authPath={pathLogin}>
                 <Route exact path={pathValidators} component={Validators} />
-                <Route exact path={`${pathValidator}/:validatorAddress`} component={ValidatorHome} />
+                <Route exact path={`${pathValidators}${paramValidatorAddress}`} component={Validator} />
                 <Route
                   exact
-                  path={`${pathValidator}/:validatorAddress${pathDetail}`}
-                  component={ValidatorDetail}
+                  path={`${pathValidators}${paramValidatorAddress}${pathDelegate}`}
+                  component={Delegate}
                 />
-                <Route exact path={`${pathWallet}/:validatorAddress`} component={Wallet} />
-                <Route exact path={`${pathDelegate}/:validatorAddress`} component={Delegate} />
-                <Route exact path={`${pathUndelegate}/:validatorAddress`} component={Undelegate} />
+                <Route
+                  exact
+                  path={`${pathValidators}${paramValidatorAddress}${pathUndelegate}`}
+                  component={Undelegate}
+                />
+                <Route
+                  exact
+                  path={`${pathValidators}${paramValidatorAddress}${pathRewards}`}
+                  component={Rewards}
+                />
                 <Route exact path={pathOperationResult} component={OperationResult} />
               </ProtectedSwitch>
             </Switch>

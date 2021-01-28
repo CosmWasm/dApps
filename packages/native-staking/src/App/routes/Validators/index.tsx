@@ -4,7 +4,7 @@ import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { AccountMenu } from "../../components/AccountMenu";
-import { pathValidator } from "../../paths";
+import { pathValidators } from "../../paths";
 import { BorderContainer, MainStack, MenuHeader, ValidatorItem, ValidatorStack } from "./style";
 
 const { Title, Text } = Typography;
@@ -45,7 +45,7 @@ export function Validators(): JSX.Element {
   }, [getStakingClient]);
 
   function goToValidator(address: string) {
-    history.push(`${pathValidator}/${address}`);
+    history.push(`${pathValidators}/${address}`);
   }
 
   return (
