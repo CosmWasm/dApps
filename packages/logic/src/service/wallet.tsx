@@ -1,6 +1,7 @@
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { FaucetClient } from "@cosmjs/faucet-client";
-import { Coin, LcdClient, OfflineSigner, StakingExtension } from "@cosmjs/launchpad";
+import { Coin, OfflineSigner } from "@cosmjs/launchpad";
+import { QueryClient, StakingExtension, DistributionExtension } from "@cosmjs/stargate";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { AppConfig } from "../config";
@@ -20,7 +21,7 @@ interface CosmWasmContextType {
   readonly getSigner: () => OfflineSigner;
   readonly changeSigner: (newSigner: OfflineSigner) => void;
   readonly getClient: () => SigningCosmWasmClient;
-  readonly getStakingClient: () => LcdClient & StakingExtension;
+  readonly getStakingClient: () => QueryClient & StakingExtension & DistributionExtension;
 }
 
 function throwNotInitialized(): any {
@@ -113,7 +114,6 @@ export function SdkProvider({ config: configProp, children }: SdkProviderProps):
     if (!signer || !client) return;
 
     const balance: Coin[] = [];
-    const stakingClient = createStakingClient(config.httpUrl);
 
     (async function updateValue(): Promise<void> {
       const address = (await signer.getAccounts())[0].address;
@@ -123,6 +123,8 @@ export function SdkProvider({ config: configProp, children }: SdkProviderProps):
         await hitFaucet(address);
       }
       await refreshBalance(address, balance);
+
+      const stakingClient = await createStakingClient(config.rpcUrl);
 
       setValue({
         initialized: true,

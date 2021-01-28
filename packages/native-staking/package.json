@@ -1,9 +1,9 @@
 {
-  "name": "wallet",
+  "name": "native-staking",
   "version": "0.4.0",
   "license": "Apache-2.0",
   "private": true,
-  "homepage": "https://dapps.cosmwasm.com/wallet",
+  "homepage": "https://dapps.cosmwasm.com/native-stakes",
   "browserslist": [
     "last 2 chrome versions",
     "last 2 firefox versions",
@@ -21,7 +21,9 @@
     "@cosmicdapp/design": "^0.4.5",
     "@cosmicdapp/logic": "^0.4.5",
     "@cosmjs/launchpad": "^0.24.0-alpha.22",
+    "@cosmjs/math": "^0.24.0-alpha.22",
     "antd": "^4.5.4",
+    "clipboard-copy": "^3.1.0",
     "formik": "^2.1.5",
     "formik-antd": "^2.0.1",
     "react": "^16.13.1",
