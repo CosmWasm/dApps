@@ -5,7 +5,6 @@ import { Formik } from "formik";
 import { Form, FormItem, Input } from "formik-antd";
 import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
-import { StakingValidator } from "../../../utils/staking";
 import { FormField, FormStack } from "./style";
 
 const { Text } = Typography;
@@ -15,12 +14,12 @@ export interface FormUndelegateBalanceFields {
 }
 
 interface FormUndelegateBalanceProps {
-  readonly validator: StakingValidator;
+  readonly validatorAddress: string;
   readonly submitUndelegateBalance: (values: FormUndelegateBalanceFields) => Promise<void>;
 }
 
 export function FormUndelegateBalance({
-  validator,
+  validatorAddress,
   submitUndelegateBalance,
 }: FormUndelegateBalanceProps): JSX.Element {
   const { config, getStakingClient, address } = useSdk();
@@ -36,22 +35,24 @@ export function FormUndelegateBalance({
   });
 
   useEffect(() => {
-    if (!validator) return;
-
     (async function updateBalance() {
-      const { delegationResponse } = await getStakingClient().staking.unverified.delegation(
-        address,
-        validator.operatorAddress,
-      );
-      const { balance } = delegationResponse;
-      const balanceDecimal = Decimal.fromAtomics(
-        balance.amount,
-        config.coinMap[config.stakingToken].fractionalDigits,
-      );
+      try {
+        const { delegationResponse } = await getStakingClient().staking.unverified.delegation(
+          address,
+          validatorAddress,
+        );
+        const { balance } = delegationResponse;
+        const balanceDecimal = Decimal.fromAtomics(
+          balance.amount,
+          config.coinMap[config.stakingToken].fractionalDigits,
+        );
 
-      setBalance(balanceDecimal);
+        setBalance(balanceDecimal);
+      } catch (error) {
+        console.error(error.message);
+      }
     })();
-  }, [address, validator, config, getStakingClient]);
+  }, [address, validatorAddress, config, getStakingClient]);
 
   return (
     <Formik

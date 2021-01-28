@@ -7,7 +7,7 @@ import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { config } from "../../../config";
 import { HeaderBackMenu } from "../../components/HeaderBackMenu";
-import { pathOperationResult, pathUndelegate, pathValidator, pathWallet } from "../../paths";
+import { pathOperationResult, pathUndelegate, pathValidators } from "../../paths";
 import { EncodeMsgUndelegate, useStakingValidator } from "../../utils/staking";
 import { FormUndelegateBalance, FormUndelegateBalanceFields } from "./FormUndelegateBalance";
 import { HeaderTitleStack, MainStack } from "./style";
@@ -61,9 +61,9 @@ export function Undelegate(): JSX.Element {
         pathname: pathOperationResult,
         state: {
           success: true,
-          message: `${amount} ${config.stakingToken} successfully undelegated`,
-          customButtonText: "Wallet",
-          customButtonActionPath: `${pathWallet}/${validatorAddress}`,
+          message: `${amount} ${config.coinMap[config.stakingToken].denom} successfully undelegated`,
+          customButtonText: "Validator home",
+          customButtonActionPath: `${pathValidators}/${validatorAddress}`,
         },
       });
     } catch (stackTrace) {
@@ -75,7 +75,7 @@ export function Undelegate(): JSX.Element {
           success: false,
           message: "Undelegate transaction failed:",
           error: getErrorFromStackTrace(stackTrace),
-          customButtonActionPath: `${pathUndelegate}/${validatorAddress}`,
+          customButtonActionPath: `${pathValidators}/${validatorAddress}${pathUndelegate}`,
         },
       });
     }
@@ -87,11 +87,14 @@ export function Undelegate(): JSX.Element {
       <PageLayout>
         <MainStack>
           <HeaderTitleStack>
-            <HeaderBackMenu path={`${pathValidator}/${validatorAddress}`} />
+            <HeaderBackMenu path={`${pathValidators}/${validatorAddress}`} />
             <Title>Undelegate</Title>
             <Title level={2}>{validator?.description.moniker ?? ""}</Title>
           </HeaderTitleStack>
-          <FormUndelegateBalance validator={validator} submitUndelegateBalance={submitUndelegateBalance} />
+          <FormUndelegateBalance
+            validatorAddress={validatorAddress}
+            submitUndelegateBalance={submitUndelegateBalance}
+          />
         </MainStack>
       </PageLayout>
     ))
