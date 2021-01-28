@@ -1,5 +1,5 @@
 /names/* /names/index.html 200
 /wallet/* /wallet/index.html 200
 /cw20-wallet/* /cw20-wallet/index.html 200
-/stakes/* /stakes/index.html 200
-/cw20-stakes/* /cw20-stakes/index.html 200
+/staking/* /staking/index.html 200
+/cw20-staking/* /cw20-staking/index.html 200

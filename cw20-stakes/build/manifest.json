@@ -1,6 +1,0 @@
-{
-  "short_name": "Staking Service",
-  "name": "Staking Service with CRA",
-  "start_url": ".",
-  "display": "standalone"
-}
