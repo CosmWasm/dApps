@@ -1,7 +1,7 @@
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { FaucetClient } from "@cosmjs/faucet-client";
 import { Coin, OfflineSigner } from "@cosmjs/launchpad";
-import { QueryClient, StakingExtension } from "@cosmjs/stargate";
+import { QueryClient, StakingExtension, DistributionExtension } from "@cosmjs/stargate";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { AppConfig } from "../config";
@@ -21,7 +21,7 @@ interface CosmWasmContextType {
   readonly getSigner: () => OfflineSigner;
   readonly changeSigner: (newSigner: OfflineSigner) => void;
   readonly getClient: () => SigningCosmWasmClient;
-  readonly getStakingClient: () => QueryClient & StakingExtension;
+  readonly getStakingClient: () => QueryClient & StakingExtension & DistributionExtension;
 }
 
 function throwNotInitialized(): any {
