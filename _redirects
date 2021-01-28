@@ -2,3 +2,4 @@
 /wallet/* /wallet/index.html 200
 /cw20-wallet/* /cw20-wallet/index.html 200
 /stakes/* /stakes/index.html 200
+/cw20-stakes/* /cw20-stakes/index.html 200
