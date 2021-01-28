@@ -16,6 +16,10 @@ export type EncodeMsgUndelegate = EncodeObject<
   "/cosmos.staking.v1beta1.MsgUndelegate",
   codec.cosmos.staking.v1beta1.IMsgUndelegate
 >;
+export type EncodeMsgWithdrawDelegatorReward = EncodeObject<
+  "/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward",
+  codec.cosmos.distribution.v1beta1.IMsgWithdrawDelegatorReward
+>;
 
 export function useStakingValidator(validatorAddress: string): StakingValidator {
   const { setError } = useError();
