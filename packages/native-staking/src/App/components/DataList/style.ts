@@ -29,6 +29,6 @@ export const KeyText = styled(Text)`
 export const ValueText = styled(Text)`
   font-family: var(--ff-montserrat);
   font-weight: bolder;
-  font-size: var(--s4);
-  line-height: var(--s4);
+  font-size: var(--s-1);
+  line-height: var(--s-1);
 `;
