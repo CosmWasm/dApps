@@ -48,7 +48,7 @@ export function Rewards(): JSX.Element {
         );
         const nonNullRewards: readonly Coin[] = rewards
           .map((coin) => ({
-            amount: coin.amount || "",
+            amount: coin.amount ? coin.amount.slice(0, -18) : "",
             denom: coin.denom || "",
           }))
           .filter((coin) => coin.amount.length && coin.denom.length);
