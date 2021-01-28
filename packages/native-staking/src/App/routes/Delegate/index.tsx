@@ -7,7 +7,7 @@ import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { config } from "../../../config";
 import { HeaderBackMenu } from "../../components/HeaderBackMenu";
-import { pathOperationResult, pathDelegate, pathValidator, pathWallet } from "../../paths";
+import { pathDelegate, pathOperationResult, pathValidators } from "../../paths";
 import { EncodeMsgDelegate, useStakingValidator } from "../../utils/staking";
 import { FormDelegateBalance, FormDelegateBalanceFields } from "./FormDelegateBalance";
 import { HeaderTitleStack, MainStack } from "./style";
@@ -62,9 +62,9 @@ export function Delegate(): JSX.Element {
         pathname: pathOperationResult,
         state: {
           success: true,
-          message: `${amount} ${config.stakingToken} successfully bonded`,
-          customButtonText: "Wallet",
-          customButtonActionPath: `${pathWallet}/${validatorAddress}`,
+          message: `${amount} ${config.coinMap[config.stakingToken].denom} successfully delegated`,
+          customButtonText: "Validator home",
+          customButtonActionPath: `${pathValidators}/${validatorAddress}`,
         },
       });
     } catch (stackTrace) {
@@ -74,25 +74,25 @@ export function Delegate(): JSX.Element {
         pathname: pathOperationResult,
         state: {
           success: false,
-          message: "Bond transaction failed:",
+          message: "Delegate transaction failed:",
           error: getErrorFromStackTrace(stackTrace),
-          customButtonActionPath: `${pathDelegate}/${validatorAddress}`,
+          customButtonActionPath: `${pathValidators}/${validatorAddress}${pathDelegate}`,
         },
       });
     }
   }
 
   return (
-    (loading && <Loading loadingText={`Bonding...`} />) ||
+    (loading && <Loading loadingText={`Delegating...`} />) ||
     (!loading && (
       <PageLayout>
         <MainStack>
           <HeaderTitleStack>
-            <HeaderBackMenu path={`${pathValidator}/${validatorAddress}`} />
+            <HeaderBackMenu path={`${pathValidators}/${validatorAddress}`} />
             <Title>Delegate</Title>
             <Title level={2}>{validator?.description.moniker ?? ""}</Title>
           </HeaderTitleStack>
-          <FormDelegateBalance validator={validator} submitDelegateBalance={submitDelegateBalance} />
+          <FormDelegateBalance submitDelegateBalance={submitDelegateBalance} />
         </MainStack>
       </PageLayout>
     ))

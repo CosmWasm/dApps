@@ -7,8 +7,7 @@ import { Form, FormItem, Input } from "formik-antd";
 import React from "react";
 import * as Yup from "yup";
 import { config } from "../../../../config";
-import { StakingValidator } from "../../../utils/staking";
-import { FormField, FormStack, StakePerToken } from "./style";
+import { FormField, FormStack } from "./style";
 
 const { Text } = Typography;
 
@@ -17,14 +16,10 @@ export interface FormDelegateBalanceFields {
 }
 
 interface FormDelegateBalanceProps {
-  readonly validator: StakingValidator;
   readonly submitDelegateBalance: (values: FormDelegateBalanceFields) => Promise<void>;
 }
 
-export function FormDelegateBalance({
-  validator,
-  submitDelegateBalance,
-}: FormDelegateBalanceProps): JSX.Element {
+export function FormDelegateBalance({ submitDelegateBalance }: FormDelegateBalanceProps): JSX.Element {
   const { balance } = useSdk();
 
   const stakingBalance: Coin = balance.find((coin) => coin.denom === config.stakingToken);
@@ -52,10 +47,6 @@ export function FormDelegateBalance({
         return (
           <Form>
             <FormStack>
-              <StakePerToken>
-                <Text>Min. Delegation:</Text>
-                <Text>{validator?.minSelfDelegation}</Text>
-              </StakePerToken>
               <FormField>
                 <Text>{config.coinMap[config.stakingToken].denom}</Text>
                 <FormItem name="amount">
