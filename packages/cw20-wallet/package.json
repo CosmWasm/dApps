@@ -13,6 +13,7 @@
     "start:base": "craco start",
     "start:local": "REACT_APP_NETWORK=local yarn start:base",
     "start:musselnet": "REACT_APP_NETWORK=musselnet yarn start:base",
+    "start:hackatom": "REACT_APP_NETWORK=hackatom yarn start:base",
     "start": "yarn start:musselnet",
     "build": "REACT_APP_NETWORK=musselnet craco build",
     "test": "craco test"
