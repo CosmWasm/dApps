@@ -18,7 +18,7 @@ const local: AppConfig = {
 };
 
 const musselnet: AppConfig = {
-  chainId: "musselnet-2",
+  chainId: "musselnet-4",
   chainName: "Musselnet",
   addressPrefix: "wasm",
   rpcUrl: "https://rpc.musselnet.cosmwasm.com",
@@ -48,7 +48,7 @@ const hackatom: AppConfig = {
     uatom: { denom: "ATOM", fractionalDigits: 6 },
   },
   gasPrice: 0.025,
-  codeId: 4,
+  codeId: 5,
 };
 
 const configs: NetworkConfigs = { local, musselnet, hackatom };

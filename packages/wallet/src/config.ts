@@ -17,7 +17,7 @@ const local: AppConfig = {
 };
 
 const musselnet: AppConfig = {
-  chainId: "musselnet-2",
+  chainId: "musselnet-4",
   chainName: "Musselnet",
   addressPrefix: "wasm",
   rpcUrl: "https://rpc.musselnet.cosmwasm.com",
