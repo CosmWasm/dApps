@@ -1,0 +1,6 @@
+{
+  "short_name": "CW20 Wallet",
+  "name": "CW20 Wallet with CRA",
+  "start_url": ".",
+  "display": "standalone"
+}

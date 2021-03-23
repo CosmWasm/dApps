@@ -14,6 +14,7 @@ const local: AppConfig = {
     uatom: { denom: "ATOM", fractionalDigits: 6 },
   },
   gasPrice: 0.025,
+  codeId: 2,
 };
 
 const musselnet: AppConfig = {
@@ -30,6 +31,7 @@ const musselnet: AppConfig = {
     ufrites: { denom: "FRITES", fractionalDigits: 6 },
   },
   gasPrice: 0.025,
+  codeId: 4,
 };
 
 const hackatom: AppConfig = {
