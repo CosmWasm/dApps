@@ -1,4 +1,4 @@
-# cw20-wallet
+# native-multisender
 
 ## Prerequisites
 
@@ -11,7 +11,7 @@ yarn build-deps
 
 ## Run the app
 
-In the packages/cw20-wallet directory, run:
+In the packages/native-multisender directory, run:
 
 ```shell
 yarn start

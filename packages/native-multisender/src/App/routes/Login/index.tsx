@@ -6,7 +6,12 @@ import cosmWasmLogo from "./assets/cosmWasmLogo.svg";
 
 function Login(): JSX.Element {
   return (
-    <LoginDesign pathAfterLogin={pathTokens} appName="CW20 Wallet" appLogo={cosmWasmLogo} config={config} />
+    <LoginDesign
+      pathAfterLogin={pathTokens}
+      appName="Native MultiSender"
+      appLogo={cosmWasmLogo}
+      config={config}
+    />
   );
 }
 

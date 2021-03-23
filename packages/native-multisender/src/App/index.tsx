@@ -9,7 +9,6 @@ import {
   pathAllowances,
   pathLogin,
   pathOperationResult,
-  pathTokenDetail,
   pathTokens,
   pathTokensAdd,
   pathTokenSend,
@@ -19,7 +18,6 @@ import AllowanceEdit from "./routes/AllowanceEdit";
 import Allowances from "./routes/Allowances";
 import Login from "./routes/Login";
 import OperationResult from "./routes/OperationResult";
-import TokenDetail from "./routes/TokenDetail";
 import Tokens from "./routes/Tokens";
 import TokensAdd from "./routes/TokensAdd";
 import TokenSend from "./routes/TokenSend";
@@ -37,11 +35,6 @@ function App(): JSX.Element {
               <ProtectedSwitch authPath={pathLogin}>
                 <Route exact path={pathTokens} component={Tokens} />
                 <Route exact path={`${pathTokensAdd}/:codeId?`} component={TokensAdd} />
-                <Route
-                  exact
-                  path={`${pathTokenDetail}/:contractAddress/:allowingAddress?`}
-                  component={TokenDetail}
-                />
                 <Route
                   exact
                   path={`${pathTokenSend}/:contractAddress/:allowingAddress?`}

@@ -1,6 +1,6 @@
 {
-  "short_name": "CW20 Wallet",
-  "name": "CW20 Wallet with CRA",
+  "short_name": "Native MultiSender",
+  "name": "Native MultiSender with CRA",
   "start_url": ".",
   "display": "standalone"
 }

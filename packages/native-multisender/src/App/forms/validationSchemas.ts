@@ -24,3 +24,12 @@ export const addAllowanceValidationSchema = Yup.object().shape({
   address: requiredAddressField,
   amount: amountField,
 });
+
+const addressShape = {
+  address: Yup.string()
+    .required("An address is required")
+    .matches(regexStartsWithPrefix, `"${config.addressPrefix}" prefix required`)
+    .length(39 + config.addressPrefix.length, "Address invalid"),
+};
+
+export const searchValidationSchema = Yup.object().shape(addressShape);
