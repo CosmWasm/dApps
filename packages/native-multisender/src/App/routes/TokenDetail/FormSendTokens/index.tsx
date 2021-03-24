@@ -19,35 +19,28 @@ export function FormSendTokens({
   tokenAmount,
   sendTokensAction,
 }: FormSendTokensProps): JSX.Element {
-  const sendAmountValidationSchema = Yup.object().shape({
-    amount: Yup.number()
-      .required("An amount is required")
-      .positive("Amount should be positive")
-      .max(parseFloat(tokenAmount), `Amount cannot be greater than ${tokenAmount}`),
-  });
+  // const sendAmountValidationSchema = Yup.object().shape({
+  //   amount: Yup.number()
+  //     .required("An amount is required")
+  //     .positive("Amount should be positive")
+  //     .max(parseFloat(tokenAmount), `Amount cannot be greater than ${tokenAmount}`),
+  // });
 
-  const sendValidationSchema = sendAmountValidationSchema.concat(sendAddressValidationSchema);
+  // const sendValidationSchema = sendAmountValidationSchema.concat(sendAddressValidationSchema);
 
   return (
     <Formik
-      initialValues={{ amount: "", address: "" }}
+      initialValues={{ data: "" }}
       onSubmit={sendTokensAction}
-      validationSchema={sendValidationSchema}
+      // validationSchema={sendValidationSchema}
     >
       {(formikProps) => (
         <Form>
           <FormStack>
+            <Text>Amount and address</Text>
             <FormField>
-              <Text>Send</Text>
-              <FormItem name="amount">
-                <Input name="amount" placeholder="Enter amount" />
-              </FormItem>
-              <Text>{tokenName}</Text>
-            </FormField>
-            <FormField>
-              <Text>to</Text>
-              <FormItem name="address">
-                <Input name="address" placeholder="Enter address" />
+              <FormItem name="data">
+                <Input.TextArea name="data" placeholder="Enter amount and account" />
               </FormItem>
             </FormField>
             <Button
