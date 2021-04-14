@@ -27,6 +27,7 @@ export interface KeplrConfig {
     readonly average: number;
     readonly high: number;
   };
+  readonly features?: string[];
   readonly bip44: { readonly coinType: number };
   readonly coinType: number;
 }
@@ -105,6 +106,7 @@ export function configKeplr(config: AppConfig): KeplrConfig {
       average: config.gasPrice,
       high: config.gasPrice * 2,
     },
+    features: ["cosmwasm"],
     bip44: { coinType: 118 },
     coinType: 118,
   };
