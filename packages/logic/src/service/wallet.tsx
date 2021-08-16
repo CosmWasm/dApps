@@ -1,6 +1,7 @@
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { FaucetClient } from "@cosmjs/faucet-client";
-import { Coin, OfflineSigner } from "@cosmjs/launchpad";
+import { Coin } from "@cosmjs/stargate";
+import { OfflineSigner } from "@cosmjs/proto-signing";
 import { QueryClient, StakingExtension, DistributionExtension } from "@cosmjs/stargate";
 import * as React from "react";
 import { useEffect, useState } from "react";

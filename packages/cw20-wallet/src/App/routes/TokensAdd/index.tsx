@@ -1,6 +1,6 @@
 import { BackButton, OperationResultState, PageLayout } from "@cosmicdapp/design";
 import { CW20, getErrorFromStackTrace, useContracts, useError, useSdk } from "@cosmicdapp/logic";
-import { Contract } from "@cosmjs/cosmwasm";
+import { Contract } from "@cosmjs/cosmwasm-stargate";
 import { Button, Typography } from "antd";
 import { Formik } from "formik";
 import { Form, FormItem, Input, Transfer } from "formik-antd";

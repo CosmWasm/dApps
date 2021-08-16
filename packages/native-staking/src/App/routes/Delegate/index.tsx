@@ -1,6 +1,6 @@
 import { Loading, PageLayout } from "@cosmicdapp/design";
 import { displayAmountToNative, getErrorFromStackTrace, useSdk } from "@cosmicdapp/logic";
-import { Coin, coins } from "@cosmjs/launchpad";
+import { Coin, coins } from "@cosmjs/stargate";
 import { isBroadcastTxFailure } from "@cosmjs/stargate";
 import { Typography } from "antd";
 import React, { useState } from "react";
