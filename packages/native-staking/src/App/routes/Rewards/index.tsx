@@ -42,7 +42,7 @@ export function Rewards(): JSX.Element {
   useEffect(() => {
     (async function updateRewards() {
       try {
-        const { rewards } = await getStakingClient().distribution.unverified.delegationRewards(
+        const { rewards } = await getStakingClient().distribution.delegationRewards(
           address,
           validatorAddress,
         );

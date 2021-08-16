@@ -44,7 +44,7 @@ export function Validator(): JSX.Element {
   useEffect(() => {
     (async function updateBalance() {
       try {
-        const { delegationResponse } = await getStakingClient().staking.unverified.delegation(
+        const { delegationResponse } = await getStakingClient().staking.delegation(
           address,
           validatorAddress,
         );
