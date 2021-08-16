@@ -46,7 +46,7 @@ export function Validators(): JSX.Element {
       const contracts = await client.getContracts(config.codeId);
 
       for (const contract of contracts) {
-        const newCw20contract = CW20(client).use(contract.address);
+        const newCw20contract = CW20(client).use(contract);
         addContract(newCw20contract);
       }
     })();

@@ -28,11 +28,19 @@ function TokensAdd(): JSX.Element {
     const codeId = !Number.isNaN(Number(contract)) && Number(contract);
 
     if (codeId) {
-      getClient()
+      const client = getClient();
+      client
         .getContracts(codeId)
         .then((contracts) => {
-          setContracts(contracts);
-          setCodeId(codeId);
+          const contractsPromise = [];
+          contracts.forEach(contract => {
+            contractsPromise.push(client.getContract(contract));
+          });
+          Promise.all(contractsPromise)
+            .then((contracts) => {
+              setContracts(contracts);
+              setCodeId(codeId);
+            });
         })
         .catch(setError);
     } else {

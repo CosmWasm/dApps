@@ -17,9 +17,19 @@ export function Home(): JSX.Element {
   const [contracts, setContracts] = useState<readonly Contract[]>([]);
 
   useEffect(() => {
-    getClient()
+    const client = getClient();
+    client
       .getContracts(config.codeId)
-      .then((contracts) => setContracts(contracts))
+      .then((contracts) => {
+        const contractsPromise = [];
+        contracts.forEach(contract => {
+          contractsPromise.push(client.getContract(contract));
+        });
+        Promise.all(contractsPromise)
+          .then((contracts) => {
+            setContracts(contracts);
+          });
+      })
       .catch(setError);
   }, [getClient, setError]);
 
