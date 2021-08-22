@@ -5,7 +5,7 @@ import {
   nativeCoinToDisplay,
   useSdk,
 } from "@cosmicdapp/logic";
-import { Coin } from "@cosmjs/launchpad";
+import { Coin } from "@cosmjs/stargate";
 import { isBroadcastTxFailure } from "@cosmjs/stargate";
 import { Typography } from "antd";
 import React, { useState } from "react";

@@ -29,7 +29,7 @@ export function useStakingValidator(validatorAddress: string): StakingValidator 
   useEffect(() => {
     (async function updateValidator() {
       try {
-        const { validator } = await getStakingClient().staking.unverified.validator(validatorAddress);
+        const { validator } = await getStakingClient().staking.validator(validatorAddress);
         setValidator(validator);
       } catch (error) {
         setError(error.message);

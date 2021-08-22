@@ -1,7 +1,8 @@
-import { CosmWasmFeeTable } from "@cosmjs/cosmwasm-launchpad";
+import { CosmWasmFeeTable } from "@cosmjs/cosmwasm-stargate";
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { Bip39, Random } from "@cosmjs/crypto";
-import { GasLimits, GasPrice, makeCosmoshubPath, OfflineSigner, Secp256k1HdWallet } from "@cosmjs/launchpad";
+import { defaultGasLimits as defaultStargateGasLimits, GasLimits, GasPrice, makeCosmoshubPath, } from "@cosmjs/stargate";
+import { DirectSecp256k1HdWallet, OfflineSigner } from "@cosmjs/proto-signing";
 import { LedgerSigner } from "@cosmjs/ledger-amino";
 import {
   DistributionExtension,
@@ -10,7 +11,7 @@ import {
   setupStakingExtension,
   StakingExtension,
 } from "@cosmjs/stargate";
-import { adaptor34, Client as TendermintClient } from "@cosmjs/tendermint-rpc";
+import { Tendermint34Client } from "@cosmjs/tendermint-rpc";
 import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { AppConfig } from "../config";
 
@@ -37,7 +38,10 @@ export type WalletLoader = (chainId: string, addressPrefix?: string) => Promise<
 export async function loadOrCreateWallet(_chainId: string, addressPrefix?: string): Promise<OfflineSigner> {
   const mnemonic = loadOrCreateMnemonic();
   const hdPath = makeCosmoshubPath(0);
-  const wallet = await Secp256k1HdWallet.fromMnemonic(mnemonic, hdPath, addressPrefix);
+  const wallet = await DirectSecp256k1HdWallet.fromMnemonic(mnemonic, {
+    hdPaths: [hdPath],
+    prefix: addressPrefix
+  });
   return wallet;
 }
 
@@ -64,6 +68,7 @@ export async function loadKeplrWallet(chainId: string): Promise<OfflineSigner> {
 // using a signing keyring generated from the given mnemonic
 export async function createClient(config: AppConfig, signer: OfflineSigner): Promise<SigningCosmWasmClient> {
   const gasLimits: GasLimits<CosmWasmFeeTable> = {
+    ...defaultStargateGasLimits,
     upload: 1500000,
     init: 600000,
     exec: 400000,
@@ -82,6 +87,6 @@ export async function createClient(config: AppConfig, signer: OfflineSigner): Pr
 export async function createStakingClient(
   apiUrl: string,
 ): Promise<QueryClient & StakingExtension & DistributionExtension> {
-  const tmClient = await TendermintClient.connect(apiUrl, adaptor34);
+  const tmClient = await Tendermint34Client.connect(apiUrl);
   return QueryClient.withExtensions(tmClient, setupStakingExtension, setupDistributionExtension);
 }

@@ -1,6 +1,6 @@
 import { BackButton, Loading, OperationResultState, PageLayout, YourAccount } from "@cosmicdapp/design";
 import { getErrorFromStackTrace, printableCoin, useError, useSdk } from "@cosmicdapp/logic";
-import { Coin } from "@cosmjs/launchpad";
+import { Coin } from "@cosmjs/stargate";
 import { Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";

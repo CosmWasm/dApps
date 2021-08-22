@@ -1,5 +1,5 @@
 import { CW20, CW20Instance, useContracts, useSdk } from "@cosmicdapp/logic";
-import { Coin } from "@cosmjs/launchpad";
+import { Coin } from "@cosmjs/stargate";
 import { Decimal } from "@cosmjs/math";
 import { Typography } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
@@ -49,7 +49,7 @@ function TokenList(): JSX.Element {
 
     client.getContracts(config.codeId).then((contracts) => {
       contracts.forEach((contract) => {
-        const newCw20contract = CW20(client).use(contract.address);
+        const newCw20contract = CW20(client).use(contract);
         addContract(newCw20contract);
       });
     });

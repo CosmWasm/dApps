@@ -1,5 +1,5 @@
 import { useSdk } from "@cosmicdapp/logic";
-import { Coin } from "@cosmjs/launchpad";
+import { Coin } from "@cosmjs/stargate";
 import { Decimal } from "@cosmjs/math";
 import { Button, Typography } from "antd";
 import { Formik } from "formik";

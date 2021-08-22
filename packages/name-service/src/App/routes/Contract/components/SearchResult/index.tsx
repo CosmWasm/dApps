@@ -1,6 +1,6 @@
 import { OperationResultState } from "@cosmicdapp/design";
 import { getErrorFromStackTrace, printableCoin, useError, useSdk } from "@cosmicdapp/logic";
-import { Coin } from "@cosmjs/launchpad";
+import { Coin } from "@cosmjs/stargate";
 import { Button, Typography } from "antd";
 import copyToClipboard from "clipboard-copy";
 import React, { useEffect, useState } from "react";

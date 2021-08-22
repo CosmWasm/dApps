@@ -1,6 +1,6 @@
 import { PageLayout } from "@cosmicdapp/design";
 import { nativeCoinToDisplay, useSdk } from "@cosmicdapp/logic";
-import { Coin } from "@cosmjs/launchpad";
+import { Coin } from "@cosmjs/stargate";
 import { Decimal } from "@cosmjs/math";
 import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
@@ -44,7 +44,7 @@ export function Validator(): JSX.Element {
   useEffect(() => {
     (async function updateBalance() {
       try {
-        const { delegationResponse } = await getStakingClient().staking.unverified.delegation(
+        const { delegationResponse } = await getStakingClient().staking.delegation(
           address,
           validatorAddress,
         );

@@ -1,6 +1,6 @@
 import { PageLayout, YourAccount } from "@cosmicdapp/design";
 import { useError, useSdk } from "@cosmicdapp/logic";
-import { Contract } from "@cosmjs/cosmwasm";
+import { Contract } from "@cosmjs/cosmwasm-stargate";
 import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -17,9 +17,19 @@ export function Home(): JSX.Element {
   const [contracts, setContracts] = useState<readonly Contract[]>([]);
 
   useEffect(() => {
-    getClient()
+    const client = getClient();
+    client
       .getContracts(config.codeId)
-      .then((contracts) => setContracts(contracts))
+      .then((contractAddresses) => {
+        const contractsPromise = [];
+        contractAddresses.forEach(contractAddress => {
+          contractsPromise.push(client.getContract(contractAddress));
+        });
+        Promise.all(contractsPromise)
+          .then((contracts) => {
+            setContracts(contracts);
+          });
+      })
       .catch(setError);
   }, [getClient, setError]);
 

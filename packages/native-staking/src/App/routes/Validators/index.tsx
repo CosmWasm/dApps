@@ -32,7 +32,7 @@ export function Validators(): JSX.Element {
 
   useEffect(() => {
     (async function updateValidatorsData() {
-      const { validators } = await getStakingClient().staking.unverified.validators("BOND_STATUS_BONDED");
+      const { validators } = await getStakingClient().staking.validators("BOND_STATUS_BONDED");
       const validatorsData: readonly ValidatorData[] = validators
         .map((validator) => ({
           name: validator.description.moniker,

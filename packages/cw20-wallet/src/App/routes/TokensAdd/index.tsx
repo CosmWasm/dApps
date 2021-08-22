@@ -1,6 +1,6 @@
 import { BackButton, OperationResultState, PageLayout } from "@cosmicdapp/design";
 import { CW20, getErrorFromStackTrace, useContracts, useError, useSdk } from "@cosmicdapp/logic";
-import { Contract } from "@cosmjs/cosmwasm";
+import { Contract } from "@cosmjs/cosmwasm-stargate";
 import { Button, Typography } from "antd";
 import { Formik } from "formik";
 import { Form, FormItem, Input, Transfer } from "formik-antd";
@@ -28,11 +28,19 @@ function TokensAdd(): JSX.Element {
     const codeId = !Number.isNaN(Number(contract)) && Number(contract);
 
     if (codeId) {
-      getClient()
+      const client = getClient();
+      client
         .getContracts(codeId)
-        .then((contracts) => {
-          setContracts(contracts);
-          setCodeId(codeId);
+        .then((contractAddresses) => {
+          const contractsPromise = [];
+          contractAddresses.forEach(contractAddress => {
+            contractsPromise.push(client.getContract(contractAddress));
+          });
+          Promise.all(contractsPromise)
+            .then((contracts) => {
+              setContracts(contracts);
+              setCodeId(codeId);
+            });
         })
         .catch(setError);
     } else {

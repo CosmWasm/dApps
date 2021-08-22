@@ -1,4 +1,4 @@
-import { Coin } from "@cosmjs/launchpad";
+import { Coin } from "@cosmjs/stargate";
 import { Decimal } from "@cosmjs/math";
 
 // NARROW NO-BREAK SPACE (U+202F)
