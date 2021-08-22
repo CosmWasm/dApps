@@ -31,10 +31,10 @@ function TokensAdd(): JSX.Element {
       const client = getClient();
       client
         .getContracts(codeId)
-        .then((contracts) => {
+        .then((contractAddresses) => {
           const contractsPromise = [];
-          contracts.forEach(contract => {
-            contractsPromise.push(client.getContract(contract));
+          contractAddresses.forEach(contractAddress => {
+            contractsPromise.push(client.getContract(contractAddress));
           });
           Promise.all(contractsPromise)
             .then((contracts) => {
