@@ -22,6 +22,7 @@
     "@cosmicdapp/design": "^0.4.5",
     "@cosmicdapp/logic": "^0.4.5",
     "@cosmjs/cosmwasm-stargate": "^0.25.6",
+    "@cosmjs/stargate": "^0.25.6",
     "@cosmjs/crypto": "^0.25.6",
     "@cosmjs/math": "^0.25.6",
     "antd": "^4.5.4",
