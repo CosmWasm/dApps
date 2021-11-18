@@ -14,7 +14,7 @@
     "start:local": "REACT_APP_NETWORK=local yarn start:base",
     "start:uninet": "REACT_APP_NETWORK=uninet yarn start:base",
     "start": "yarn start:uninet",
-    "build": "REACT_APP_NETWORK=uni craco build",
+    "build": "REACT_APP_NETWORK=uninet craco build",
     "test": "craco test"
   },
   "dependencies": {
