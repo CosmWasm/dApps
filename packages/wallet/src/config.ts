@@ -47,5 +47,5 @@ const pebblenet: AppConfig = {
   gasPrice: 0.025,
 };
 
-const configs: NetworkConfigs = { local, musselnet };
+const configs: NetworkConfigs = { local, uninet, pebblenet };
 export const config = getAppConfig(configs);
