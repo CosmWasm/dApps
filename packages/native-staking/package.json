@@ -12,9 +12,9 @@
   "scripts": {
     "start:base": "craco start",
     "start:local": "REACT_APP_NETWORK=local yarn start:base",
-    "start:musselnet": "REACT_APP_NETWORK=musselnet yarn start:base",
-    "start": "yarn start:musselnet",
-    "build": "REACT_APP_NETWORK=musselnet craco build",
+    "start:uninet": "REACT_APP_NETWORK=uninet yarn start:base",
+    "start": "yarn start:uninet",
+    "build": "REACT_APP_NETWORK=uninet craco build",
     "test": "craco test"
   },
   "dependencies": {
