@@ -14,26 +14,38 @@ const local: AppConfig = {
     uatom: { denom: "ATOM", fractionalDigits: 6 },
   },
   gasPrice: 0.025,
-  // TODO make sure it's correct
-  codeId: 129,
 };
 
-const musselnet: AppConfig = {
-  chainId: "musselnet-2",
-  chainName: "Musselnet",
-  addressPrefix: "wasm",
-  rpcUrl: "https://rpc.musselnet.cosmwasm.com",
-  httpUrl: "https://lcd.musselnet.cosmwasm.com",
-  faucetUrl: "https://faucet.musselnet.cosmwasm.com",
-  feeToken: "umayo",
-  stakingToken: "ufrites",
+const uninet: AppConfig = {
+  chainId: "uni",
+  chainName: "Uni",
+  addressPrefix: "juno",
+  rpcUrl: "https://rpc.uni.juno.deuslabs.fi",
+  httpUrl: "https://lcd.uni.juno.deuslabs.fi",
+  faucetUrl: "https://faucet.uni.juno.deuslabs.fi",
+  feeToken: "ujunox",
+  stakingToken: "ujunox",
   coinMap: {
-    umayo: { denom: "MAYO", fractionalDigits: 6 },
-    ufrites: { denom: "FRITES", fractionalDigits: 6 },
+    ujunox: { denom: "JUNOX", fractionalDigits: 6 },
   },
   gasPrice: 0.025,
-  codeId: 5,
 };
 
-const configs: NetworkConfigs = { local, musselnet };
+const pebblenet: AppConfig = {
+  chainId: "pebblenet-1",
+  chainName: "Pebblenet",
+  addressPrefix: "wasm",
+  rpcUrl: "https://rpc.pebblenet.cosmwasm.com",
+  httpUrl: "https://lcd.pebblenet.cosmwasm.com",
+  faucetUrl: "https://faucet.pebblenet.cosmwasm.com",
+  feeToken: "upebble",
+  stakingToken: "urock",
+  coinMap: {
+    urock: { denom: "ROCK", fractionalDigits: 6 },
+    upebble: { denom: "PEBBLE", fractionalDigits: 6 },
+  },
+  gasPrice: 0.025,
+};
+
+const configs: NetworkConfigs = { local, uninet, pebblenet };
 export const config = getAppConfig(configs);
